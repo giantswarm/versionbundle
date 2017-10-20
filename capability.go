@@ -11,12 +11,23 @@ type Capability struct {
 	Name    string   `json:"name" yaml:"name"`
 }
 
+// TODO write tests
 func (c Capability) Validate() error {
 	for _, b := range c.Bundles {
 		err := b.Validate()
 		if err != nil {
 			return microerror.Mask(err)
 		}
+	}
+
+	var deprecatedCount int
+	for _, b := range c.Bundles {
+		if b.Deprecated {
+			deprecatedCount++
+		}
+	}
+	if deprecatedCount == len(c.Bundles) {
+		return microerror.Maskf(invalidCapabilityError, "at least one bundle must not be deprecated")
 	}
 
 	if c.Name == "" {
@@ -34,6 +45,7 @@ func (c SortCapabilitiesByName) Less(i, j int) bool { return c[i].Name < c[j].Na
 
 type ValidateCapabilities []Capability
 
+// TODO write tests
 func (c ValidateCapabilities) Validate() error {
 	if c.hasDuplicates() {
 		return microerror.Mask(duplicatedCapabilityError)
