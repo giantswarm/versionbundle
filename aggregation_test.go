@@ -428,7 +428,7 @@ func Test_Aggregation_Validate(t *testing.T) {
 					},
 				},
 			},
-			ErrorMatcher: IsInvalidCapability,
+			ErrorMatcher: IsInvalidAggregationError,
 		},
 	}
 

@@ -38,7 +38,7 @@ type ValidateCapabilities []Capability
 
 func (c ValidateCapabilities) Validate() error {
 	if c.hasDuplicates() {
-		return microerror.Mask(invalidCapabilityError)
+		return microerror.Maskf(invalidCapabilityError, "capabilities must not be duplicated")
 	}
 
 	for _, capability := range c {
@@ -73,7 +73,7 @@ type ValidateBundledCapabilities [][]Capability
 
 func (c ValidateBundledCapabilities) Validate() error {
 	if c.hasDuplicates() {
-		return microerror.Mask(invalidCapabilityError)
+		return microerror.Maskf(invalidCapabilityError, "capabilities must not be duplicated")
 	}
 
 	for _, capability := range c {

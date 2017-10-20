@@ -18,6 +18,9 @@ type Bundle struct {
 
 // TODO write tests
 func (b Bundle) Validate() error {
+	if len(b.Changelogs) == 0 {
+		return microerror.Maskf(invalidBundleError, "changelogs must not be empty")
+	}
 	for _, c := range b.Changelogs {
 		err := c.Validate()
 		if err != nil {
@@ -25,6 +28,9 @@ func (b Bundle) Validate() error {
 		}
 	}
 
+	if len(b.Components) == 0 {
+		return microerror.Maskf(invalidBundleError, "components must not be empty")
+	}
 	for _, c := range b.Components {
 		err := c.Validate()
 		if err != nil {
