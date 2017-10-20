@@ -3,7 +3,6 @@ package versionbundle
 import (
 	"reflect"
 	"sort"
-	"strings"
 
 	"github.com/giantswarm/microerror"
 )
@@ -85,11 +84,11 @@ func capabilitiesConflictWithDependencies(c1, c2 Capability) bool {
 		for _, d := range b1.Dependencies {
 			for _, b2 := range c2.Bundles {
 				for _, c := range b2.Components {
-					if c.Name != d.Name {
+					if d.Name != c.Name {
 						continue
 					}
 
-					if !versionRequirementMatches(c.Version, d.Version) {
+					if !d.Matches(c) {
 						return true
 					}
 				}
@@ -111,33 +110,4 @@ func containsAggregatedCapabilities(list [][]Capability, item []Capability) bool
 	}
 
 	return false
-}
-
-func versionRequirementMatches(componentVersion string, dependencyVersion string) bool {
-	split := strings.Split(dependencyVersion, " ")
-	operator := split[0]
-	dependencyVersion = split[1]
-	componentVersion, dependencyVersion = alignWildcardVersion(componentVersion, dependencyVersion)
-
-	// TODO support more operators
-	if operator == "<=" {
-		if componentVersion <= dependencyVersion {
-			return true
-		}
-	}
-
-	return false
-}
-
-func alignWildcardVersion(componentVersion, dependencyVersion string) (string, string) {
-	i := strings.Index(dependencyVersion, "x")
-
-	if i == -1 {
-		return componentVersion, dependencyVersion
-	}
-
-	componentVersion = componentVersion[:i-1]
-	dependencyVersion = dependencyVersion[:i-1]
-
-	return componentVersion, dependencyVersion
 }
