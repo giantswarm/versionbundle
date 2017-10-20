@@ -64,6 +64,14 @@ func (d Dependency) Matches(c Component) bool {
 
 // TODO write tests
 func (d Dependency) Validate() error {
+	if d.Name == "" {
+		return microerror.Maskf(invalidChangelogError, "name must not be empty")
+	}
+
+	if d.Version == "" {
+		return microerror.Maskf(invalidChangelogError, "version must not be empty")
+	}
+
 	inputSplit := strings.Split(d.Version, " ")
 	if len(inputSplit) != 2 {
 		return microerror.Maskf(invalidDependencyError, "input format must be '<operator> <semver version>'")

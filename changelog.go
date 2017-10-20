@@ -33,15 +33,15 @@ type Changelog struct {
 // TODO write tests
 func (c Changelog) Validate() error {
 	if c.Component == "" {
-		return microerror.Maskf(invalidCapabilityError, "name must not be empty")
+		return microerror.Maskf(invalidChangelogError, "component must not be empty")
 	}
 
 	if c.Description == "" {
-		return microerror.Maskf(invalidCapabilityError, "name must not be empty")
+		return microerror.Maskf(invalidChangelogError, "description must not be empty")
 	}
 
 	if c.Kind == "" {
-		return microerror.Maskf(invalidDependencyError, "kind must not be empty")
+		return microerror.Maskf(invalidChangelogError, "kind must not be empty")
 	}
 	var found bool
 	for _, k := range validKinds {
@@ -50,7 +50,7 @@ func (c Changelog) Validate() error {
 		}
 	}
 	if !found {
-		return microerror.Maskf(invalidDependencyError, "kind must be one of %#v", validKinds)
+		return microerror.Maskf(invalidChangelogError, "kind must be one of %#v", validKinds)
 	}
 
 	return nil

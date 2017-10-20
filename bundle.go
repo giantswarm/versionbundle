@@ -40,24 +40,24 @@ func (b Bundle) Validate() error {
 
 	var emptyTime time.Time
 	if b.Time == emptyTime {
-		return microerror.Maskf(invalidCapabilityError, "time must not be empty")
+		return microerror.Maskf(invalidBundleError, "time must not be empty")
 	}
 
 	versionSplit := strings.Split(b.Version, ".")
 	if len(versionSplit) != 3 {
-		return microerror.Maskf(invalidDependencyError, "version format must be '<major>.<minor>.<patch>'")
+		return microerror.Maskf(invalidBundleError, "version format must be '<major>.<minor>.<patch>'")
 	}
 
 	if !isNumber(versionSplit[0]) {
-		return microerror.Maskf(invalidDependencyError, "major version must be int")
+		return microerror.Maskf(invalidBundleError, "major version must be int")
 	}
 
 	if !isNumber(versionSplit[1]) {
-		return microerror.Maskf(invalidDependencyError, "minor version must be int")
+		return microerror.Maskf(invalidBundleError, "minor version must be int")
 	}
 
 	if !isNumber(versionSplit[2]) {
-		return microerror.Maskf(invalidDependencyError, "patch version must be int")
+		return microerror.Maskf(invalidBundleError, "patch version must be int")
 	}
 
 	return nil
