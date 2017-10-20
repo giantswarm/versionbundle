@@ -4,9 +4,9 @@ import (
 	"github.com/giantswarm/microerror"
 )
 
-var duplicatedDependencyError = microerror.New("duplicated dependency")
+var duplicatedCapabilityError = microerror.New("duplicated capability")
 
-// IsDuplicatedDependency asserts duplicatedDependencyError.
-func IsDuplicatedDependency(err error) bool {
-	return microerror.Cause(err) == duplicatedDependencyError
+// IsDuplicatedCapability asserts duplicatedCapabilityError.
+func IsDuplicatedCapability(err error) bool {
+	return microerror.Cause(err) == duplicatedCapabilityError
 }

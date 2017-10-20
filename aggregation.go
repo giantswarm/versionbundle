@@ -1,5 +1,5 @@
 package versionbundle
 
 type Aggregation struct {
-	BundledCapabilities [][]Capability `json:"bundledCapabilities" yaml:"bundledCapabilities"`
+	Capabilities [][]Capability `json:"capabilities" yaml:"capabilities"`
 }
