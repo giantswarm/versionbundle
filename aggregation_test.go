@@ -274,6 +274,162 @@ func Test_Aggregation_Validate(t *testing.T) {
 			},
 			ErrorMatcher: IsInvalidAggregationError,
 		},
+
+		// Test 5 ensures that an aggregation with bundled capabilities lists having
+		// the same capabilities is not valid.
+		{
+			Aggregation: Aggregation{
+				Capabilities: [][]Capability{
+					{
+						{
+							Bundles: []Bundle{
+								{
+									Changelogs: []Changelog{
+										{
+											Component:   "calico",
+											Description: "Calico version updated.",
+											Kind:        "changed",
+										},
+										{
+											Component:   "kubernetes",
+											Description: "Kubernetes version requirements changed due to calico update.",
+											Kind:        "changed",
+										},
+									},
+									Components: []Component{
+										{
+											Name:    "calico",
+											Version: "1.1.0",
+										},
+										{
+											Name:    "kube-dns",
+											Version: "1.0.0",
+										},
+									},
+									Dependencies: []Dependency{
+										{
+											Name:    "kubernetes",
+											Version: "<= 1.7.x",
+										},
+									},
+									Deprecated: false,
+									Time:       time.Unix(10, 5),
+									Version:    "0.1.0",
+								},
+							},
+							Name: "kubernetes-operator",
+						},
+						{
+							Bundles: []Bundle{
+								{
+									Changelogs: []Changelog{
+										{
+											Component:   "etcd",
+											Description: "Etcd version updated.",
+											Kind:        "changed",
+										},
+										{
+											Component:   "kubernetes",
+											Description: "Kubernetes version updated.",
+											Kind:        "changed",
+										},
+									},
+									Components: []Component{
+										{
+											Name:    "etcd",
+											Version: "3.2.0",
+										},
+										{
+											Name:    "kubernetes",
+											Version: "1.7.1",
+										},
+									},
+									Dependencies: []Dependency{},
+									Deprecated:   false,
+									Time:         time.Unix(20, 15),
+									Version:      "0.2.0",
+								},
+							},
+							Name: "cloud-config-operator",
+						},
+					},
+					{
+						{
+							Bundles: []Bundle{
+								{
+									Changelogs: []Changelog{
+										{
+											Component:   "calico",
+											Description: "Calico version updated.",
+											Kind:        "changed",
+										},
+										{
+											Component:   "kubernetes",
+											Description: "Kubernetes version requirements changed due to calico update.",
+											Kind:        "changed",
+										},
+									},
+									Components: []Component{
+										{
+											Name:    "calico",
+											Version: "1.1.0",
+										},
+										{
+											Name:    "kube-dns",
+											Version: "1.0.0",
+										},
+									},
+									Dependencies: []Dependency{
+										{
+											Name:    "kubernetes",
+											Version: "<= 1.7.x",
+										},
+									},
+									Deprecated: false,
+									Time:       time.Unix(10, 5),
+									Version:    "0.1.0",
+								},
+							},
+							Name: "kubernetes-operator",
+						},
+						{
+							Bundles: []Bundle{
+								{
+									Changelogs: []Changelog{
+										{
+											Component:   "etcd",
+											Description: "Etcd version updated.",
+											Kind:        "changed",
+										},
+										{
+											Component:   "kubernetes",
+											Description: "Kubernetes version updated.",
+											Kind:        "changed",
+										},
+									},
+									Components: []Component{
+										{
+											Name:    "etcd",
+											Version: "3.2.0",
+										},
+										{
+											Name:    "kubernetes",
+											Version: "1.7.1",
+										},
+									},
+									Dependencies: []Dependency{},
+									Deprecated:   false,
+									Time:         time.Unix(20, 15),
+									Version:      "0.2.0",
+								},
+							},
+							Name: "cloud-config-operator",
+						},
+					},
+				},
+			},
+			ErrorMatcher: IsDuplicatedCapability,
+		},
 	}
 
 	for i, tc := range testCases {

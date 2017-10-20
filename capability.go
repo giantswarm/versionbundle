@@ -78,3 +78,38 @@ func (c ValidateCapabilities) hasDuplicates() bool {
 
 	return false
 }
+
+type ValidateBundledCapabilities [][]Capability
+
+func (c ValidateBundledCapabilities) Validate() error {
+	if c.hasDuplicates() {
+		return microerror.Mask(duplicatedCapabilityError)
+	}
+
+	for _, capability := range c {
+		err := ValidateCapabilities(capability).Validate()
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+
+	return nil
+}
+
+func (c ValidateBundledCapabilities) hasDuplicates() bool {
+	for _, c1 := range c {
+		var seen int
+
+		for _, c2 := range c {
+			if reflect.DeepEqual(c1, c2) {
+				seen++
+
+				if seen >= 2 {
+					return true
+				}
+			}
+		}
+	}
+
+	return false
+}
