@@ -8,11 +8,9 @@ import (
 )
 
 func Aggregate(capabilities []Capability) (Aggregation, error) {
-	// TODO validate depdenency version
-	// TODO dispatch validation to types (implement validation in types)
-
-	if hasDuplicatedCapabilities(capabilities) {
-		return Aggregation{}, microerror.Mask(duplicatedCapabilityError)
+	err := ValidateCapabilities(capabilities).Validate()
+	if err != nil {
+		return Aggregation{}, microerror.Mask(err)
 	}
 
 	var newAggregration Aggregation
@@ -58,25 +56,12 @@ func Aggregate(capabilities []Capability) (Aggregation, error) {
 		newAggregration.Capabilities = append(newAggregration.Capabilities, newCapabilities)
 	}
 
-	return newAggregration, nil
-}
-
-func hasDuplicatedCapabilities(list []Capability) bool {
-	for _, c1 := range list {
-		var seen int
-
-		for _, c2 := range list {
-			if reflect.DeepEqual(c1, c2) {
-				seen++
-
-				if seen >= 2 {
-					return true
-				}
-			}
-		}
+	err := newAggregration.Validate()
+	if err != nil {
+		return microerror.Mask(err)
 	}
 
-	return false
+	return newAggregration, nil
 }
 
 func capabilitiesConflictWithDependencies(c1, c2 Capability) bool {
