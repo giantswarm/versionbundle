@@ -6,7 +6,6 @@ type Aggregation struct {
 	Capabilities [][]Capability `json:"capabilities" yaml:"capabilities"`
 }
 
-// TODO write tests
 func (a Aggregation) Validate() error {
 	for _, bundle := range a.Capabilities {
 		for _, c := range bundle {
