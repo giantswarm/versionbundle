@@ -1,3 +1,3 @@
-package: github.com/giantswarm/versiongraph
+package: github.com/giantswarm/versionbundle
 import:
 - package: github.com/giantswarm/microerror

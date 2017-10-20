@@ -1,4 +1,4 @@
-package versiongraph
+package versionbundle
 
 import (
 	"github.com/giantswarm/microerror"
