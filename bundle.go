@@ -21,21 +21,21 @@ func (b Bundle) Validate() error {
 	for _, c := range b.Changelogs {
 		err := c.Validate()
 		if err != nil {
-			return microerror.Mask(err)
+			return microerror.Maskf(invalidBundleError, err.Error())
 		}
 	}
 
 	for _, c := range b.Components {
 		err := c.Validate()
 		if err != nil {
-			return microerror.Mask(err)
+			return microerror.Maskf(invalidBundleError, err.Error())
 		}
 	}
 
 	for _, d := range b.Dependencies {
 		err := d.Validate()
 		if err != nil {
-			return microerror.Mask(err)
+			return microerror.Maskf(invalidBundleError, err.Error())
 		}
 	}
 
@@ -62,4 +62,49 @@ func (b Bundle) Validate() error {
 	}
 
 	return nil
+}
+
+type ValidateBundles []Bundle
+
+func (b ValidateBundles) Validate() error {
+	if b.hasDuplicatedVersions() {
+		return microerror.Mask(invalidBundleError)
+	}
+
+	for _, bundle := range b {
+		err := bundle.Validate()
+		if err != nil {
+			return microerror.Maskf(invalidBundleError, err.Error())
+		}
+	}
+
+	var deprecatedCount int
+	for _, bundle := range b {
+		if bundle.Deprecated {
+			deprecatedCount++
+		}
+	}
+	if deprecatedCount == len(b) {
+		return microerror.Maskf(invalidBundleError, "at least one bundle must not be deprecated")
+	}
+
+	return nil
+}
+
+func (b ValidateBundles) hasDuplicatedVersions() bool {
+	for _, b1 := range b {
+		var seen int
+
+		for _, b2 := range b {
+			if b1.Version == b2.Version {
+				seen++
+
+				if seen >= 2 {
+					return true
+				}
+			}
+		}
+	}
+
+	return false
 }

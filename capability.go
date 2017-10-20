@@ -11,27 +11,18 @@ type Capability struct {
 	Name    string   `json:"name" yaml:"name"`
 }
 
-// TODO write tests
 func (c Capability) Validate() error {
-	for _, b := range c.Bundles {
-		err := b.Validate()
-		if err != nil {
-			return microerror.Mask(err)
-		}
-	}
-
-	var deprecatedCount int
-	for _, b := range c.Bundles {
-		if b.Deprecated {
-			deprecatedCount++
-		}
-	}
-	if deprecatedCount == len(c.Bundles) {
-		return microerror.Maskf(invalidCapabilityError, "at least one bundle must not be deprecated")
+	if len(c.Bundles) == 0 {
+		return microerror.Maskf(invalidCapabilityError, "bundles must not be empty")
 	}
 
 	if c.Name == "" {
 		return microerror.Maskf(invalidCapabilityError, "name must not be empty")
+	}
+
+	err := ValidateBundles(c.Bundles).Validate()
+	if err != nil {
+		return microerror.Maskf(invalidCapabilityError, err.Error())
 	}
 
 	return nil
@@ -45,10 +36,9 @@ func (c SortCapabilitiesByName) Less(i, j int) bool { return c[i].Name < c[j].Na
 
 type ValidateCapabilities []Capability
 
-// TODO write tests
 func (c ValidateCapabilities) Validate() error {
 	if c.hasDuplicates() {
-		return microerror.Mask(duplicatedCapabilityError)
+		return microerror.Mask(invalidCapabilityError)
 	}
 
 	for _, capability := range c {
@@ -83,7 +73,7 @@ type ValidateBundledCapabilities [][]Capability
 
 func (c ValidateBundledCapabilities) Validate() error {
 	if c.hasDuplicates() {
-		return microerror.Mask(duplicatedCapabilityError)
+		return microerror.Mask(invalidCapabilityError)
 	}
 
 	for _, capability := range c {

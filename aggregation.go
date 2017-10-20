@@ -11,14 +11,14 @@ type Aggregation struct {
 func (a Aggregation) Validate() error {
 	err := ValidateBundledCapabilities(a.Capabilities).Validate()
 	if err != nil {
-		return microerror.Mask(err)
+		return microerror.Maskf(invalidAggregationError, err.Error())
 	}
 
 	for _, bundle := range a.Capabilities {
 		for _, c := range bundle {
 			err := c.Validate()
 			if err != nil {
-				return microerror.Mask(err)
+				return microerror.Maskf(invalidAggregationError, err.Error())
 			}
 		}
 	}
