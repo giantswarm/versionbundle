@@ -69,9 +69,13 @@ func (d Dependency) Validate() error {
 		return microerror.Maskf(invalidDependencyError, "input format must be '<operator> <semver version>'")
 	}
 
+	operator := inputSplit[0]
+	if operator == "" {
+		return microerror.Maskf(invalidDependencyError, "operator must not be empty")
+	}
 	var found bool
 	for _, o := range validOperators {
-		if inputSplit[0] == o {
+		if operator == o {
 			found = true
 		}
 	}

@@ -8,7 +8,7 @@ type Aggregation struct {
 
 // TODO write tests
 func (a Aggregation) Validate() error {
-	for _, bundle := range c.Capabilities {
+	for _, bundle := range a.Capabilities {
 		for _, c := range bundle {
 			err := c.Validate()
 			if err != nil {
@@ -17,7 +17,14 @@ func (a Aggregation) Validate() error {
 		}
 	}
 
-	// TODO ensure same length
+	if len(a.Capabilities) != 0 {
+		l := len(a.Capabilities[0])
+		for _, bundle := range a.Capabilities {
+			if l != len(bundle) {
+				return microerror.Mask(invalidAggregationError)
+			}
+		}
+	}
 
 	return nil
 }

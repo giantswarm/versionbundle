@@ -11,6 +11,13 @@ func IsDuplicatedCapability(err error) bool {
 	return microerror.Cause(err) == duplicatedCapabilityError
 }
 
+var invalidAggregationError = microerror.New("invalid aggregation")
+
+// IsInvalidAggregationError asserts invalidAggregationError.
+func IsInvalidAggregationError(err error) bool {
+	return microerror.Cause(err) == invalidAggregationError
+}
+
 var invalidCapabilityError = microerror.New("invalid capability")
 
 // IsInvalidCapability asserts invalidCapabilityError.

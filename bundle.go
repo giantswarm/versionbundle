@@ -38,7 +38,8 @@ func (b Bundle) Validate() error {
 		}
 	}
 
-	if b.Time == time.Time{} {
+	var emptyTime time.Time
+	if b.Time == emptyTime {
 		return microerror.Maskf(invalidCapabilityError, "time must not be empty")
 	}
 

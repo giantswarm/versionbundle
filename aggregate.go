@@ -56,9 +56,9 @@ func Aggregate(capabilities []Capability) (Aggregation, error) {
 		newAggregration.Capabilities = append(newAggregration.Capabilities, newCapabilities)
 	}
 
-	err := newAggregration.Validate()
+	err = newAggregration.Validate()
 	if err != nil {
-		return microerror.Mask(err)
+		return Aggregation{}, microerror.Mask(err)
 	}
 
 	return newAggregration, nil
