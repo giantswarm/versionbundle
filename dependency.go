@@ -1,6 +1,10 @@
 package versionbundle
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/giantswarm/microerror"
+)
 
 const (
 	OperatorEqual          = "=="
@@ -9,11 +13,21 @@ const (
 	OperatorNotEqual       = "!="
 )
 
+var (
+	validOperators = []string{
+		OperatorEqual,
+		OperatorGreaterOrEqual,
+		OperatorLessOrEqual,
+		OperatorNotEqual,
+	}
+)
+
 type Dependency struct {
 	Name    string `json:"name" yaml:"name"`
 	Version string `json:"version" yaml:"version"`
 }
 
+// TODO write tests
 func (d Dependency) Matches(c Component) bool {
 	if d.Name != c.Name {
 		return false
@@ -48,8 +62,42 @@ func (d Dependency) Matches(c Component) bool {
 	return false
 }
 
-// TODO
+// TODO write tests
 func (d Dependency) Validate() error {
+	inputSplit := strings.Split(d.Version, " ")
+	if len(inputSplit) != 2 {
+		return microerror.Maskf(invalidDependencyError, "input format must be '<operator> <semver version>'")
+	}
+
+	var found bool
+	for _, o := range validOperators {
+		if inputSplit[0] == o {
+			found = true
+		}
+	}
+	if !found {
+		return microerror.Maskf(invalidDependencyError, "operator format must be one of %#v", validOperators)
+	}
+
+	versionSplit := strings.Split(inputSplit[1], ".")
+	if len(versionSplit) != 3 {
+		return microerror.Maskf(invalidDependencyError, "version format must be '<major>.<minor>.<patch>'")
+	}
+
+	if !isNumber(versionSplit[0]) {
+		return microerror.Maskf(invalidDependencyError, "major version must be int")
+	}
+
+	minor := versionSplit[1]
+	if !isNumber(minor) && minor != "x" {
+		return microerror.Maskf(invalidDependencyError, "minor version must be int or wildcard ('x')")
+	}
+
+	patch := versionSplit[2]
+	if !isNumber(patch) && patch != "x" {
+		return microerror.Maskf(invalidDependencyError, "patch version must be int or wildcard ('x')")
+	}
+
 	return nil
 }
 
