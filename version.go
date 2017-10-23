@@ -2,9 +2,13 @@ package versionbundle
 
 import "strconv"
 
-func isNumber(s string) bool {
-	_, err := strconv.Atoi(s)
+func isPositiveNumber(s string) bool {
+	i, err := strconv.Atoi(s)
 	if err != nil {
+		return false
+	}
+
+	if i < 0 {
 		return false
 	}
 

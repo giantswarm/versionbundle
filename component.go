@@ -21,16 +21,16 @@ func (c Component) Validate() error {
 		return microerror.Maskf(invalidComponentError, "version format must be '<major>.<minor>.<patch>'")
 	}
 
-	if !isNumber(versionSplit[0]) {
-		return microerror.Maskf(invalidComponentError, "major version must be int")
+	if !isPositiveNumber(versionSplit[0]) {
+		return microerror.Maskf(invalidComponentError, "major version must be positive number")
 	}
 
-	if !isNumber(versionSplit[1]) {
-		return microerror.Maskf(invalidComponentError, "minor version must be int")
+	if !isPositiveNumber(versionSplit[1]) {
+		return microerror.Maskf(invalidComponentError, "minor version must be positive number")
 	}
 
-	if !isNumber(versionSplit[2]) {
-		return microerror.Maskf(invalidComponentError, "patch version must be int")
+	if !isPositiveNumber(versionSplit[2]) {
+		return microerror.Maskf(invalidComponentError, "patch version must be positive number")
 	}
 
 	return nil

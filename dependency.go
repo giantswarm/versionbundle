@@ -8,7 +8,9 @@ import (
 
 const (
 	OperatorEqual          = "=="
+	OperatorGreater        = ">"
 	OperatorGreaterOrEqual = ">="
+	OperatorLess           = "<"
 	OperatorLessOrEqual    = "<="
 	OperatorNotEqual       = "!="
 )
@@ -16,7 +18,9 @@ const (
 var (
 	validOperators = []string{
 		OperatorEqual,
+		OperatorGreater,
 		OperatorGreaterOrEqual,
+		OperatorLess,
 		OperatorLessOrEqual,
 		OperatorNotEqual,
 	}
@@ -27,12 +31,7 @@ type Dependency struct {
 	Version string `json:"version" yaml:"version"`
 }
 
-// TODO write tests
 func (d Dependency) Matches(c Component) bool {
-	if d.Name != c.Name {
-		return false
-	}
-
 	dependencyVersion, componentVersion, operator := parseParameters(d.Version, c.Version)
 
 	if operator == OperatorEqual {
@@ -43,6 +42,18 @@ func (d Dependency) Matches(c Component) bool {
 
 	if operator == OperatorGreaterOrEqual {
 		if componentVersion >= dependencyVersion {
+			return true
+		}
+	}
+
+	if operator == OperatorGreater {
+		if componentVersion > dependencyVersion {
+			return true
+		}
+	}
+
+	if operator == OperatorLess {
+		if componentVersion < dependencyVersion {
 			return true
 		}
 	}
@@ -62,14 +73,13 @@ func (d Dependency) Matches(c Component) bool {
 	return false
 }
 
-// TODO write tests
 func (d Dependency) Validate() error {
 	if d.Name == "" {
-		return microerror.Maskf(invalidChangelogError, "name must not be empty")
+		return microerror.Maskf(invalidDependencyError, "name must not be empty")
 	}
 
 	if d.Version == "" {
-		return microerror.Maskf(invalidChangelogError, "version must not be empty")
+		return microerror.Maskf(invalidDependencyError, "version must not be empty")
 	}
 
 	inputSplit := strings.Split(d.Version, " ")
@@ -96,18 +106,22 @@ func (d Dependency) Validate() error {
 		return microerror.Maskf(invalidDependencyError, "version format must be '<major>.<minor>.<patch>'")
 	}
 
-	if !isNumber(versionSplit[0]) {
-		return microerror.Maskf(invalidDependencyError, "major version must be int")
+	if !isPositiveNumber(versionSplit[0]) {
+		return microerror.Maskf(invalidDependencyError, "major version must be positive number")
 	}
 
 	minor := versionSplit[1]
-	if !isNumber(minor) && minor != "x" {
-		return microerror.Maskf(invalidDependencyError, "minor version must be int or wildcard ('x')")
+	if !isPositiveNumber(minor) && minor != "x" {
+		return microerror.Maskf(invalidDependencyError, "minor version must be positive number or wildcard ('x')")
 	}
 
 	patch := versionSplit[2]
-	if !isNumber(patch) && patch != "x" {
-		return microerror.Maskf(invalidDependencyError, "patch version must be int or wildcard ('x')")
+	if !isPositiveNumber(patch) && patch != "x" {
+		return microerror.Maskf(invalidDependencyError, "patch version must be positive number or wildcard ('x')")
+	}
+
+	if minor == "x" && patch != "x" {
+		return microerror.Maskf(invalidDependencyError, "patch must be wildcard ('x') when minor is wildcard ('x')")
 	}
 
 	return nil

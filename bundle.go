@@ -55,16 +55,16 @@ func (b Bundle) Validate() error {
 		return microerror.Maskf(invalidBundleError, "version format must be '<major>.<minor>.<patch>'")
 	}
 
-	if !isNumber(versionSplit[0]) {
-		return microerror.Maskf(invalidBundleError, "major version must be int")
+	if !isPositiveNumber(versionSplit[0]) {
+		return microerror.Maskf(invalidBundleError, "major version must be positive number")
 	}
 
-	if !isNumber(versionSplit[1]) {
-		return microerror.Maskf(invalidBundleError, "minor version must be int")
+	if !isPositiveNumber(versionSplit[1]) {
+		return microerror.Maskf(invalidBundleError, "minor version must be positive number")
 	}
 
-	if !isNumber(versionSplit[2]) {
-		return microerror.Maskf(invalidBundleError, "patch version must be int")
+	if !isPositiveNumber(versionSplit[2]) {
+		return microerror.Maskf(invalidBundleError, "patch version must be positive number")
 	}
 
 	return nil
