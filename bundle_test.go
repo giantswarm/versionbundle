@@ -28,6 +28,281 @@ func Test_Bundle_Validate(t *testing.T) {
 			},
 			ErrorMatcher: IsInvalidBundleError,
 		},
+
+		// Test 2 ensures a bundle without changelogs throws an error.
+		{
+			Bundle: Bundle{
+				Changelogs: []Changelog{},
+				Components: []Component{
+					{
+						Name:    "calico",
+						Version: "1.1.0",
+					},
+					{
+						Name:    "kube-dns",
+						Version: "1.0.0",
+					},
+				},
+				Dependencies: []Dependency{
+					{
+						Name:    "kubernetes",
+						Version: "<= 1.7.x",
+					},
+				},
+				Deprecated: false,
+				Time:       time.Unix(10, 5),
+				Version:    "0.1.0",
+			},
+			ErrorMatcher: IsInvalidBundleError,
+		},
+
+		// Test 3 ensures a bundle without components throws an error.
+		{
+			Bundle: Bundle{
+				Changelogs: []Changelog{
+					{
+						Component:   "calico",
+						Description: "Calico version updated.",
+						Kind:        "changed",
+					},
+					{
+						Component:   "kubernetes",
+						Description: "Kubernetes version requirements changed due to calico update.",
+						Kind:        "changed",
+					},
+				},
+				Components: []Component{},
+				Dependencies: []Dependency{
+					{
+						Name:    "kubernetes",
+						Version: "<= 1.7.x",
+					},
+				},
+				Deprecated: false,
+				Time:       time.Unix(10, 5),
+				Version:    "0.1.0",
+			},
+			ErrorMatcher: IsInvalidBundleError,
+		},
+
+		// Test 4 ensures a bundle without dependencies does not throw an error.
+		{
+			Bundle: Bundle{
+				Changelogs: []Changelog{
+					{
+						Component:   "calico",
+						Description: "Calico version updated.",
+						Kind:        "changed",
+					},
+				},
+				Components: []Component{
+					{
+						Name:    "calico",
+						Version: "1.1.0",
+					},
+					{
+						Name:    "kube-dns",
+						Version: "1.0.0",
+					},
+				},
+				Dependencies: []Dependency{},
+				Deprecated:   false,
+				Time:         time.Unix(10, 5),
+				Version:      "0.1.0",
+			},
+			ErrorMatcher: nil,
+		},
+
+		// Test 5 ensures a bundle without time throws an error.
+		{
+			Bundle: Bundle{
+				Changelogs: []Changelog{
+					{
+						Component:   "calico",
+						Description: "Calico version updated.",
+						Kind:        "changed",
+					},
+					{
+						Component:   "kubernetes",
+						Description: "Kubernetes version requirements changed due to calico update.",
+						Kind:        "changed",
+					},
+				},
+				Components: []Component{
+					{
+						Name:    "calico",
+						Version: "1.1.0",
+					},
+					{
+						Name:    "kube-dns",
+						Version: "1.0.0",
+					},
+				},
+				Dependencies: []Dependency{
+					{
+						Name:    "kubernetes",
+						Version: "<= 1.7.x",
+					},
+				},
+				Deprecated: false,
+				Time:       time.Time{},
+				Version:    "0.1.0",
+			},
+			ErrorMatcher: IsInvalidBundleError,
+		},
+
+		// Test 6 ensures a bundle without version throws an error.
+		{
+			Bundle: Bundle{
+				Changelogs: []Changelog{
+					{
+						Component:   "calico",
+						Description: "Calico version updated.",
+						Kind:        "changed",
+					},
+					{
+						Component:   "kubernetes",
+						Description: "Kubernetes version requirements changed due to calico update.",
+						Kind:        "changed",
+					},
+				},
+				Components: []Component{
+					{
+						Name:    "calico",
+						Version: "1.1.0",
+					},
+					{
+						Name:    "kube-dns",
+						Version: "1.0.0",
+					},
+				},
+				Dependencies: []Dependency{
+					{
+						Name:    "kubernetes",
+						Version: "<= 1.7.x",
+					},
+				},
+				Deprecated: false,
+				Time:       time.Unix(10, 5),
+				Version:    "",
+			},
+			ErrorMatcher: IsInvalidBundleError,
+		},
+
+		// Test 7 ensures a deprecated bundle does not throw an error.
+		{
+			Bundle: Bundle{
+				Changelogs: []Changelog{
+					{
+						Component:   "calico",
+						Description: "Calico version updated.",
+						Kind:        "changed",
+					},
+					{
+						Component:   "kubernetes",
+						Description: "Kubernetes version requirements changed due to calico update.",
+						Kind:        "changed",
+					},
+				},
+				Components: []Component{
+					{
+						Name:    "calico",
+						Version: "1.1.0",
+					},
+					{
+						Name:    "kube-dns",
+						Version: "1.0.0",
+					},
+				},
+				Dependencies: []Dependency{
+					{
+						Name:    "kubernetes",
+						Version: "<= 1.7.x",
+					},
+				},
+				Deprecated: true,
+				Time:       time.Unix(10, 5),
+				Version:    "0.1.0",
+			},
+			ErrorMatcher: nil,
+		},
+
+		// Test 8 ensures a bundle with an invalid dependency version format throws
+		// an error.
+		{
+			Bundle: Bundle{
+				Changelogs: []Changelog{
+					{
+						Component:   "calico",
+						Description: "Calico version updated.",
+						Kind:        "changed",
+					},
+					{
+						Component:   "kubernetes",
+						Description: "Kubernetes version requirements changed due to calico update.",
+						Kind:        "changed",
+					},
+				},
+				Components: []Component{
+					{
+						Name:    "calico",
+						Version: "1.1.0",
+					},
+					{
+						Name:    "kube-dns",
+						Version: "1.0.0",
+					},
+				},
+				Dependencies: []Dependency{
+					{
+						Name:    "kubernetes",
+						Version: "1.7.x",
+					},
+				},
+				Deprecated: true,
+				Time:       time.Unix(10, 5),
+				Version:    "0.1.0",
+			},
+			ErrorMatcher: IsInvalidBundleError,
+		},
+
+		// Test 9 ensures a valid bundle does not throw an error.
+		{
+			Bundle: Bundle{
+				Changelogs: []Changelog{
+					{
+						Component:   "calico",
+						Description: "Calico version updated.",
+						Kind:        "changed",
+					},
+					{
+						Component:   "kubernetes",
+						Description: "Kubernetes version requirements changed due to calico update.",
+						Kind:        "changed",
+					},
+				},
+				Components: []Component{
+					{
+						Name:    "calico",
+						Version: "1.1.0",
+					},
+					{
+						Name:    "kube-dns",
+						Version: "1.0.0",
+					},
+				},
+				Dependencies: []Dependency{
+					{
+						Name:    "kubernetes",
+						Version: "<= 1.7.x",
+					},
+				},
+				Deprecated: false,
+				Time:       time.Unix(10, 5),
+				Version:    "0.1.0",
+			},
+			ErrorMatcher: nil,
+		},
 	}
 
 	for i, tc := range testCases {

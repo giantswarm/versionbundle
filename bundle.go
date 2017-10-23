@@ -16,7 +16,6 @@ type Bundle struct {
 	Version      string       `json:"version" yaml:"version"`
 }
 
-// TODO write tests
 func (b Bundle) Validate() error {
 	if len(b.Changelogs) == 0 {
 		return microerror.Maskf(invalidBundleError, "changelogs must not be empty")
