@@ -6,8 +6,13 @@ import (
 	"github.com/giantswarm/microerror"
 )
 
+// Component is the software component an authority provides. It describes the
+// functionality of such a component being exposed by the authority. In return
+// an authority guarantees to provide the components functionality.
 type Component struct {
-	Name    string `json:"name" yaml:"name"`
+	// Name is the name of the exposed component.
+	Name string `json:"name" yaml:"name"`
+	// Version is the version of the exposed component.
 	Version string `json:"version" yaml:"version"`
 }
 

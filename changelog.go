@@ -5,12 +5,24 @@ import "github.com/giantswarm/microerror"
 type kind string
 
 const (
-	KindAdded      kind = "added"
-	KindChanged    kind = "changed"
+	// KindAdded being used in a changelog describes an authority's component got
+	// added.
+	KindAdded kind = "added"
+	// KindAdded being used in a changelog describes an authority's component got
+	// changed.
+	KindChanged kind = "changed"
+	// KindAdded being used in a changelog describes an authority's component got
+	// deprecated.
 	KindDeprecated kind = "deprecated"
-	KindFixed      kind = "fixed"
-	KindRemoved    kind = "removed"
-	KindSecurity   kind = "security"
+	// KindAdded being used in a changelog describes an authority's component got
+	// fixed.
+	KindFixed kind = "fixed"
+	// KindAdded being used in a changelog describes an authority's component got
+	// removed.
+	KindRemoved kind = "removed"
+	// KindAdded being used in a changelog describes an authority's component got
+	// adapted for security reasons.
+	KindSecurity kind = "security"
 )
 
 var (
@@ -24,10 +36,21 @@ var (
 	}
 )
 
+// Changelog is a single changelog entry a version bundle must define. Its
+// intention is to explain the introduction of the version bundle.
 type Changelog struct {
-	Component   string `json:"component" yaml:"component"`
+	// Component is the component the changelog is about. Thus might be a
+	// component provided by another authority. To be able to properly aggregate
+	// version bundles the given component must exist, either within the same
+	// authority or within another authority within the infrastructure. That is,
+	// Aggregate must know about it to be able to properly merge version bundles.
+	Component string `json:"component" yaml:"component"`
+	// Description is some text describing the changelog entry. This information
+	// is intended to be useful for humans.
 	Description string `json:"description" yaml:"description"`
-	Kind        kind   `json:"kind" yaml:"kind"`
+	// Kind is a machine readable type describing what kind of changelog the
+	// changelog actually is. Also see the kind type.
+	Kind kind `json:"kind" yaml:"kind"`
 }
 
 func (c Changelog) Validate() error {

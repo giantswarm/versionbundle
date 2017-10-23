@@ -4,6 +4,11 @@ import (
 	"github.com/giantswarm/microerror"
 )
 
+// Aggregation describes the aggregated version bundles which are wrapped by
+// Capabilities. Each Capability must be within a merged Aggregation must only
+// contain one version bundle. The set of capabilities being bundled within the
+// same list represent the version bundles being able to work together based on
+// the dependencies version bundles defined for their exposed components.
 type Aggregation struct {
 	Capabilities [][]Capability `json:"capabilities" yaml:"capabilities"`
 }

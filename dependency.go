@@ -7,12 +7,24 @@ import (
 )
 
 const (
-	OperatorEqual          = "=="
-	OperatorGreater        = ">"
+	// OperatorEqual is the operator used to describe the mathematical comparison
+	// '==' between matching dependency and component versions.
+	OperatorEqual = "=="
+	// OperatorGreater is the operator used to describe the mathematical
+	// comparison '>' between matching dependency and component versions.
+	OperatorGreater = ">"
+	// OperatorGreaterOrEqual is the operator used to describe the mathematical
+	// comparison '>=' between matching dependency and component versions.
 	OperatorGreaterOrEqual = ">="
-	OperatorLess           = "<"
-	OperatorLessOrEqual    = "<="
-	OperatorNotEqual       = "!="
+	// OperatorLess is the operator used to describe the mathematical comparison
+	// '<' between matching dependency and component versions.
+	OperatorLess = "<"
+	// OperatorLessOrEqual is the operator used to describe the mathematical
+	// comparison '<=' between matching dependency and component versions.
+	OperatorLessOrEqual = "<="
+	// OperatorNotEqual is the operator used to describe the mathematical
+	// comparison '!=' between matching dependency and component versions.
+	OperatorNotEqual = "!="
 )
 
 var (
@@ -26,8 +38,22 @@ var (
 	}
 )
 
+// Dependency is the dependency an authority defines within its version bundles
+// to describe the requirement of other components within the infrastructure to
+// be able to reliably provide its own component suppurt.
 type Dependency struct {
-	Name    string `json:"name" yaml:"name"`
+	// Name is the name of the exposed dependency.
+	Name string `json:"name" yaml:"name"`
+	// Version is the version of the exposed dependency. This version is a
+	// combination of a supported mathematical operator and the actual semver
+	// version separated by a space.
+	//
+	//     <operator> <major>.<minor>.<patch>
+	//
+	//     == 1.0.0
+	//     != 1.5.0
+	//     > 5.2.33
+	//
 	Version string `json:"version" yaml:"version"`
 }
 

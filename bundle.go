@@ -7,14 +7,42 @@ import (
 	"github.com/giantswarm/microerror"
 )
 
+// Bundle represents a single version bundle exposed by an authority. An
+// authority might exposes mutliple version bundles using the Capability
+// structure. Version bundles are aggregated into a merged structure represented
+// by the Aggregation structure. Also see the Aggregate function.
 type Bundle struct {
-	Changelogs   []Changelog  `json:"changelogs" yaml:"changelogs"`
-	Components   []Component  `json:"components" yaml:"components"`
+	// Changelogs describe what changes are introduced by the version bundle. Each
+	// version bundle must have at least one changelog entry.
+	Changelogs []Changelog `json:"changelogs" yaml:"changelogs"`
+	// Components describe the components an authority exposes. Functionality of
+	// components listed here is guaranteed to be implemented in the according
+	// versions.
+	//
+	// NOTE that once this property is set it must never change again.
+	Components []Component `json:"components" yaml:"components"`
+	// Dependencies describe which components other authorities expose have to be
+	// available to be able to guarantee functionality this authority implements.
+	//
+	// NOTE that once this property is set it must never change again.
 	Dependencies []Dependency `json:"dependency" yaml:"dependency"`
-	Deprecated   bool         `json:"deprecated" yaml:"deprecated"`
-	Time         time.Time    `json:"time" yaml:"time"`
-	Version      string       `json:"version" yaml:"version"`
-	WIP          bool         `json:"wip" yaml:"wip"`
+	// Deprecated defines a version bundle to be deprecated. Deprecated version
+	// bundles are not intended to be mainatined anymore. Further usage of a
+	// deprecated version bundle should be omitted.
+	Deprecated bool `json:"deprecated" yaml:"deprecated"`
+	// Time describes the time this version bundle got introduced.
+	//
+	// NOTE that once this property is set it must never change again.
+	Time time.Time `json:"time" yaml:"time"`
+	// Version describes the version of the version bundle. Versions of version
+	// bundles must be semver versions. Versions must not be duplicated. Versions
+	// should be incremented gradually.
+	//
+	// NOTE that once this property is set it must never change again.
+	Version string `json:"version" yaml:"version"`
+	// WIP describes if a version bundle is being developed. Usage of a version
+	// bundle still being developed should be omitted.
+	WIP bool `json:"wip" yaml:"wip"`
 }
 
 func (b Bundle) Validate() error {

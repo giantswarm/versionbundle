@@ -7,9 +7,16 @@ import (
 	"github.com/giantswarm/microerror"
 )
 
+// Capability represents the data format being exposed by authorities like
+// microservices or operators.
 type Capability struct {
+	// Bundles are the version bundles being exposed by an authority. Over the
+	// curse of a lifetime of an authority bundles are added and removed based on
+	// the implementation and support of exposed component versions.
 	Bundles []Bundle `json:"bundles" yaml:"bundles"`
-	Name    string   `json:"name" yaml:"name"`
+	// Name is the name of the authority, e.g. the name of the microservice or
+	// operator.
+	Name string `json:"name" yaml:"name"`
 }
 
 func (c Capability) Copy() Capability {

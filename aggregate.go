@@ -7,6 +7,8 @@ import (
 	"github.com/giantswarm/microerror"
 )
 
+// Aggregate merges capabilities based on dependencies version bundles within
+// the given capabilities define for their components.
 func Aggregate(capabilities []Capability) (Aggregation, error) {
 	err := ValidateCapabilities(capabilities).Validate()
 	if err != nil {
