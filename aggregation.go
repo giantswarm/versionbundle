@@ -14,8 +14,8 @@ func (a Aggregation) Validate() error {
 		return microerror.Maskf(invalidAggregationError, err.Error())
 	}
 
-	for _, bundle := range a.Capabilities {
-		for _, c := range bundle {
+	for _, capabilitiesList := range a.Capabilities {
+		for _, c := range capabilitiesList {
 			err := c.Validate()
 			if err != nil {
 				return microerror.Maskf(invalidAggregationError, err.Error())
@@ -25,9 +25,17 @@ func (a Aggregation) Validate() error {
 
 	if len(a.Capabilities) != 0 {
 		l := len(a.Capabilities[0])
-		for _, bundle := range a.Capabilities {
-			if l != len(bundle) {
+		for _, capabilitiesList := range a.Capabilities {
+			if l != len(capabilitiesList) {
 				return microerror.Mask(invalidAggregationError)
+			}
+		}
+	}
+
+	for _, capabilitiesList := range a.Capabilities {
+		for _, c := range capabilitiesList {
+			if len(c.Bundles) != 1 {
+				return microerror.Maskf(invalidAggregationError, "there must be one capability bundle")
 			}
 		}
 	}

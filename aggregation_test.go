@@ -5,7 +5,6 @@ import (
 	"time"
 )
 
-// TODO test multiple bundles
 func Test_Aggregation_Validate(t *testing.T) {
 	testCases := []struct {
 		Aggregation  Aggregation
@@ -76,7 +75,95 @@ func Test_Aggregation_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 3 ensures that an aggregation with two bundled capabilities list is
+		// Test 3 ensures that an aggregation with multiple bundles per capability
+		// is not valid.
+		//
+		// NOTE this is because the aggregation only uses one bundle per authority
+		// due to the dynamic and recursive structure.
+		{
+			Aggregation: Aggregation{
+				Capabilities: [][]Capability{
+					{
+						{
+							Bundles: []Bundle{
+								{
+									Changelogs: []Changelog{
+										{
+											Component:   "calico",
+											Description: "Calico version updated.",
+											Kind:        "changed",
+										},
+										{
+											Component:   "kubernetes",
+											Description: "Kubernetes version requirements changed due to calico update.",
+											Kind:        "changed",
+										},
+									},
+									Components: []Component{
+										{
+											Name:    "calico",
+											Version: "1.1.0",
+										},
+										{
+											Name:    "kube-dns",
+											Version: "1.0.0",
+										},
+									},
+									Dependencies: []Dependency{
+										{
+											Name:    "kubernetes",
+											Version: "<= 1.7.x",
+										},
+									},
+									Deprecated: false,
+									Time:       time.Unix(10, 5),
+									Version:    "0.1.0",
+									WIP:        false,
+								},
+								{
+									Changelogs: []Changelog{
+										{
+											Component:   "calico",
+											Description: "Calico version updated.",
+											Kind:        "changed",
+										},
+										{
+											Component:   "kubernetes",
+											Description: "Kubernetes version requirements changed due to calico update.",
+											Kind:        "changed",
+										},
+									},
+									Components: []Component{
+										{
+											Name:    "calico",
+											Version: "1.1.1",
+										},
+										{
+											Name:    "kube-dns",
+											Version: "1.0.1",
+										},
+									},
+									Dependencies: []Dependency{
+										{
+											Name:    "kubernetes",
+											Version: "<= 1.8.x",
+										},
+									},
+									Deprecated: false,
+									Time:       time.Unix(10, 5),
+									Version:    "0.2.0",
+									WIP:        false,
+								},
+							},
+							Name: "kubernetes-operator",
+						},
+					},
+				},
+			},
+			ErrorMatcher: IsInvalidAggregationError,
+		},
+
+		// Test 4 ensures that an aggregation with two bundled capabilities list is
 		// valid.
 		{
 			Aggregation: Aggregation{
@@ -161,7 +248,7 @@ func Test_Aggregation_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 4 ensures that an aggregation with bundled capabilities lists having
+		// Test 5 ensures that an aggregation with bundled capabilities lists having
 		// different lengths is not valid.
 		{
 			Aggregation: Aggregation{
@@ -282,7 +369,7 @@ func Test_Aggregation_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidAggregationError,
 		},
 
-		// Test 5 ensures that an aggregation with bundled capabilities lists having
+		// Test 6 ensures that an aggregation with bundled capabilities lists having
 		// the same capabilities is not valid.
 		{
 			Aggregation: Aggregation{

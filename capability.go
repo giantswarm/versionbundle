@@ -1,6 +1,7 @@
 package versionbundle
 
 import (
+	"encoding/json"
 	"reflect"
 
 	"github.com/giantswarm/microerror"
@@ -9,6 +10,21 @@ import (
 type Capability struct {
 	Bundles []Bundle `json:"bundles" yaml:"bundles"`
 	Name    string   `json:"name" yaml:"name"`
+}
+
+func (c Capability) Copy() Capability {
+	b, err := json.Marshal(c)
+	if err != nil {
+		panic(err)
+	}
+
+	var copy Capability
+	err = json.Unmarshal(b, &copy)
+	if err != nil {
+		panic(err)
+	}
+
+	return copy
 }
 
 func (c Capability) Validate() error {

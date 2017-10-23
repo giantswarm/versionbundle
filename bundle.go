@@ -70,6 +70,12 @@ func (b Bundle) Validate() error {
 	return nil
 }
 
+type SortBundlesByVersion []Bundle
+
+func (b SortBundlesByVersion) Len() int           { return len(b) }
+func (b SortBundlesByVersion) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
+func (b SortBundlesByVersion) Less(i, j int) bool { return b[i].Version < b[j].Version }
+
 type ValidateBundles []Bundle
 
 func (b ValidateBundles) Validate() error {

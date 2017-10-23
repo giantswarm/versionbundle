@@ -25,35 +25,60 @@ func Aggregate(capabilities []Capability) (Aggregation, error) {
 	}
 
 	for _, c1 := range capabilities {
-		newCapabilities := []Capability{
-			c1,
-		}
+		c1Copy := c1.Copy()
 
-		for _, c2 := range capabilities {
-			if reflect.DeepEqual(c1, c2) {
+		for _, b1 := range c1.Bundles {
+			c1Copy.Bundles = []Bundle{
+				b1,
+			}
+
+			newCapabilities := []Capability{
+				c1Copy,
+			}
+
+			for _, c2 := range capabilities {
+				c2Copy := c2.Copy()
+
+				for _, b2 := range c2Copy.Bundles {
+					c2Copy.Bundles = []Bundle{
+						b2,
+					}
+
+					if reflect.DeepEqual(c1Copy, c2Copy) {
+						continue
+					}
+
+					if capabilitiesConflictWithDependencies(c1Copy, c2Copy) {
+						continue
+					}
+
+					if capabilitiesConflictWithDependencies(c2Copy, c1Copy) {
+						continue
+					}
+
+					if containsCapabitlityWithBundleName(newCapabilities, c2Copy) {
+						continue
+					}
+
+					newCapabilities = append(newCapabilities, c2Copy)
+				}
+			}
+
+			sort.Sort(SortCapabilitiesByName(newCapabilities))
+			for _, c := range newCapabilities {
+				sort.Sort(SortBundlesByVersion(c.Bundles))
+			}
+
+			if containsAggregatedCapabilities(newAggregration.Capabilities, newCapabilities) {
 				continue
 			}
 
-			if capabilitiesConflictWithDependencies(c1, c2) {
+			if len(capabilities) != len(newCapabilities) {
 				continue
 			}
 
-			if capabilitiesConflictWithDependencies(c2, c1) {
-				continue
-			}
-
-			newCapabilities = append(newCapabilities, c2)
+			newAggregration.Capabilities = append(newAggregration.Capabilities, newCapabilities)
 		}
-
-		if containsAggregatedCapabilities(newAggregration.Capabilities, newCapabilities) {
-			continue
-		}
-
-		if len(capabilities) != len(newCapabilities) {
-			continue
-		}
-
-		newAggregration.Capabilities = append(newAggregration.Capabilities, newCapabilities)
 	}
 
 	err = newAggregration.Validate()
@@ -86,10 +111,17 @@ func capabilitiesConflictWithDependencies(c1, c2 Capability) bool {
 
 func containsAggregatedCapabilities(list [][]Capability, item []Capability) bool {
 	for _, c := range list {
-		sort.Sort(SortCapabilitiesByName(c))
-		sort.Sort(SortCapabilitiesByName(item))
-
 		if reflect.DeepEqual(c, item) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func containsCapabitlityWithBundleName(list []Capability, item Capability) bool {
+	for _, c := range list {
+		if c.Name == item.Name {
 			return true
 		}
 	}
