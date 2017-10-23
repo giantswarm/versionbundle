@@ -14,6 +14,7 @@ type Bundle struct {
 	Deprecated   bool         `json:"deprecated" yaml:"deprecated"`
 	Time         time.Time    `json:"time" yaml:"time"`
 	Version      string       `json:"version" yaml:"version"`
+	WIP          bool         `json:"wip" yaml:"wip"`
 }
 
 func (b Bundle) Validate() error {
