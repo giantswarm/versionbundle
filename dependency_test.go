@@ -866,7 +866,7 @@ func Test_Dependency_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidDependency,
 		},
 
-		// Test 18 is the same as 11 but with a different version.
+		// Test 19 is the same as 11 but with a different version.
 		{
 			Dependency: Dependency{
 				Name:    "kubernetes",
@@ -875,7 +875,7 @@ func Test_Dependency_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidDependency,
 		},
 
-		// Test 19 is the same as 11 but with a different version.
+		// Test 20 is the same as 11 but with a different version.
 		{
 			Dependency: Dependency{
 				Name:    "kubernetes",
@@ -884,7 +884,7 @@ func Test_Dependency_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidDependency,
 		},
 
-		// Test 20 is the same as 11 but with a different version.
+		// Test 21 is the same as 11 but with a different version.
 		//
 		// NOTE negative version numbers are not allowed.
 		{
@@ -895,7 +895,7 @@ func Test_Dependency_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidDependency,
 		},
 
-		// Test 21 is the same as 18 but with a different version.
+		// Test 22 is the same as 18 but with a different version.
 		//
 		// NOTE negative version numbers are not allowed.
 		{
@@ -906,7 +906,7 @@ func Test_Dependency_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidDependency,
 		},
 
-		// Test 22 is the same as 18 but with a different version.
+		// Test 23 is the same as 18 but with a different version.
 		//
 		// NOTE negative version numbers are not allowed.
 		{
@@ -917,7 +917,25 @@ func Test_Dependency_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidDependency,
 		},
 
-		// Test 23 ensures a valid dependency does not throw an error.
+		// Test 24 ensures using the wildcard for the major version is not valid.
+		{
+			Dependency: Dependency{
+				Name:    "kubernetes",
+				Version: "== x.x.x",
+			},
+			ErrorMatcher: IsInvalidDependency,
+		},
+
+		// Test 25 is the same as 17 but with different input.
+		{
+			Dependency: Dependency{
+				Name:    "kubernetes",
+				Version: "== x.3.9",
+			},
+			ErrorMatcher: IsInvalidDependency,
+		},
+
+		// Test 26 ensures a valid dependency does not throw an error.
 		{
 			Dependency: Dependency{
 				Name:    "kubernetes",
@@ -926,7 +944,7 @@ func Test_Dependency_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 24 ensures a valid dependency does not throw an error.
+		// Test 27 ensures a valid dependency does not throw an error.
 		{
 			Dependency: Dependency{
 				Name:    "kubernetes",
@@ -935,7 +953,7 @@ func Test_Dependency_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 25 ensures a valid dependency does not throw an error.
+		// Test 28 ensures a valid dependency does not throw an error.
 		{
 			Dependency: Dependency{
 				Name:    "kubernetes",
@@ -944,7 +962,7 @@ func Test_Dependency_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 26 is the same as 25 but with a different operator.
+		// Test 29 is the same as 25 but with a different operator.
 		{
 			Dependency: Dependency{
 				Name:    "kubernetes",
@@ -953,7 +971,7 @@ func Test_Dependency_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 27 is the same as 25 but with a different operator.
+		// Test 30 is the same as 25 but with a different operator.
 		{
 			Dependency: Dependency{
 				Name:    "kubernetes",
@@ -962,7 +980,7 @@ func Test_Dependency_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 28 is the same as 25 but with a different operator.
+		// Test 31 is the same as 25 but with a different operator.
 		{
 			Dependency: Dependency{
 				Name:    "kubernetes",
@@ -971,7 +989,7 @@ func Test_Dependency_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 29 is the same as 25 but with a different operator.
+		// Test 32 is the same as 25 but with a different operator.
 		{
 			Dependency: Dependency{
 				Name:    "kubernetes",
@@ -980,7 +998,7 @@ func Test_Dependency_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 30 is the same as 25 but with a different operator.
+		// Test 33 is the same as 25 but with a different operator.
 		{
 			Dependency: Dependency{
 				Name:    "kubernetes",

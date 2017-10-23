@@ -13,7 +13,11 @@ type Component struct {
 
 func (c Component) Validate() error {
 	if c.Name == "" {
-		return microerror.Maskf(invalidChangelogError, "name must not be empty")
+		return microerror.Maskf(invalidComponentError, "name must not be empty")
+	}
+
+	if c.Version == "" {
+		return microerror.Maskf(invalidComponentError, "version must not be empty")
 	}
 
 	versionSplit := strings.Split(c.Version, ".")
