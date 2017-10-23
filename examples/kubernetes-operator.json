@@ -30,7 +30,7 @@
         }
       ],
       "deprecated": false,
-      "time": "2017 Aug 18, 11:57 UTC",
+      "time": "2017-08-18T11:57:00Z",
       "version": "1.0.0",
       "wip": false
     },
@@ -64,7 +64,7 @@
         }
       ],
       "deprecated": false,
-      "time": "2017 Aug 25, 16:40 UTC",
+      "time": "2017-08-25T16:40:00Z",
       "version": "2.0.0",
       "wip": false
     }

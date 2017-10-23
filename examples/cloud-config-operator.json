@@ -25,7 +25,7 @@
       ],
       "dependencies": [],
       "deprecated": false,
-      "time": "2017 Aug 17, 21:03 UTC",
+      "time": "2017-08-17T21:03:00Z",
       "version": "2.0.0",
       "wip": false
     },
@@ -54,7 +54,7 @@
       ],
       "dependencies": [],
       "deprecated": false,
-      "time": "2017 Aug 24, 09:11 UTC",
+      "time": "2017-08-24T09:11:00Z",
       "version": "2.1.0",
       "wip": false
     }
