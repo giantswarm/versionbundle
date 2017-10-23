@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// TODO test multiple bundles
 func Test_Aggregate(t *testing.T) {
 	testCases := []struct {
 		Capabilities        []Capability

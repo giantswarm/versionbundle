@@ -61,6 +61,7 @@ func Test_Capability_Validate(t *testing.T) {
 						Deprecated: false,
 						Time:       time.Unix(10, 5),
 						Version:    "0.1.0",
+						WIP:        false,
 					},
 				},
 				Name: "kubernetes-operator",
@@ -104,6 +105,7 @@ func Test_Capability_Validate(t *testing.T) {
 						Deprecated: false,
 						Time:       time.Unix(10, 5),
 						Version:    "0.1.0",
+						WIP:        false,
 					},
 					{
 						Changelogs: []Changelog{
@@ -137,6 +139,7 @@ func Test_Capability_Validate(t *testing.T) {
 						Deprecated: false,
 						Time:       time.Unix(10, 5),
 						Version:    "0.2.0",
+						WIP:        false,
 					},
 				},
 				Name: "kubernetes-operator",
@@ -181,6 +184,7 @@ func Test_Capability_Validate(t *testing.T) {
 						Deprecated: true,
 						Time:       time.Unix(10, 5),
 						Version:    "0.1.0",
+						WIP:        false,
 					},
 				},
 				Name: "kubernetes-operator",
@@ -224,6 +228,7 @@ func Test_Capability_Validate(t *testing.T) {
 						Deprecated: true,
 						Time:       time.Unix(10, 5),
 						Version:    "0.1.0",
+						WIP:        false,
 					},
 					{
 						Changelogs: []Changelog{
@@ -257,6 +262,7 @@ func Test_Capability_Validate(t *testing.T) {
 						Deprecated: true,
 						Time:       time.Unix(10, 5),
 						Version:    "0.2.0",
+						WIP:        false,
 					},
 				},
 				Name: "kubernetes-operator",
@@ -301,6 +307,7 @@ func Test_Capability_Validate(t *testing.T) {
 						Deprecated: false,
 						Time:       time.Unix(10, 5),
 						Version:    "0.1.0",
+						WIP:        false,
 					},
 					{
 						Changelogs: []Changelog{
@@ -334,6 +341,7 @@ func Test_Capability_Validate(t *testing.T) {
 						Deprecated: true,
 						Time:       time.Unix(10, 5),
 						Version:    "0.2.0",
+						WIP:        false,
 					},
 				},
 				Name: "kubernetes-operator",
@@ -378,6 +386,7 @@ func Test_Capability_Validate(t *testing.T) {
 						Deprecated: false,
 						Time:       time.Unix(10, 5),
 						Version:    "0.1.0",
+						WIP:        false,
 					},
 					{
 						Changelogs: []Changelog{
@@ -411,6 +420,7 @@ func Test_Capability_Validate(t *testing.T) {
 						Deprecated: false,
 						Time:       time.Unix(10, 5),
 						Version:    "0.1.0",
+						WIP:        false,
 					},
 				},
 				Name: "kubernetes-operator",

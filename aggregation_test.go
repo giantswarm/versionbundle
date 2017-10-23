@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// TODO test multiple bundles
 func Test_Aggregation_Validate(t *testing.T) {
 	testCases := []struct {
 		Aggregation  Aggregation
@@ -64,6 +65,7 @@ func Test_Aggregation_Validate(t *testing.T) {
 									Deprecated: false,
 									Time:       time.Unix(10, 5),
 									Version:    "0.1.0",
+									WIP:        false,
 								},
 							},
 							Name: "kubernetes-operator",
@@ -114,6 +116,7 @@ func Test_Aggregation_Validate(t *testing.T) {
 									Deprecated: false,
 									Time:       time.Unix(10, 5),
 									Version:    "0.1.0",
+									WIP:        false,
 								},
 							},
 							Name: "kubernetes-operator",
@@ -147,6 +150,7 @@ func Test_Aggregation_Validate(t *testing.T) {
 									Deprecated:   false,
 									Time:         time.Unix(20, 15),
 									Version:      "0.2.0",
+									WIP:          false,
 								},
 							},
 							Name: "cloud-config-operator",
@@ -197,6 +201,7 @@ func Test_Aggregation_Validate(t *testing.T) {
 									Deprecated: false,
 									Time:       time.Unix(10, 5),
 									Version:    "0.1.0",
+									WIP:        false,
 								},
 							},
 							Name: "kubernetes-operator",
@@ -230,6 +235,7 @@ func Test_Aggregation_Validate(t *testing.T) {
 									Deprecated:   false,
 									Time:         time.Unix(20, 15),
 									Version:      "0.2.0",
+									WIP:          false,
 								},
 							},
 							Name: "cloud-config-operator",
@@ -265,6 +271,7 @@ func Test_Aggregation_Validate(t *testing.T) {
 									Deprecated:   false,
 									Time:         time.Unix(20, 15),
 									Version:      "0.2.0",
+									WIP:          false,
 								},
 							},
 							Name: "cloud-config-operator",
@@ -315,6 +322,7 @@ func Test_Aggregation_Validate(t *testing.T) {
 									Deprecated: false,
 									Time:       time.Unix(10, 5),
 									Version:    "0.1.0",
+									WIP:        false,
 								},
 							},
 							Name: "kubernetes-operator",
@@ -348,6 +356,7 @@ func Test_Aggregation_Validate(t *testing.T) {
 									Deprecated:   false,
 									Time:         time.Unix(20, 15),
 									Version:      "0.2.0",
+									WIP:          false,
 								},
 							},
 							Name: "cloud-config-operator",
@@ -388,6 +397,7 @@ func Test_Aggregation_Validate(t *testing.T) {
 									Deprecated: false,
 									Time:       time.Unix(10, 5),
 									Version:    "0.1.0",
+									WIP:        false,
 								},
 							},
 							Name: "kubernetes-operator",
@@ -421,6 +431,7 @@ func Test_Aggregation_Validate(t *testing.T) {
 									Deprecated:   false,
 									Time:         time.Unix(20, 15),
 									Version:      "0.2.0",
+									WIP:          false,
 								},
 							},
 							Name: "cloud-config-operator",
