@@ -274,7 +274,85 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundleError,
 		},
 
-		// Test 9 ensures a bundle being flagged as WIP does not throw an error.
+		// Test 9 ensures an invalid version throws an error.
+		{
+			Bundle: Bundle{
+				Changelogs: []Changelog{
+					{
+						Component:   "calico",
+						Description: "Calico version updated.",
+						Kind:        "changed",
+					},
+					{
+						Component:   "kubernetes",
+						Description: "Kubernetes version requirements changed due to calico update.",
+						Kind:        "changed",
+					},
+				},
+				Components: []Component{
+					{
+						Name:    "calico",
+						Version: "1.1.0",
+					},
+					{
+						Name:    "kube-dns",
+						Version: "1.0.0",
+					},
+				},
+				Dependencies: []Dependency{
+					{
+						Name:    "kubernetes",
+						Version: "<= 1.7.x",
+					},
+				},
+				Deprecated: true,
+				Time:       time.Unix(10, 5),
+				Version:    "foo",
+				WIP:        false,
+			},
+			ErrorMatcher: IsInvalidBundleError,
+		},
+
+		// Test 10 is the same as 9 but with a different version.
+		{
+			Bundle: Bundle{
+				Changelogs: []Changelog{
+					{
+						Component:   "calico",
+						Description: "Calico version updated.",
+						Kind:        "changed",
+					},
+					{
+						Component:   "kubernetes",
+						Description: "Kubernetes version requirements changed due to calico update.",
+						Kind:        "changed",
+					},
+				},
+				Components: []Component{
+					{
+						Name:    "calico",
+						Version: "1.1.0",
+					},
+					{
+						Name:    "kube-dns",
+						Version: "1.0.0",
+					},
+				},
+				Dependencies: []Dependency{
+					{
+						Name:    "kubernetes",
+						Version: "<= 1.7.x",
+					},
+				},
+				Deprecated: true,
+				Time:       time.Unix(10, 5),
+				Version:    "1.2.3.4",
+				WIP:        false,
+			},
+			ErrorMatcher: IsInvalidBundleError,
+		},
+
+		// Test 11 ensures a bundle being flagged as WIP does not throw an error.
 		{
 			Bundle: Bundle{
 				Changelogs: []Changelog{
@@ -313,7 +391,7 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 10 ensures a valid bundle does not throw an error.
+		// Test 12 ensures a valid bundle does not throw an error.
 		{
 			Bundle: Bundle{
 				Changelogs: []Changelog{
