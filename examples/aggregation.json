@@ -1,0 +1,152 @@
+[
+  [
+    {
+      "bundles": [
+        {
+          "changelog": [
+            {
+              "component": "etcd",
+              "description": "Etcd version updated.",
+              "kind": "changed"
+            },
+            {
+              "component": "kubernetes",
+              "description": "Kubernetes version updated.",
+              "kind": "changed"
+            }
+          ],
+          "components": [
+            {
+              "name": "etcd",
+              "version": "3.2.0"
+            },
+            {
+              "name": "kubernetes",
+              "version": "1.7.1"
+            }
+          ],
+          "dependencies": [],
+          "deprecated": false,
+          "time": "2017 Aug 17, 21:03 UTC",
+          "version": "2.0.0",
+          "wip": false
+        }
+      ],
+      "name": "cloud-config-operator"
+    },
+    {
+      "bundles": [
+        {
+          "changelog": [
+            {
+              "component": "calico",
+              "description": "Calico version updated.",
+              "kind": "changed"
+            },
+            {
+              "component": "kubernetes",
+              "description": "Kubernetes version requirements changed due to calico update.",
+              "kind": "changed"
+            }
+          ],
+          "components": [
+            {
+              "name": "calico",
+              "version": "1.0.0"
+            },
+            {
+              "name": "kube-dns",
+              "version": "1.0.0"
+            }
+          ],
+          "dependencies": [
+            {
+              "name": "kubernetes",
+              "version": "<= 1.7.x"
+            }
+          ],
+          "deprecated": false,
+          "time": "2017 Aug 18, 11:57 UTC",
+          "version": "1.0.0",
+          "wip": false
+        }
+      ],
+      "name": "kubernetes-operator"
+    }
+  ],
+  [
+    {
+      "bundles": [
+        {
+          "changelog": [
+            {
+              "component": "etcd",
+              "description": "Etcd version updated.",
+              "kind": "changed"
+            },
+            {
+              "component": "kubernetes",
+              "description": "Kubernetes version updated.",
+              "kind": "changed"
+            }
+          ],
+          "components": [
+            {
+              "name": "etcd",
+              "version": "3.2.4"
+            },
+            {
+              "name": "kubernetes",
+              "version": "1.8.2"
+            }
+          ],
+          "dependencies": [],
+          "deprecated": false,
+          "time": "2017 Aug 24, 09:11 UTC",
+          "version": "2.1.0",
+          "wip": false
+        }
+      ],
+      "name": "cloud-config-operator"
+    },
+    {
+      "bundles": [
+        {
+          "changelog": [
+            {
+              "component": "calico",
+              "description": "Calico version updated.",
+              "kind": "changed"
+            },
+            {
+              "component": "kubernetes",
+              "description": "Kubernetes version requirements changed due to calico update.",
+              "kind": "changed"
+            }
+          ],
+          "components": [
+            {
+              "name": "calico",
+              "version": "2.0.0"
+            },
+            {
+              "name": "kube-dns",
+              "version": "1.0.0"
+            }
+          ],
+          "dependencies": [
+            {
+              "name": "kubernetes",
+              "version": "<= 1.8.x"
+            }
+          ],
+          "deprecated": false,
+          "time": "2017 Aug 25, 16:40 UTC",
+          "version": "2.0.0",
+          "wip": false
+        }
+      ],
+      "name": "kubernetes-operator"
+    }
+  ]
+]

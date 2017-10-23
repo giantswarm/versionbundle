@@ -1,0 +1,73 @@
+{
+  "bundles": [
+    {
+      "changelog": [
+        {
+          "component": "calico",
+          "description": "Calico version updated.",
+          "kind": "changed"
+        },
+        {
+          "component": "kubernetes",
+          "description": "Kubernetes version requirements changed due to calico update.",
+          "kind": "changed"
+        }
+      ],
+      "components": [
+        {
+          "name": "calico",
+          "version": "1.0.0"
+        },
+        {
+          "name": "kube-dns",
+          "version": "1.0.0"
+        }
+      ],
+      "dependencies": [
+        {
+          "name": "kubernetes",
+          "version": "<= 1.7.x"
+        }
+      ],
+      "deprecated": false,
+      "time": "2017 Aug 18, 11:57 UTC",
+      "version": "1.0.0",
+      "wip": false
+    },
+    {
+      "changelog": [
+        {
+          "component": "calico",
+          "description": "Calico version updated.",
+          "kind": "changed"
+        },
+        {
+          "component": "kubernetes",
+          "description": "Kubernetes version requirements changed due to calico update.",
+          "kind": "changed"
+        }
+      ],
+      "components": [
+        {
+          "name": "calico",
+          "version": "2.0.0"
+        },
+        {
+          "name": "kube-dns",
+          "version": "1.0.0"
+        }
+      ],
+      "dependencies": [
+        {
+          "name": "kubernetes",
+          "version": "<= 1.8.x"
+        }
+      ],
+      "deprecated": false,
+      "time": "2017 Aug 25, 16:40 UTC",
+      "version": "2.0.0",
+      "wip": false
+    }
+  ],
+  "name": "kubernetes-operator"
+}

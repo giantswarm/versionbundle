@@ -1,0 +1,63 @@
+{
+  "bundles": [
+    {
+      "changelog": [
+        {
+          "component": "etcd",
+          "description": "Etcd version updated.",
+          "kind": "changed"
+        },
+        {
+          "component": "kubernetes",
+          "description": "Kubernetes version updated.",
+          "kind": "changed"
+        }
+      ],
+      "components": [
+        {
+          "name": "etcd",
+          "version": "3.2.0"
+        },
+        {
+          "name": "kubernetes",
+          "version": "1.7.1"
+        }
+      ],
+      "dependencies": [],
+      "deprecated": false,
+      "time": "2017 Aug 17, 21:03 UTC",
+      "version": "2.0.0",
+      "wip": false
+    },
+    {
+      "changelog": [
+        {
+          "component": "etcd",
+          "description": "Etcd version updated.",
+          "kind": "changed"
+        },
+        {
+          "component": "kubernetes",
+          "description": "Kubernetes version updated.",
+          "kind": "changed"
+        }
+      ],
+      "components": [
+        {
+          "name": "etcd",
+          "version": "3.2.4"
+        },
+        {
+          "name": "kubernetes",
+          "version": "1.8.2"
+        }
+      ],
+      "dependencies": [],
+      "deprecated": false,
+      "time": "2017 Aug 24, 09:11 UTC",
+      "version": "2.1.0",
+      "wip": false
+    }
+  ],
+  "name": "cloud-config-operator"
+}
