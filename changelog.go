@@ -30,7 +30,6 @@ type Changelog struct {
 	Kind        kind   `json:"kind" yaml:"kind"`
 }
 
-// TODO write tests
 func (c Changelog) Validate() error {
 	if c.Component == "" {
 		return microerror.Maskf(invalidChangelogError, "component must not be empty")

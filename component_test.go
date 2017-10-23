@@ -10,7 +10,6 @@ func Test_Component_Validate(t *testing.T) {
 		ErrorMatcher func(err error) bool
 	}{
 		// Test 0 ensures an empty component is not valid.
-		// and component matches.
 		{
 			Component:    Component{},
 			ErrorMatcher: IsInvalidComponent,
