@@ -27,42 +27,38 @@ func Aggregate(capabilities []Capability) (Aggregation, error) {
 	}
 
 	for _, c1 := range capabilities {
-		c1Copy := c1.Copy()
-
 		for _, b1 := range c1.Bundles {
-			c1Copy.Bundles = []Bundle{
+			c1.Bundles = []Bundle{
 				b1,
 			}
 
 			newCapabilities := []Capability{
-				c1Copy,
+				c1,
 			}
 
 			for _, c2 := range capabilities {
-				c2Copy := c2.Copy()
-
-				for _, b2 := range c2Copy.Bundles {
-					c2Copy.Bundles = []Bundle{
+				for _, b2 := range c2.Bundles {
+					c2.Bundles = []Bundle{
 						b2,
 					}
 
-					if reflect.DeepEqual(c1Copy, c2Copy) {
+					if reflect.DeepEqual(c1, c2) {
 						continue
 					}
 
-					if capabilitiesConflictWithDependencies(c1Copy, c2Copy) {
+					if capabilitiesConflictWithDependencies(c1, c2) {
 						continue
 					}
 
-					if capabilitiesConflictWithDependencies(c2Copy, c1Copy) {
+					if capabilitiesConflictWithDependencies(c2, c1) {
 						continue
 					}
 
-					if containsCapabitlityWithBundleName(newCapabilities, c2Copy) {
+					if containsCapabitlityWithBundleName(newCapabilities, c2) {
 						continue
 					}
 
-					newCapabilities = append(newCapabilities, c2Copy)
+					newCapabilities = append(newCapabilities, c2)
 				}
 			}
 

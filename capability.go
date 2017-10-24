@@ -1,7 +1,6 @@
 package versionbundle
 
 import (
-	"encoding/json"
 	"reflect"
 
 	"github.com/giantswarm/microerror"
@@ -17,21 +16,6 @@ type Capability struct {
 	// Name is the name of the authority, e.g. the name of the microservice or
 	// operator.
 	Name string `json:"name" yaml:"name"`
-}
-
-func (c Capability) Copy() Capability {
-	b, err := json.Marshal(c)
-	if err != nil {
-		panic(err)
-	}
-
-	var copy Capability
-	err = json.Unmarshal(b, &copy)
-	if err != nil {
-		panic(err)
-	}
-
-	return copy
 }
 
 func (c Capability) Validate() error {
