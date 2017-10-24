@@ -22,7 +22,7 @@ func Aggregate(capabilities []Capability) (Aggregation, error) {
 	}
 
 	if len(capabilities) == 1 {
-		newAggregration.Capabilities = append(newAggregration.Capabilities, []Capability{capabilities[0]})
+		newAggregration.Capabilities = append(newAggregration.Capabilities, capabilities)
 		return newAggregration, nil
 	}
 
