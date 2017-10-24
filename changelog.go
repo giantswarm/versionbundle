@@ -65,6 +65,7 @@ func (c Changelog) Validate() error {
 	if c.Kind == "" {
 		return microerror.Maskf(invalidChangelogError, "kind must not be empty")
 	}
+
 	var found bool
 	for _, k := range validKinds {
 		if c.Kind == k {

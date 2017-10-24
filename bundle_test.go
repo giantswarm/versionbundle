@@ -10,7 +10,7 @@ func Test_Bundle_Validate(t *testing.T) {
 		Bundle       Bundle
 		ErrorMatcher func(err error) bool
 	}{
-		// Test 0 ensures that an empty capability is not valid.
+		// Test 0 ensures that an empty bundle is not valid.
 		{
 			Bundle:       Bundle{},
 			ErrorMatcher: IsInvalidBundleError,
