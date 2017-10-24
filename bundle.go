@@ -14,6 +14,8 @@ import (
 type Bundle struct {
 	// Changelogs describe what changes are introduced by the version bundle. Each
 	// version bundle must have at least one changelog entry.
+	//
+	// NOTE that once this property is set it must never change again.
 	Changelogs []Changelog `json:"changelogs" yaml:"changelogs"`
 	// Components describe the components an authority exposes. Functionality of
 	// components listed here is guaranteed to be implemented in the according
@@ -30,6 +32,10 @@ type Bundle struct {
 	// bundles are not intended to be mainatined anymore. Further usage of a
 	// deprecated version bundle should be omitted.
 	Deprecated bool `json:"deprecated" yaml:"deprecated"`
+	// Name is the name of the authority exposing the version bundle.
+	//
+	// NOTE that once this property is set it must never change again.
+	Name string `json:"name" yaml:"name"`
 	// Time describes the time this version bundle got introduced.
 	//
 	// NOTE that once this property is set it must never change again.
@@ -78,6 +84,10 @@ func (b Bundle) Validate() error {
 		return microerror.Maskf(invalidBundleError, "time must not be empty")
 	}
 
+	if b.Name == "" {
+		return microerror.Maskf(invalidBundleError, "name must not be empty")
+	}
+
 	versionSplit := strings.Split(b.Version, ".")
 	if len(versionSplit) != 3 {
 		return microerror.Maskf(invalidBundleError, "version format must be '<major>.<minor>.<patch>'")
@@ -97,6 +107,12 @@ func (b Bundle) Validate() error {
 
 	return nil
 }
+
+type SortBundlesByName []Bundle
+
+func (b SortBundlesByName) Len() int           { return len(b) }
+func (b SortBundlesByName) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
+func (b SortBundlesByName) Less(i, j int) bool { return b[i].Name < b[j].Name }
 
 type SortBundlesByVersion []Bundle
 
@@ -128,6 +144,15 @@ func (b ValidateBundles) Validate() error {
 		return microerror.Maskf(invalidBundleError, "at least one bundle must not be deprecated")
 	}
 
+	if len(b) != 0 {
+		bundleName := b[0].Name
+		for _, bundle := range b {
+			if bundle.Name != bundleName {
+				return microerror.Maskf(invalidBundleError, "name must be the same for all bundles")
+			}
+		}
+	}
+
 	return nil
 }
 
@@ -147,4 +172,32 @@ func (b ValidateBundles) hasDuplicatedVersions() bool {
 	}
 
 	return false
+}
+
+type ValidateGroupedBundles [][]Bundle
+
+// TODO add tests for deprecated bundles within a group
+func (b ValidateGroupedBundles) Validate() error {
+	if len(b) != 0 {
+		l := len(b[0])
+		for _, group := range b {
+			if l != len(group) {
+				return microerror.Mask(invalidBundleError)
+			}
+		}
+	}
+
+	for _, group := range b {
+		var deprecatedCount int
+		for _, bundle := range group {
+			if bundle.Deprecated {
+				deprecatedCount++
+			}
+		}
+		if deprecatedCount == len(b) {
+			return microerror.Maskf(invalidBundleError, "at least one bundle must not be deprecated")
+		}
+	}
+
+	return nil
 }

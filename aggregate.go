@@ -7,99 +7,76 @@ import (
 	"github.com/giantswarm/microerror"
 )
 
-// Aggregate merges capabilities based on dependencies version bundles within
-// the given capabilities define for their components.
-func Aggregate(capabilities []Capability) (Aggregation, error) {
-	err := ValidateCapabilities(capabilities).Validate()
-	if err != nil {
-		return Aggregation{}, microerror.Mask(err)
+// Aggregate merges bundles based on dependencies version bundles within
+// the given bundles define for their components.
+func Aggregate(bundles []Bundle) ([][]Bundle, error) {
+	if len(bundles) == 0 {
+		return nil, nil
 	}
 
-	var newAggregration Aggregation
+	var groupedBundles [][]Bundle
 
-	if len(capabilities) == 0 {
-		return newAggregration, nil
+	if len(bundles) == 1 {
+		groupedBundles = append(groupedBundles, bundles)
+		return groupedBundles, nil
 	}
 
-	if len(capabilities) == 1 {
-		newAggregration.Capabilities = append(newAggregration.Capabilities, capabilities)
-		return newAggregration, nil
-	}
-
-	for _, c1 := range capabilities {
-		for _, b1 := range c1.Bundles {
-			c1.Bundles = []Bundle{
-				b1,
-			}
-
-			newCapabilities := []Capability{
-				c1,
-			}
-
-			for _, c2 := range capabilities {
-				for _, b2 := range c2.Bundles {
-					c2.Bundles = []Bundle{
-						b2,
-					}
-
-					if reflect.DeepEqual(c1, c2) {
-						continue
-					}
-
-					if capabilitiesConflictWithDependencies(c1, c2) {
-						continue
-					}
-
-					if capabilitiesConflictWithDependencies(c2, c1) {
-						continue
-					}
-
-					if containsCapabitlityWithBundleName(newCapabilities, c2) {
-						continue
-					}
-
-					newCapabilities = append(newCapabilities, c2)
-				}
-			}
-
-			sort.Sort(SortCapabilitiesByName(newCapabilities))
-			for _, c := range newCapabilities {
-				sort.Sort(SortBundlesByVersion(c.Bundles))
-			}
-
-			if containsAggregatedCapabilities(newAggregration.Capabilities, newCapabilities) {
-				continue
-			}
-
-			if len(capabilities) != len(newCapabilities) {
-				continue
-			}
-
-			newAggregration.Capabilities = append(newAggregration.Capabilities, newCapabilities)
+	for _, b1 := range bundles {
+		newGroup := []Bundle{
+			b1,
 		}
+
+		for _, b2 := range bundles {
+			if reflect.DeepEqual(b1, b2) {
+				continue
+			}
+
+			if bundlesConflictWithDependencies(b1, b2) {
+				continue
+			}
+
+			if bundlesConflictWithDependencies(b2, b1) {
+				continue
+			}
+
+			if containsBundleByName(newGroup, b2) {
+				continue
+			}
+
+			newGroup = append(newGroup, b2)
+		}
+
+		sort.Sort(SortBundlesByVersion(newGroup))
+		sort.Sort(SortBundlesByName(newGroup))
+
+		if containsGroupedBundle(groupedBundles, newGroup) {
+			continue
+		}
+
+		if distinctCount(bundles) != len(newGroup) {
+			continue
+		}
+
+		groupedBundles = append(groupedBundles, newGroup)
 	}
 
-	err = newAggregration.Validate()
+	err := ValidateGroupedBundles(groupedBundles).Validate()
 	if err != nil {
-		return Aggregation{}, microerror.Mask(err)
+		return nil, microerror.Mask(err)
 	}
 
-	return newAggregration, nil
+	return groupedBundles, nil
 }
 
-func capabilitiesConflictWithDependencies(c1, c2 Capability) bool {
-	for _, b1 := range c1.Bundles {
-		for _, d := range b1.Dependencies {
-			for _, b2 := range c2.Bundles {
-				for _, c := range b2.Components {
-					if d.Name != c.Name {
-						continue
-					}
+func bundlesConflictWithDependencies(b1, b2 Bundle) bool {
+	for _, d := range b1.Dependencies {
+		for _, c := range b2.Components {
+			if d.Name != c.Name {
+				continue
+			}
 
-					if !d.Matches(c) {
-						return true
-					}
-				}
+			if !d.Matches(c) {
+				return true
 			}
 		}
 	}
@@ -107,9 +84,9 @@ func capabilitiesConflictWithDependencies(c1, c2 Capability) bool {
 	return false
 }
 
-func containsAggregatedCapabilities(list [][]Capability, item []Capability) bool {
-	for _, c := range list {
-		if reflect.DeepEqual(c, item) {
+func containsGroupedBundle(list [][]Bundle, item []Bundle) bool {
+	for _, grouped := range list {
+		if reflect.DeepEqual(grouped, item) {
 			return true
 		}
 	}
@@ -117,12 +94,22 @@ func containsAggregatedCapabilities(list [][]Capability, item []Capability) bool
 	return false
 }
 
-func containsCapabitlityWithBundleName(list []Capability, item Capability) bool {
-	for _, c := range list {
-		if c.Name == item.Name {
+func containsBundleByName(list []Bundle, item Bundle) bool {
+	for _, b := range list {
+		if b.Name == item.Name {
 			return true
 		}
 	}
 
 	return false
+}
+
+func distinctCount(list []Bundle) int {
+	m := map[string]struct{}{}
+
+	for _, b := range list {
+		m[b.Name] = struct{}{}
+	}
+
+	return len(m)
 }
