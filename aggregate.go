@@ -47,7 +47,7 @@ func Aggregate(bundles []Bundle) ([][]Bundle, error) {
 		}
 
 		sort.Sort(SortBundlesByVersion(newGroup))
-		sort.Sort(SortBundlesByName(newGroup))
+		sort.Stable(SortBundlesByName(newGroup))
 
 		if containsGroupedBundle(groupedBundles, newGroup) {
 			continue
