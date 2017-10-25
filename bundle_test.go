@@ -10,7 +10,7 @@ func Test_Bundle_Validate(t *testing.T) {
 		Bundle       Bundle
 		ErrorMatcher func(err error) bool
 	}{
-		// Test 0 ensures that an empty bundle is not valid.
+		// Test 0 ensures that an empty version bundle is not valid.
 		{
 			Bundle:       Bundle{},
 			ErrorMatcher: IsInvalidBundleError,
@@ -31,7 +31,7 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundleError,
 		},
 
-		// Test 2 ensures a bundle without changelogs throws an error.
+		// Test 2 ensures a version bundle without changelogs throws an error.
 		{
 			Bundle: Bundle{
 				Changelogs: []Changelog{},
@@ -60,7 +60,7 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundleError,
 		},
 
-		// Test 3 ensures a bundle without components throws an error.
+		// Test 3 ensures a version bundle without components throws an error.
 		{
 			Bundle: Bundle{
 				Changelogs: []Changelog{
@@ -91,7 +91,8 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundleError,
 		},
 
-		// Test 4 ensures a bundle without dependencies does not throw an error.
+		// Test 4 ensures a version bundle without dependencies does not throw an
+		// error.
 		{
 			Bundle: Bundle{
 				Changelogs: []Changelog{
@@ -121,7 +122,7 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 5 ensures a bundle without time throws an error.
+		// Test 5 ensures a version bundle without time throws an error.
 		{
 			Bundle: Bundle{
 				Changelogs: []Changelog{
@@ -161,7 +162,7 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundleError,
 		},
 
-		// Test 6 ensures a bundle without version throws an error.
+		// Test 6 ensures a version bundle without version throws an error.
 		{
 			Bundle: Bundle{
 				Changelogs: []Changelog{
@@ -201,7 +202,7 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundleError,
 		},
 
-		// Test 7 ensures a deprecated bundle does not throw an error.
+		// Test 7 ensures a deprecated version bundle does not throw an error.
 		{
 			Bundle: Bundle{
 				Changelogs: []Changelog{
@@ -241,8 +242,8 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 8 ensures a bundle with an invalid dependency version format throws
-		// an error.
+		// Test 8 ensures a version bundle with an invalid dependency version format
+		// throws an error.
 		{
 			Bundle: Bundle{
 				Changelogs: []Changelog{
@@ -362,7 +363,8 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundleError,
 		},
 
-		// Test 11 ensures a bundle being flagged as WIP does not throw an error.
+		// Test 11 ensures a version bundle being flagged as WIP does not throw an
+		// error.
 		{
 			Bundle: Bundle{
 				Changelogs: []Changelog{
@@ -402,7 +404,7 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 12 ensures a valid bundle does not throw an error.
+		// Test 12 ensures a valid version bundle does not throw an error.
 		{
 			Bundle: Bundle{
 				Changelogs: []Changelog{
@@ -462,8 +464,8 @@ func Test_Capability_Validate(t *testing.T) {
 		Capability   Capability
 		ErrorMatcher func(err error) bool
 	}{
-		// Test 4 ensures that a capability with only having one deprecated bundle
-		// is not valid.
+		// Test 4 ensures that a capability with only having one deprecated version
+		// bundle is not valid.
 		{
 			Capability: Capability{
 				Bundles: []Bundle{
@@ -586,7 +588,7 @@ func Test_Capability_Validate(t *testing.T) {
 		},
 
 		// Test 6 ensures that deprecated bundles are allowed as soon as at least
-		// one bundle is not deprecated.
+		// one version bundle is not deprecated.
 		{
 			Capability: Capability{
 				Bundles: []Bundle{
