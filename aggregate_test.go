@@ -252,11 +252,10 @@ func Test_Aggregate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 4 ensures depending version bundles within the given list of version
-		// bundles are not aggregated together within the aggregated state in case
-		// their dependency definitions do not meet their constraints. Thus the
-		// aggregated state should be empty because there is no proper distribution
-		// available.
+		// Test 4 ensures depending version bundles are not aggregated together in
+		// case their dependency definitions do not meet the defined constraints.
+		// Thus the aggregated state should be empty because there is no proper
+		// distribution available.
 		{
 			Bundles: []Bundle{
 				{
@@ -329,9 +328,8 @@ func Test_Aggregate(t *testing.T) {
 			ErrorMatcher:           nil,
 		},
 
-		// Test 5 ensures when having an operator's list of version bundles
-		// containing two version bundles [a1,a2] and having another operator's list
-		// of version bundles containing one version bundle [b1], there should be
+		// Test 5 ensures when having an operator's version bundles [a1,a2] and
+		// having another operator's version bundles [b1], there should be
 		// two aggregated distributions [[a1,b1],[a2,b1]].
 		{
 			Bundles: []Bundle{
@@ -560,10 +558,9 @@ func Test_Aggregate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 6 ensures when having an operator's list of version bundles
-		// containing two version bundles [a1,a2] and having another operator's list
-		// of version bundles containing one version bundle [b1], there should be
-		// one aggregated distribution [[a2,b1]].
+		// Test 6 ensures when having an operator's version bundles [a1,a2] and
+		// having another operator's version bundles [b1], there should be one
+		// aggregated distribution [[a2,b1]].
 		//
 		// NOTE a1 requires a dependency which cannot be fulfilled. This is why
 		// there is only one possible distribution.
