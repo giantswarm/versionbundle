@@ -120,6 +120,9 @@ func (b SortBundlesByVersion) Len() int           { return len(b) }
 func (b SortBundlesByVersion) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
 func (b SortBundlesByVersion) Less(i, j int) bool { return b[i].Version < b[j].Version }
 
+// ValidateBundles is a plain validation type for a list of version bundles. A
+// list of version bundles is exposed by authorities. Lists of version bundles
+// of multiple authorities are aggregated and grouped to reflect distributions.
 type ValidateBundles []Bundle
 
 func (b ValidateBundles) Validate() error {
@@ -141,7 +144,7 @@ func (b ValidateBundles) Validate() error {
 		}
 	}
 	if deprecatedCount == len(b) {
-		return microerror.Maskf(invalidBundleError, "at least one bundle must not be deprecated")
+		return microerror.Maskf(invalidBundleError, "at least one version bundle must not be deprecated")
 	}
 
 	if len(b) != 0 {
@@ -174,10 +177,12 @@ func (b ValidateBundles) hasDuplicatedVersions() bool {
 	return false
 }
 
-type ValidateGroupedBundles [][]Bundle
+// ValidateAggregatedBundles is a plain validation type for aggregated lists of
+// version bundles. Lists of version bundles reflect distributions.
+type ValidateAggregatedBundles [][]Bundle
 
 // TODO add tests for deprecated bundles within a group
-func (b ValidateGroupedBundles) Validate() error {
+func (b ValidateAggregatedBundles) Validate() error {
 	if len(b) != 0 {
 		l := len(b[0])
 		for _, group := range b {
