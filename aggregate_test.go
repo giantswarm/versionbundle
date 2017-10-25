@@ -10,110 +10,100 @@ import (
 
 func Test_Aggregate(t *testing.T) {
 	testCases := []struct {
-		Capabilities        []Capability
-		ExpectedAggregation Aggregation
-		ErrorMatcher        func(err error) bool
+		Bundles                []Bundle
+		ExpectedGroupedBundles [][]Bundle
+		ErrorMatcher           func(err error) bool
 	}{
 		// Test 0 ensures that nil input results in empty output.
 		{
-			Capabilities:        nil,
-			ExpectedAggregation: Aggregation{},
-			ErrorMatcher:        nil,
+			Bundles:                nil,
+			ExpectedGroupedBundles: nil,
+			ErrorMatcher:           nil,
 		},
 
 		// Test 1 is the same as 0 but with an empty capabilities list.
 		{
-			Capabilities:        []Capability{},
-			ExpectedAggregation: Aggregation{},
-			ErrorMatcher:        nil,
+			Bundles:                []Bundle{},
+			ExpectedGroupedBundles: nil,
+			ErrorMatcher:           nil,
 		},
 
 		// Test 2 ensures a single bundle within the given capabilities is within
 		// the aggregated state as it is.
 		{
-			Capabilities: []Capability{
+			Bundles: []Bundle{
 				{
-					Bundles: []Bundle{
+					Changelogs: []Changelog{
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "calico",
-									Description: "Calico version updated.",
-									Kind:        "changed",
-								},
-								{
-									Component:   "kubernetes",
-									Description: "Kubernetes version requirements changed due to calico update.",
-									Kind:        "changed",
-								},
-							},
-							Components: []Component{
-								{
-									Name:    "calico",
-									Version: "1.1.0",
-								},
-								{
-									Name:    "kube-dns",
-									Version: "1.0.0",
-								},
-							},
-							Dependencies: []Dependency{
-								{
-									Name:    "kubernetes",
-									Version: "<= 1.7.x",
-								},
-							},
-							Deprecated: false,
-							Time:       time.Unix(10, 5),
-							Version:    "0.1.0",
-							WIP:        false,
+							Component:   "calico",
+							Description: "Calico version updated.",
+							Kind:        "changed",
+						},
+						{
+							Component:   "kubernetes",
+							Description: "Kubernetes version requirements changed due to calico update.",
+							Kind:        "changed",
 						},
 					},
-					Name: "kubernetes-operator",
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kube-dns",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{
+						{
+							Name:    "kubernetes",
+							Version: "<= 1.7.x",
+						},
+					},
+					Deprecated: false,
+					Name:       "kubernetes-operator",
+					Time:       time.Unix(10, 5),
+					Version:    "0.1.0",
+					WIP:        false,
 				},
 			},
-			ExpectedAggregation: Aggregation{
-				Capabilities: [][]Capability{
+			ExpectedGroupedBundles: [][]Bundle{
+				{
 					{
-						{
-							Bundles: []Bundle{
-								{
-									Changelogs: []Changelog{
-										{
-											Component:   "calico",
-											Description: "Calico version updated.",
-											Kind:        "changed",
-										},
-										{
-											Component:   "kubernetes",
-											Description: "Kubernetes version requirements changed due to calico update.",
-											Kind:        "changed",
-										},
-									},
-									Components: []Component{
-										{
-											Name:    "calico",
-											Version: "1.1.0",
-										},
-										{
-											Name:    "kube-dns",
-											Version: "1.0.0",
-										},
-									},
-									Dependencies: []Dependency{
-										{
-											Name:    "kubernetes",
-											Version: "<= 1.7.x",
-										},
-									},
-									Deprecated: false,
-									Time:       time.Unix(10, 5),
-									Version:    "0.1.0",
-									WIP:        false,
-								},
+						Changelogs: []Changelog{
+							{
+								Component:   "calico",
+								Description: "Calico version updated.",
+								Kind:        "changed",
 							},
-							Name: "kubernetes-operator",
+							{
+								Component:   "kubernetes",
+								Description: "Kubernetes version requirements changed due to calico update.",
+								Kind:        "changed",
+							},
 						},
+						Components: []Component{
+							{
+								Name:    "calico",
+								Version: "1.1.0",
+							},
+							{
+								Name:    "kube-dns",
+								Version: "1.0.0",
+							},
+						},
+						Dependencies: []Dependency{
+							{
+								Name:    "kubernetes",
+								Version: "<= 1.7.x",
+							},
+						},
+						Deprecated: false,
+						Name:       "kubernetes-operator",
+						Time:       time.Unix(10, 5),
+						Version:    "0.1.0",
+						WIP:        false,
 					},
 				},
 			},
@@ -123,157 +113,139 @@ func Test_Aggregate(t *testing.T) {
 		// Test 3 ensures depending bundles within the given capabilities are
 		// bundled together within the aggregated state.
 		{
-			Capabilities: []Capability{
+			Bundles: []Bundle{
 				{
-					Bundles: []Bundle{
+					Changelogs: []Changelog{
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "etcd",
-									Description: "Etcd version updated.",
-									Kind:        "changed",
-								},
-								{
-									Component:   "kubernetes",
-									Description: "Kubernetes version updated.",
-									Kind:        "changed",
-								},
-							},
-							Components: []Component{
-								{
-									Name:    "etcd",
-									Version: "3.2.0",
-								},
-								{
-									Name:    "kubernetes",
-									Version: "1.7.1",
-								},
-							},
-							Dependencies: []Dependency{},
-							Deprecated:   false,
-							Time:         time.Unix(20, 15),
-							Version:      "0.2.0",
-							WIP:          false,
+							Component:   "etcd",
+							Description: "Etcd version updated.",
+							Kind:        "changed",
+						},
+						{
+							Component:   "kubernetes",
+							Description: "Kubernetes version updated.",
+							Kind:        "changed",
 						},
 					},
-					Name: "cloud-config-operator",
+					Components: []Component{
+						{
+							Name:    "etcd",
+							Version: "3.2.0",
+						},
+						{
+							Name:    "kubernetes",
+							Version: "1.7.1",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "cloud-config-operator",
+					Time:         time.Unix(20, 15),
+					Version:      "0.2.0",
+					WIP:          false,
 				},
 				{
-					Bundles: []Bundle{
+					Changelogs: []Changelog{
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "calico",
-									Description: "Calico version updated.",
-									Kind:        "changed",
-								},
-								{
-									Component:   "kubernetes",
-									Description: "Kubernetes version requirements changed due to calico update.",
-									Kind:        "changed",
-								},
-							},
-							Components: []Component{
-								{
-									Name:    "calico",
-									Version: "1.1.0",
-								},
-								{
-									Name:    "kube-dns",
-									Version: "1.0.0",
-								},
-							},
-							Dependencies: []Dependency{
-								{
-									Name:    "kubernetes",
-									Version: "<= 1.7.x",
-								},
-							},
-							Deprecated: false,
-							Time:       time.Unix(10, 5),
-							Version:    "0.1.0",
-							WIP:        false,
+							Component:   "calico",
+							Description: "Calico version updated.",
+							Kind:        "changed",
+						},
+						{
+							Component:   "kubernetes",
+							Description: "Kubernetes version requirements changed due to calico update.",
+							Kind:        "changed",
 						},
 					},
-					Name: "kubernetes-operator",
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kube-dns",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{
+						{
+							Name:    "kubernetes",
+							Version: "<= 1.7.x",
+						},
+					},
+					Deprecated: false,
+					Name:       "kubernetes-operator",
+					Time:       time.Unix(10, 5),
+					Version:    "0.1.0",
+					WIP:        false,
 				},
 			},
-			ExpectedAggregation: Aggregation{
-				Capabilities: [][]Capability{
+			ExpectedGroupedBundles: [][]Bundle{
+				{
 					{
-						{
-							Bundles: []Bundle{
-								{
-									Changelogs: []Changelog{
-										{
-											Component:   "etcd",
-											Description: "Etcd version updated.",
-											Kind:        "changed",
-										},
-										{
-											Component:   "kubernetes",
-											Description: "Kubernetes version updated.",
-											Kind:        "changed",
-										},
-									},
-									Components: []Component{
-										{
-											Name:    "etcd",
-											Version: "3.2.0",
-										},
-										{
-											Name:    "kubernetes",
-											Version: "1.7.1",
-										},
-									},
-									Dependencies: []Dependency{},
-									Deprecated:   false,
-									Time:         time.Unix(20, 15),
-									Version:      "0.2.0",
-									WIP:          false,
-								},
+						Changelogs: []Changelog{
+							{
+								Component:   "etcd",
+								Description: "Etcd version updated.",
+								Kind:        "changed",
 							},
-							Name: "cloud-config-operator",
-						},
-						{
-							Bundles: []Bundle{
-								{
-									Changelogs: []Changelog{
-										{
-											Component:   "calico",
-											Description: "Calico version updated.",
-											Kind:        "changed",
-										},
-										{
-											Component:   "kubernetes",
-											Description: "Kubernetes version requirements changed due to calico update.",
-											Kind:        "changed",
-										},
-									},
-									Components: []Component{
-										{
-											Name:    "calico",
-											Version: "1.1.0",
-										},
-										{
-											Name:    "kube-dns",
-											Version: "1.0.0",
-										},
-									},
-									Dependencies: []Dependency{
-										{
-											Name:    "kubernetes",
-											Version: "<= 1.7.x",
-										},
-									},
-									Deprecated: false,
-									Time:       time.Unix(10, 5),
-									Version:    "0.1.0",
-									WIP:        false,
-								},
+							{
+								Component:   "kubernetes",
+								Description: "Kubernetes version updated.",
+								Kind:        "changed",
 							},
-							Name: "kubernetes-operator",
 						},
+						Components: []Component{
+							{
+								Name:    "etcd",
+								Version: "3.2.0",
+							},
+							{
+								Name:    "kubernetes",
+								Version: "1.7.1",
+							},
+						},
+						Dependencies: []Dependency{},
+						Deprecated:   false,
+						Name:         "cloud-config-operator",
+						Time:         time.Unix(20, 15),
+						Version:      "0.2.0",
+						WIP:          false,
+					},
+					{
+						Changelogs: []Changelog{
+							{
+								Component:   "calico",
+								Description: "Calico version updated.",
+								Kind:        "changed",
+							},
+							{
+								Component:   "kubernetes",
+								Description: "Kubernetes version requirements changed due to calico update.",
+								Kind:        "changed",
+							},
+						},
+						Components: []Component{
+							{
+								Name:    "calico",
+								Version: "1.1.0",
+							},
+							{
+								Name:    "kube-dns",
+								Version: "1.0.0",
+							},
+						},
+						Dependencies: []Dependency{
+							{
+								Name:    "kubernetes",
+								Version: "<= 1.7.x",
+							},
+						},
+						Deprecated: false,
+						Name:       "kubernetes-operator",
+						Time:       time.Unix(10, 5),
+						Version:    "0.1.0",
+						WIP:        false,
 					},
 				},
 			},
@@ -285,336 +257,301 @@ func Test_Aggregate(t *testing.T) {
 		// definitions do not meet their constraints. Thus the aggregated result
 		// should be empty because there is no proper bundle available.
 		{
-			Capabilities: []Capability{
+			Bundles: []Bundle{
 				{
-					Bundles: []Bundle{
+					Changelogs: []Changelog{
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "etcd",
-									Description: "Etcd version updated.",
-									Kind:        "changed",
-								},
-								{
-									Component:   "kubernetes",
-									Description: "Kubernetes version updated.",
-									Kind:        "changed",
-								},
-							},
-							Components: []Component{
-								{
-									Name:    "etcd",
-									Version: "3.2.0",
-								},
-								{
-									Name:    "kubernetes",
-									Version: "1.7.1",
-								},
-							},
-							Dependencies: []Dependency{},
-							Deprecated:   false,
-							Time:         time.Unix(20, 15),
-							Version:      "0.2.0",
-							WIP:          false,
+							Component:   "etcd",
+							Description: "Etcd version updated.",
+							Kind:        "changed",
+						},
+						{
+							Component:   "kubernetes",
+							Description: "Kubernetes version updated.",
+							Kind:        "changed",
 						},
 					},
-					Name: "cloud-config-operator",
-				},
-				{
-					Bundles: []Bundle{
+					Components: []Component{
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "calico",
-									Description: "Calico version updated.",
-									Kind:        "changed",
-								},
-								{
-									Component:   "kubernetes",
-									Description: "Kubernetes version requirements changed due to calico update.",
-									Kind:        "changed",
-								},
-							},
-							Components: []Component{
-								{
-									Name:    "calico",
-									Version: "1.1.0",
-								},
-								{
-									Name:    "kube-dns",
-									Version: "1.0.0",
-								},
-							},
-							Dependencies: []Dependency{
-								{
-									Name:    "kubernetes",
-									Version: "<= 1.7.0",
-								},
-							},
-							Deprecated: false,
-							Time:       time.Unix(10, 5),
-							Version:    "0.1.0",
-							WIP:        false,
+							Name:    "etcd",
+							Version: "3.2.0",
+						},
+						{
+							Name:    "kubernetes",
+							Version: "1.7.1",
 						},
 					},
-					Name: "kubernetes-operator",
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "cloud-config-operator",
+					Time:         time.Unix(20, 15),
+					Version:      "0.2.0",
+					WIP:          false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "calico",
+							Description: "Calico version updated.",
+							Kind:        "changed",
+						},
+						{
+							Component:   "kubernetes",
+							Description: "Kubernetes version requirements changed due to calico update.",
+							Kind:        "changed",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kube-dns",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{
+						{
+							Name:    "kubernetes",
+							Version: "<= 1.7.0",
+						},
+					},
+					Deprecated: false,
+					Name:       "kubernetes-operator",
+					Time:       time.Unix(10, 5),
+					Version:    "0.1.0",
+					WIP:        false,
 				},
 			},
-			ExpectedAggregation: Aggregation{
-				Capabilities: nil,
-			},
-			ErrorMatcher: nil,
+			ExpectedGroupedBundles: nil,
+			ErrorMatcher:           nil,
 		},
 
 		// Test 5 ensures when having a operator capability containing two bundles
 		// [a1,a2] and having another operator capability containing one bundle
 		// [b1], there should be two aggregated capabilities [[a1,b1],[a2,b1]].
 		{
-			Capabilities: []Capability{
+			Bundles: []Bundle{
 				{
-					Bundles: []Bundle{
+					Changelogs: []Changelog{
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "etcd",
-									Description: "Etcd version updated.",
-									Kind:        "changed",
-								},
-								{
-									Component:   "kubernetes",
-									Description: "Kubernetes version updated.",
-									Kind:        "changed",
-								},
-							},
-							Components: []Component{
-								{
-									Name:    "etcd",
-									Version: "3.2.0",
-								},
-								{
-									Name:    "kubernetes",
-									Version: "1.7.1",
-								},
-							},
-							Dependencies: []Dependency{},
-							Deprecated:   false,
-							Time:         time.Unix(20, 15),
-							Version:      "0.2.0",
-							WIP:          false,
+							Component:   "etcd",
+							Description: "Etcd version updated.",
+							Kind:        "changed",
 						},
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "kubernetes",
-									Description: "Kubernetes version updated.",
-									Kind:        "changed",
-								},
-							},
-							Components: []Component{
-								{
-									Name:    "etcd",
-									Version: "3.2.0",
-								},
-								{
-									Name:    "kubernetes",
-									Version: "1.8.1",
-								},
-							},
-							Dependencies: []Dependency{},
-							Deprecated:   false,
-							Time:         time.Unix(30, 20),
-							Version:      "0.3.0",
-							WIP:          false,
+							Component:   "kubernetes",
+							Description: "Kubernetes version updated.",
+							Kind:        "changed",
 						},
 					},
-					Name: "cloud-config-operator",
+					Components: []Component{
+						{
+							Name:    "etcd",
+							Version: "3.2.0",
+						},
+						{
+							Name:    "kubernetes",
+							Version: "1.7.1",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "cloud-config-operator",
+					Time:         time.Unix(20, 15),
+					Version:      "0.2.0",
+					WIP:          false,
 				},
 				{
-					Bundles: []Bundle{
+					Changelogs: []Changelog{
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "calico",
-									Description: "Calico version updated.",
-									Kind:        "changed",
-								},
-								{
-									Component:   "kubernetes",
-									Description: "Kubernetes version requirements changed due to calico update.",
-									Kind:        "changed",
-								},
-							},
-							Components: []Component{
-								{
-									Name:    "calico",
-									Version: "1.1.0",
-								},
-								{
-									Name:    "kube-dns",
-									Version: "1.0.0",
-								},
-							},
-							Dependencies: []Dependency{
-								{
-									Name:    "kubernetes",
-									Version: "<= 1.8.x",
-								},
-							},
-							Deprecated: false,
-							Time:       time.Unix(10, 5),
-							Version:    "0.1.0",
-							WIP:        false,
+							Component:   "kubernetes",
+							Description: "Kubernetes version updated.",
+							Kind:        "changed",
 						},
 					},
-					Name: "kubernetes-operator",
+					Components: []Component{
+						{
+							Name:    "etcd",
+							Version: "3.2.0",
+						},
+						{
+							Name:    "kubernetes",
+							Version: "1.8.1",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "cloud-config-operator",
+					Time:         time.Unix(30, 20),
+					Version:      "0.3.0",
+					WIP:          false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "calico",
+							Description: "Calico version updated.",
+							Kind:        "changed",
+						},
+						{
+							Component:   "kubernetes",
+							Description: "Kubernetes version requirements changed due to calico update.",
+							Kind:        "changed",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kube-dns",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{
+						{
+							Name:    "kubernetes",
+							Version: "<= 1.8.x",
+						},
+					},
+					Deprecated: false,
+					Name:       "kubernetes-operator",
+					Time:       time.Unix(10, 5),
+					Version:    "0.1.0",
+					WIP:        false,
 				},
 			},
-			ExpectedAggregation: Aggregation{
-				Capabilities: [][]Capability{
+			ExpectedGroupedBundles: [][]Bundle{
+				{
 					{
-						{
-							Bundles: []Bundle{
-								{
-									Changelogs: []Changelog{
-										{
-											Component:   "etcd",
-											Description: "Etcd version updated.",
-											Kind:        "changed",
-										},
-										{
-											Component:   "kubernetes",
-											Description: "Kubernetes version updated.",
-											Kind:        "changed",
-										},
-									},
-									Components: []Component{
-										{
-											Name:    "etcd",
-											Version: "3.2.0",
-										},
-										{
-											Name:    "kubernetes",
-											Version: "1.7.1",
-										},
-									},
-									Dependencies: []Dependency{},
-									Deprecated:   false,
-									Time:         time.Unix(20, 15),
-									Version:      "0.2.0",
-									WIP:          false,
-								},
+						Changelogs: []Changelog{
+							{
+								Component:   "etcd",
+								Description: "Etcd version updated.",
+								Kind:        "changed",
 							},
-							Name: "cloud-config-operator",
-						},
-						{
-							Bundles: []Bundle{
-								{
-									Changelogs: []Changelog{
-										{
-											Component:   "calico",
-											Description: "Calico version updated.",
-											Kind:        "changed",
-										},
-										{
-											Component:   "kubernetes",
-											Description: "Kubernetes version requirements changed due to calico update.",
-											Kind:        "changed",
-										},
-									},
-									Components: []Component{
-										{
-											Name:    "calico",
-											Version: "1.1.0",
-										},
-										{
-											Name:    "kube-dns",
-											Version: "1.0.0",
-										},
-									},
-									Dependencies: []Dependency{
-										{
-											Name:    "kubernetes",
-											Version: "<= 1.8.x",
-										},
-									},
-									Deprecated: false,
-									Time:       time.Unix(10, 5),
-									Version:    "0.1.0",
-									WIP:        false,
-								},
+							{
+								Component:   "kubernetes",
+								Description: "Kubernetes version updated.",
+								Kind:        "changed",
 							},
-							Name: "kubernetes-operator",
 						},
+						Components: []Component{
+							{
+								Name:    "etcd",
+								Version: "3.2.0",
+							},
+							{
+								Name:    "kubernetes",
+								Version: "1.7.1",
+							},
+						},
+						Dependencies: []Dependency{},
+						Deprecated:   false,
+						Name:         "cloud-config-operator",
+						Time:         time.Unix(20, 15),
+						Version:      "0.2.0",
+						WIP:          false,
 					},
 					{
-						{
-							Bundles: []Bundle{
-								{
-									Changelogs: []Changelog{
-										{
-											Component:   "kubernetes",
-											Description: "Kubernetes version updated.",
-											Kind:        "changed",
-										},
-									},
-									Components: []Component{
-										{
-											Name:    "etcd",
-											Version: "3.2.0",
-										},
-										{
-											Name:    "kubernetes",
-											Version: "1.8.1",
-										},
-									},
-									Dependencies: []Dependency{},
-									Deprecated:   false,
-									Time:         time.Unix(30, 20),
-									Version:      "0.3.0",
-									WIP:          false,
-								},
+						Changelogs: []Changelog{
+							{
+								Component:   "calico",
+								Description: "Calico version updated.",
+								Kind:        "changed",
 							},
-							Name: "cloud-config-operator",
-						},
-						{
-							Bundles: []Bundle{
-								{
-									Changelogs: []Changelog{
-										{
-											Component:   "calico",
-											Description: "Calico version updated.",
-											Kind:        "changed",
-										},
-										{
-											Component:   "kubernetes",
-											Description: "Kubernetes version requirements changed due to calico update.",
-											Kind:        "changed",
-										},
-									},
-									Components: []Component{
-										{
-											Name:    "calico",
-											Version: "1.1.0",
-										},
-										{
-											Name:    "kube-dns",
-											Version: "1.0.0",
-										},
-									},
-									Dependencies: []Dependency{
-										{
-											Name:    "kubernetes",
-											Version: "<= 1.8.x",
-										},
-									},
-									Deprecated: false,
-									Time:       time.Unix(10, 5),
-									Version:    "0.1.0",
-									WIP:        false,
-								},
+							{
+								Component:   "kubernetes",
+								Description: "Kubernetes version requirements changed due to calico update.",
+								Kind:        "changed",
 							},
-							Name: "kubernetes-operator",
 						},
+						Components: []Component{
+							{
+								Name:    "calico",
+								Version: "1.1.0",
+							},
+							{
+								Name:    "kube-dns",
+								Version: "1.0.0",
+							},
+						},
+						Dependencies: []Dependency{
+							{
+								Name:    "kubernetes",
+								Version: "<= 1.8.x",
+							},
+						},
+						Deprecated: false,
+						Name:       "kubernetes-operator",
+						Time:       time.Unix(10, 5),
+						Version:    "0.1.0",
+						WIP:        false,
+					},
+				},
+				{
+					{
+						Changelogs: []Changelog{
+							{
+								Component:   "kubernetes",
+								Description: "Kubernetes version updated.",
+								Kind:        "changed",
+							},
+						},
+						Components: []Component{
+							{
+								Name:    "etcd",
+								Version: "3.2.0",
+							},
+							{
+								Name:    "kubernetes",
+								Version: "1.8.1",
+							},
+						},
+						Dependencies: []Dependency{},
+						Deprecated:   false,
+						Name:         "cloud-config-operator",
+						Time:         time.Unix(30, 20),
+						Version:      "0.3.0",
+						WIP:          false,
+					},
+					{
+						Changelogs: []Changelog{
+							{
+								Component:   "calico",
+								Description: "Calico version updated.",
+								Kind:        "changed",
+							},
+							{
+								Component:   "kubernetes",
+								Description: "Kubernetes version requirements changed due to calico update.",
+								Kind:        "changed",
+							},
+						},
+						Components: []Component{
+							{
+								Name:    "calico",
+								Version: "1.1.0",
+							},
+							{
+								Name:    "kube-dns",
+								Version: "1.0.0",
+							},
+						},
+						Dependencies: []Dependency{
+							{
+								Name:    "kubernetes",
+								Version: "<= 1.8.x",
+							},
+						},
+						Deprecated: false,
+						Name:       "kubernetes-operator",
+						Time:       time.Unix(10, 5),
+						Version:    "0.1.0",
+						WIP:        false,
 					},
 				},
 			},
@@ -628,176 +565,159 @@ func Test_Aggregate(t *testing.T) {
 		// NOTE a1 requires a dependency which cannot be fulfilled. This is why
 		// there is only one possible option.
 		{
-			Capabilities: []Capability{
+			Bundles: []Bundle{
 				{
-					Bundles: []Bundle{
+					Changelogs: []Changelog{
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "etcd",
-									Description: "Etcd version updated.",
-									Kind:        "changed",
-								},
-								{
-									Component:   "kubernetes",
-									Description: "Kubernetes version updated.",
-									Kind:        "changed",
-								},
-							},
-							Components: []Component{
-								{
-									Name:    "etcd",
-									Version: "3.2.0",
-								},
-								{
-									Name:    "kubernetes",
-									Version: "1.7.1",
-								},
-							},
-							Dependencies: []Dependency{},
-							Deprecated:   false,
-							Time:         time.Unix(20, 15),
-							Version:      "0.2.0",
-							WIP:          false,
+							Component:   "etcd",
+							Description: "Etcd version updated.",
+							Kind:        "changed",
 						},
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "kubernetes",
-									Description: "Kubernetes version updated.",
-									Kind:        "changed",
-								},
-							},
-							Components: []Component{
-								{
-									Name:    "etcd",
-									Version: "3.2.0",
-								},
-								{
-									Name:    "kubernetes",
-									Version: "1.8.1",
-								},
-							},
-							Dependencies: []Dependency{},
-							Deprecated:   false,
-							Time:         time.Unix(30, 20),
-							Version:      "0.3.0",
-							WIP:          false,
+							Component:   "kubernetes",
+							Description: "Kubernetes version updated.",
+							Kind:        "changed",
 						},
 					},
-					Name: "cloud-config-operator",
+					Components: []Component{
+						{
+							Name:    "etcd",
+							Version: "3.2.0",
+						},
+						{
+							Name:    "kubernetes",
+							Version: "1.7.1",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "cloud-config-operator",
+					Time:         time.Unix(20, 15),
+					Version:      "0.2.0",
+					WIP:          false,
 				},
 				{
-					Bundles: []Bundle{
+					Changelogs: []Changelog{
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "calico",
-									Description: "Calico version updated.",
-									Kind:        "changed",
-								},
-								{
-									Component:   "kubernetes",
-									Description: "Kubernetes version requirements changed due to calico update.",
-									Kind:        "changed",
-								},
-							},
-							Components: []Component{
-								{
-									Name:    "calico",
-									Version: "1.1.0",
-								},
-								{
-									Name:    "kube-dns",
-									Version: "1.0.0",
-								},
-							},
-							Dependencies: []Dependency{
-								{
-									Name:    "kubernetes",
-									Version: "== 1.8.1",
-								},
-							},
-							Deprecated: false,
-							Time:       time.Unix(10, 5),
-							Version:    "0.1.0",
-							WIP:        false,
+							Component:   "kubernetes",
+							Description: "Kubernetes version updated.",
+							Kind:        "changed",
 						},
 					},
-					Name: "kubernetes-operator",
+					Components: []Component{
+						{
+							Name:    "etcd",
+							Version: "3.2.0",
+						},
+						{
+							Name:    "kubernetes",
+							Version: "1.8.1",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "cloud-config-operator",
+					Time:         time.Unix(30, 20),
+					Version:      "0.3.0",
+					WIP:          false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "calico",
+							Description: "Calico version updated.",
+							Kind:        "changed",
+						},
+						{
+							Component:   "kubernetes",
+							Description: "Kubernetes version requirements changed due to calico update.",
+							Kind:        "changed",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kube-dns",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{
+						{
+							Name:    "kubernetes",
+							Version: "== 1.8.1",
+						},
+					},
+					Deprecated: false,
+					Name:       "kubernetes-operator",
+					Time:       time.Unix(10, 5),
+					Version:    "0.1.0",
+					WIP:        false,
 				},
 			},
-			ExpectedAggregation: Aggregation{
-				Capabilities: [][]Capability{
+			ExpectedGroupedBundles: [][]Bundle{
+				{
 					{
-						{
-							Bundles: []Bundle{
-								{
-									Changelogs: []Changelog{
-										{
-											Component:   "kubernetes",
-											Description: "Kubernetes version updated.",
-											Kind:        "changed",
-										},
-									},
-									Components: []Component{
-										{
-											Name:    "etcd",
-											Version: "3.2.0",
-										},
-										{
-											Name:    "kubernetes",
-											Version: "1.8.1",
-										},
-									},
-									Dependencies: []Dependency{},
-									Deprecated:   false,
-									Time:         time.Unix(30, 20),
-									Version:      "0.3.0",
-									WIP:          false,
-								},
+						Changelogs: []Changelog{
+							{
+								Component:   "kubernetes",
+								Description: "Kubernetes version updated.",
+								Kind:        "changed",
 							},
-							Name: "cloud-config-operator",
 						},
-						{
-							Bundles: []Bundle{
-								{
-									Changelogs: []Changelog{
-										{
-											Component:   "calico",
-											Description: "Calico version updated.",
-											Kind:        "changed",
-										},
-										{
-											Component:   "kubernetes",
-											Description: "Kubernetes version requirements changed due to calico update.",
-											Kind:        "changed",
-										},
-									},
-									Components: []Component{
-										{
-											Name:    "calico",
-											Version: "1.1.0",
-										},
-										{
-											Name:    "kube-dns",
-											Version: "1.0.0",
-										},
-									},
-									Dependencies: []Dependency{
-										{
-											Name:    "kubernetes",
-											Version: "== 1.8.1",
-										},
-									},
-									Deprecated: false,
-									Time:       time.Unix(10, 5),
-									Version:    "0.1.0",
-									WIP:        false,
-								},
+						Components: []Component{
+							{
+								Name:    "etcd",
+								Version: "3.2.0",
 							},
-							Name: "kubernetes-operator",
+							{
+								Name:    "kubernetes",
+								Version: "1.8.1",
+							},
 						},
+						Dependencies: []Dependency{},
+						Deprecated:   false,
+						Name:         "cloud-config-operator",
+						Time:         time.Unix(30, 20),
+						Version:      "0.3.0",
+						WIP:          false,
+					},
+					{
+						Changelogs: []Changelog{
+							{
+								Component:   "calico",
+								Description: "Calico version updated.",
+								Kind:        "changed",
+							},
+							{
+								Component:   "kubernetes",
+								Description: "Kubernetes version requirements changed due to calico update.",
+								Kind:        "changed",
+							},
+						},
+						Components: []Component{
+							{
+								Name:    "calico",
+								Version: "1.1.0",
+							},
+							{
+								Name:    "kube-dns",
+								Version: "1.0.0",
+							},
+						},
+						Dependencies: []Dependency{
+							{
+								Name:    "kubernetes",
+								Version: "== 1.8.1",
+							},
+						},
+						Deprecated: false,
+						Name:       "kubernetes-operator",
+						Time:       time.Unix(10, 5),
+						Version:    "0.1.0",
+						WIP:        false,
 					},
 				},
 			},
@@ -806,15 +726,15 @@ func Test_Aggregate(t *testing.T) {
 	}
 
 	for i, tc := range testCases {
-		aggregation, err := Aggregate(tc.Capabilities)
+		groupedBundles, err := Aggregate(tc.Bundles)
 		if tc.ErrorMatcher != nil {
 			if !tc.ErrorMatcher(err) {
 				t.Fatalf("test %d expected %#v got %#v", i, true, false)
 			}
 		} else {
-			if !reflect.DeepEqual(aggregation, tc.ExpectedAggregation) {
-				diff := pretty.Compare(tc.ExpectedAggregation, aggregation)
-				t.Fatalf("test %d expected %#v got %#v (\n%s \n)", i, tc.ExpectedAggregation, aggregation, diff)
+			if !reflect.DeepEqual(groupedBundles, tc.ExpectedGroupedBundles) {
+				diff := pretty.Compare(tc.ExpectedGroupedBundles, groupedBundles)
+				t.Fatalf("test %d expected %#v got %#v (\n%s \n)", i, tc.ExpectedGroupedBundles, groupedBundles, diff)
 			}
 		}
 	}
