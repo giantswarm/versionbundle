@@ -210,7 +210,7 @@ func (b ValidateAggregatedBundles) Validate() error {
 		l := len(b[0])
 		for _, group := range b {
 			if l != len(group) {
-				return microerror.Maskf(invalidAggregatedBundlesError, "number of version bundles within aggregated version bundles must be qual")
+				return microerror.Maskf(invalidAggregatedBundlesError, "number of version bundles within aggregated version bundles must be equal")
 			}
 		}
 	}
