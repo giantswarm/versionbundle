@@ -1,6 +1,9 @@
 package versionbundle
 
 import (
+	"encoding/json"
+	"reflect"
+	"sort"
 	"strings"
 	"time"
 
@@ -120,39 +123,60 @@ func (b SortBundlesByVersion) Len() int           { return len(b) }
 func (b SortBundlesByVersion) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
 func (b SortBundlesByVersion) Less(i, j int) bool { return b[i].Version < b[j].Version }
 
+type SortBundlesByTime []Bundle
+
+func (b SortBundlesByTime) Len() int           { return len(b) }
+func (b SortBundlesByTime) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
+func (b SortBundlesByTime) Less(i, j int) bool { return b[i].Time.UnixNano() < b[j].Time.UnixNano() }
+
 // ValidateBundles is a plain validation type for a list of version bundles. A
 // list of version bundles is exposed by authorities. Lists of version bundles
 // of multiple authorities are aggregated and grouped to reflect distributions.
 type ValidateBundles []Bundle
 
+func (b ValidateBundles) Copy() ValidateBundles {
+	raw, err := json.Marshal(b)
+	if err != nil {
+		panic(err)
+	}
+
+	var copy ValidateBundles
+	err = json.Unmarshal(raw, &copy)
+	if err != nil {
+		panic(err)
+	}
+
+	return copy
+}
+
 func (b ValidateBundles) Validate() error {
+	if len(b) == 0 {
+		return microerror.Maskf(invalidBundlesError, "version bundles must not be empty")
+	}
+
 	if b.hasDuplicatedVersions() {
-		return microerror.Mask(invalidBundleError)
+		return microerror.Maskf(invalidBundlesError, "version bundle versions must be unique")
+	}
+
+	b1 := b.Copy()
+	b2 := b.Copy()
+	sort.Sort(SortBundlesByTime(b1))
+	sort.Sort(SortBundlesByVersion(b2))
+	if !reflect.DeepEqual(b1, b2) {
+		return microerror.Maskf(invalidBundlesError, "version bundle versions must always increment")
 	}
 
 	for _, bundle := range b {
 		err := bundle.Validate()
 		if err != nil {
-			return microerror.Maskf(invalidBundleError, err.Error())
+			return microerror.Maskf(invalidBundlesError, err.Error())
 		}
 	}
 
-	var deprecatedCount int
+	bundleName := b[0].Name
 	for _, bundle := range b {
-		if bundle.Deprecated {
-			deprecatedCount++
-		}
-	}
-	if deprecatedCount == len(b) {
-		return microerror.Maskf(invalidBundleError, "at least one version bundle must not be deprecated")
-	}
-
-	if len(b) != 0 {
-		bundleName := b[0].Name
-		for _, bundle := range b {
-			if bundle.Name != bundleName {
-				return microerror.Maskf(invalidBundleError, "name must be the same for all bundles")
-			}
+		if bundle.Name != bundleName {
+			return microerror.Maskf(invalidBundlesError, "name must be the same for all version bundles")
 		}
 	}
 
@@ -181,28 +205,37 @@ func (b ValidateBundles) hasDuplicatedVersions() bool {
 // version bundles. Lists of version bundles reflect distributions.
 type ValidateAggregatedBundles [][]Bundle
 
-// TODO add tests for deprecated bundles within a group
 func (b ValidateAggregatedBundles) Validate() error {
 	if len(b) != 0 {
 		l := len(b[0])
 		for _, group := range b {
 			if l != len(group) {
-				return microerror.Mask(invalidBundleError)
+				return microerror.Maskf(invalidAggregatedBundlesError, "number of version bundles within aggregated version bundles must be equal")
 			}
 		}
 	}
 
-	for _, group := range b {
-		var deprecatedCount int
-		for _, bundle := range group {
-			if bundle.Deprecated {
-				deprecatedCount++
-			}
-		}
-		if deprecatedCount == len(b) {
-			return microerror.Maskf(invalidBundleError, "at least one bundle must not be deprecated")
-		}
+	if b.hasDuplicatedAggregatedBundles() {
+		return microerror.Maskf(invalidAggregatedBundlesError, "version bundles within aggregated version bundles must be unique")
 	}
 
 	return nil
+}
+
+func (b ValidateAggregatedBundles) hasDuplicatedAggregatedBundles() bool {
+	for _, b1 := range b {
+		var seen int
+
+		for _, b2 := range b {
+			if reflect.DeepEqual(b1, b2) {
+				seen++
+
+				if seen >= 2 {
+					return true
+				}
+			}
+		}
+	}
+
+	return false
 }
