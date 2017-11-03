@@ -239,6 +239,254 @@ func Test_Collector_Collect(t *testing.T) {
 				},
 			},
 		},
+
+		// Test 2 ensures two version bundles exposed by a one endpoint and another
+		// two version bundles exposed by another endpoint results in four version
+		// bundles.
+		{
+			HandlerFuncs: []func(w http.ResponseWriter, r *http.Request){
+				func(w http.ResponseWriter, r *http.Request) {
+					cr := CollectorEndpointResponse{
+						VersionBundles: []Bundle{
+							{
+								Changelogs: []Changelog{
+									{
+										Component:   "calico",
+										Description: "Calico version updated.",
+										Kind:        "changed",
+									},
+								},
+								Components: []Component{
+									{
+										Name:    "calico",
+										Version: "1.1.0",
+									},
+									{
+										Name:    "kube-dns",
+										Version: "1.0.0",
+									},
+								},
+								Dependencies: []Dependency{},
+								Deprecated:   false,
+								Name:         "kubernetes-operator",
+								Time:         time.Unix(10, 5),
+								Version:      "0.1.0",
+								WIP:          false,
+							},
+							{
+								Changelogs: []Changelog{
+									{
+										Component:   "calico",
+										Description: "Calico version updated.",
+										Kind:        "changed",
+									},
+								},
+								Components: []Component{
+									{
+										Name:    "calico",
+										Version: "1.2.0",
+									},
+									{
+										Name:    "kube-dns",
+										Version: "1.0.0",
+									},
+								},
+								Dependencies: []Dependency{},
+								Deprecated:   false,
+								Name:         "kubernetes-operator",
+								Time:         time.Unix(10, 5),
+								Version:      "0.2.0",
+								WIP:          false,
+							},
+						},
+					}
+					b, err := json.Marshal(cr)
+					if err != nil {
+						t.Fatalf("expected %#v got %#v", nil, err)
+					}
+					_, err = io.WriteString(w, string(b))
+					if err != nil {
+						t.Fatalf("expected %#v got %#v", nil, err)
+					}
+				},
+				func(w http.ResponseWriter, r *http.Request) {
+					cr := CollectorEndpointResponse{
+						VersionBundles: []Bundle{
+							{
+								Changelogs: []Changelog{
+									{
+										Component:   "etcd",
+										Description: "Etcd version updated.",
+										Kind:        "changed",
+									},
+									{
+										Component:   "kubernetes",
+										Description: "Kubernetes version updated.",
+										Kind:        "changed",
+									},
+								},
+								Components: []Component{
+									{
+										Name:    "etcd",
+										Version: "3.2.0",
+									},
+									{
+										Name:    "kubernetes",
+										Version: "1.7.1",
+									},
+								},
+								Dependencies: []Dependency{},
+								Name:         "cloud-config-operator",
+								Deprecated:   false,
+								Time:         time.Unix(20, 15),
+								Version:      "0.2.0",
+								WIP:          false,
+							},
+							{
+								Changelogs: []Changelog{
+									{
+										Component:   "etcd",
+										Description: "Etcd version updated.",
+										Kind:        "changed",
+									},
+								},
+								Components: []Component{
+									{
+										Name:    "etcd",
+										Version: "3.3.0",
+									},
+									{
+										Name:    "kubernetes",
+										Version: "1.7.1",
+									},
+								},
+								Dependencies: []Dependency{},
+								Name:         "cloud-config-operator",
+								Deprecated:   false,
+								Time:         time.Unix(20, 15),
+								Version:      "0.3.0",
+								WIP:          false,
+							},
+						},
+					}
+					b, err := json.Marshal(cr)
+					if err != nil {
+						t.Fatalf("expected %#v got %#v", nil, err)
+					}
+					_, err = io.WriteString(w, string(b))
+					if err != nil {
+						t.Fatalf("expected %#v got %#v", nil, err)
+					}
+				},
+			},
+			ExpectedBundles: []Bundle{
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "calico",
+							Description: "Calico version updated.",
+							Kind:        "changed",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kube-dns",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "kubernetes-operator",
+					Time:         time.Unix(10, 5),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "calico",
+							Description: "Calico version updated.",
+							Kind:        "changed",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.2.0",
+						},
+						{
+							Name:    "kube-dns",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "kubernetes-operator",
+					Time:         time.Unix(10, 5),
+					Version:      "0.2.0",
+					WIP:          false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "etcd",
+							Description: "Etcd version updated.",
+							Kind:        "changed",
+						},
+						{
+							Component:   "kubernetes",
+							Description: "Kubernetes version updated.",
+							Kind:        "changed",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "etcd",
+							Version: "3.2.0",
+						},
+						{
+							Name:    "kubernetes",
+							Version: "1.7.1",
+						},
+					},
+					Dependencies: []Dependency{},
+					Name:         "cloud-config-operator",
+					Deprecated:   false,
+					Time:         time.Unix(20, 15),
+					Version:      "0.2.0",
+					WIP:          false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "etcd",
+							Description: "Etcd version updated.",
+							Kind:        "changed",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "etcd",
+							Version: "3.3.0",
+						},
+						{
+							Name:    "kubernetes",
+							Version: "1.7.1",
+						},
+					},
+					Dependencies: []Dependency{},
+					Name:         "cloud-config-operator",
+					Deprecated:   false,
+					Time:         time.Unix(20, 15),
+					Version:      "0.3.0",
+					WIP:          false,
+				},
+			},
+		},
 	}
 
 	for i, tc := range testCases {

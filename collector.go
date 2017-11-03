@@ -69,14 +69,14 @@ type CollectorEndpointResponse struct {
 func (c *Collector) Collect(ctx context.Context) error {
 	var responses [][]byte
 	{
-		g, ctx := errgroup.WithContext(ctx)
+		var g errgroup.Group
 		responses = make([][]byte, len(c.endpoints))
 
 		for i, e := range c.endpoints {
 			i, e := i, e
 
 			g.Go(func() error {
-				res, err := c.restClient.NewRequest().SetContext(ctx).Get(e.String())
+				res, err := c.restClient.NewRequest().Get(e.String())
 				if err != nil {
 					return microerror.Mask(err)
 				}
