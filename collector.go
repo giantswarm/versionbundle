@@ -14,7 +14,7 @@ import (
 type CollectorConfig struct {
 	RestClient *resty.Client
 
-	Endpoints []url.URL
+	Endpoints []*url.URL
 }
 
 func DefaultCollectorConfig() CollectorConfig {
@@ -31,7 +31,7 @@ type Collector struct {
 	bundles []Bundle
 	mutex   sync.Mutex
 
-	endpoints []url.URL
+	endpoints []*url.URL
 }
 
 func NewCollector(config CollectorConfig) (*Collector, error) {
@@ -85,6 +85,11 @@ func (c *Collector) Collect(ctx context.Context) error {
 
 				return nil
 			})
+
+			err := g.Wait()
+			if err != nil {
+				return microerror.Mask(err)
+			}
 		}
 	}
 
