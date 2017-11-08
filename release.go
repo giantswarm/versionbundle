@@ -2,6 +2,7 @@ package versionbundle
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/coreos/go-semver/semver"
 	"github.com/giantswarm/microerror"
@@ -32,14 +33,26 @@ func NewRelease(config ReleaseConfig) (Release, error) {
 		return Release{}, microerror.Maskf(invalidConfigError, "config.Bundles must not be empty")
 	}
 
+	var err error
+
 	var changelogs []Changelog
 	var components []Component
 	var deprecated bool
-	var timestamp string
 
-	version, err := aggregateReleaseVersion(config.Bundles)
-	if err != nil {
-		return Release{}, microerror.Maskf(invalidConfigError, err.Error())
+	var timestamp string
+	{
+		timestamp, err = aggregateReleaseTimestamp(config.Bundles)
+		if err != nil {
+			return Release{}, microerror.Maskf(invalidConfigError, err.Error())
+		}
+	}
+
+	var version string
+	{
+		version, err = aggregateReleaseVersion(config.Bundles)
+		if err != nil {
+			return Release{}, microerror.Maskf(invalidConfigError, err.Error())
+		}
 	}
 
 	r := Release{
@@ -80,6 +93,18 @@ func (r Release) Timestamp() string {
 
 func (r Release) Version() string {
 	return r.version
+}
+
+func aggregateReleaseTimestamp(bundles []Bundle) (string, error) {
+	var t time.Time
+
+	for _, b := range bundles {
+		if b.Time.After(t) {
+			t = b.Time
+		}
+	}
+
+	return t.Format("2006-01-02T15:04:05.000000Z"), nil
 }
 
 func aggregateReleaseVersion(bundles []Bundle) (string, error) {
