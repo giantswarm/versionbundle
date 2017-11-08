@@ -19,13 +19,12 @@ func DefaultReleaseConfig() ReleaseConfig {
 }
 
 type Release struct {
-	bundles     []Bundle
-	changelogs  []Changelog
-	components  []Component
-	deprecated  bool
-	description string
-	timestamp   string
-	version     string
+	bundles    []Bundle
+	changelogs []Changelog
+	components []Component
+	deprecated bool
+	timestamp  string
+	version    string
 }
 
 func NewRelease(config ReleaseConfig) (Release, error) {
@@ -37,7 +36,14 @@ func NewRelease(config ReleaseConfig) (Release, error) {
 
 	var changelogs []Changelog
 	var components []Component
+
 	var deprecated bool
+	{
+		deprecated, err = aggregateReleaseDeprecated(config.Bundles)
+		if err != nil {
+			return Release{}, microerror.Maskf(invalidConfigError, err.Error())
+		}
+	}
 
 	var timestamp string
 	{
@@ -83,16 +89,22 @@ func (r Release) Deprecated() bool {
 	return r.deprecated
 }
 
-func (r Release) Description() string {
-	return r.description
-}
-
 func (r Release) Timestamp() string {
 	return r.timestamp
 }
 
 func (r Release) Version() string {
 	return r.version
+}
+
+func aggregateReleaseDeprecated(bundles []Bundle) (bool, error) {
+	for _, b := range bundles {
+		if b.Deprecated == true {
+			return true, nil
+		}
+	}
+
+	return false, nil
 }
 
 func aggregateReleaseTimestamp(bundles []Bundle) (string, error) {
