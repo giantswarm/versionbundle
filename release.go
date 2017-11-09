@@ -35,7 +35,14 @@ func NewRelease(config ReleaseConfig) (Release, error) {
 	var err error
 
 	var changelogs []Changelog
+
 	var components []Component
+	{
+		components, err = aggregateReleaseComponents(config.Bundles)
+		if err != nil {
+			return Release{}, microerror.Maskf(invalidConfigError, err.Error())
+		}
+	}
 
 	var deprecated bool
 	{
@@ -82,7 +89,7 @@ func (r Release) Changelogs() []Changelog {
 }
 
 func (r Release) Components() []Component {
-	return r.components
+	return CopyComponents(r.components)
 }
 
 func (r Release) Deprecated() bool {
@@ -95,6 +102,16 @@ func (r Release) Timestamp() string {
 
 func (r Release) Version() string {
 	return r.version
+}
+
+func aggregateReleaseComponents(bundles []Bundle) ([]Component, error) {
+	var components []Component
+
+	for _, b := range bundles {
+		components = append(components, b.Components...)
+	}
+
+	return components, nil
 }
 
 func aggregateReleaseDeprecated(bundles []Bundle) (bool, error) {
