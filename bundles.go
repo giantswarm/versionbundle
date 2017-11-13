@@ -91,11 +91,18 @@ func CopyBundles(bundles []Bundle) []Bundle {
 }
 
 func GetBundleByName(bundles []Bundle, name string) (Bundle, error) {
+	if len(bundles) == 0 {
+		return Bundle{}, microerror.Maskf(executionFailedError, "bundles must not be empty")
+	}
+	if name == "" {
+		return Bundle{}, microerror.Maskf(executionFailedError, "name must not be empty")
+	}
+
 	for _, b := range bundles {
 		if b.Name == name {
 			return b, nil
 		}
 	}
 
-	return Bundle{}, microerror.Maskf(bundleNotFoundError, "name")
+	return Bundle{}, microerror.Maskf(bundleNotFoundError, name)
 }

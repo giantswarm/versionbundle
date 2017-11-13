@@ -11,6 +11,13 @@ func IsBundleNotFound(err error) bool {
 	return microerror.Cause(err) == bundleNotFoundError
 }
 
+var executionFailedError = microerror.New("execution failed")
+
+// IsExecutionFailed asserts executionFailedError.
+func IsExecutionFailed(err error) bool {
+	return microerror.Cause(err) == executionFailedError
+}
+
 var invalidAggregatedBundlesError = microerror.New("invalid aggregated bundles")
 
 // IsInvalidAggregatedBundlesError asserts invalidAggregatedBundlesError.
