@@ -112,8 +112,7 @@ func GetNewestBundle(bundles []Bundle) (Bundle, error) {
 		return Bundle{}, microerror.Maskf(executionFailedError, "bundles must not be empty")
 	}
 
-	c := CopyBundles(bundles)
-	s := SortBundlesByVersion(c)
+	s := SortBundlesByVersion(bundles)
 	sort.Sort(s)
 
 	return s[len(s)-1], nil
