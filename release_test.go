@@ -1631,7 +1631,7 @@ func Test_Releases_GetNewestRelease(t *testing.T) {
 			ErrorMatcher:    IsExecutionFailed,
 		},
 
-		// Test 1 ensures that the newest bundle can be found.
+		// Test 1 ensures that the newest release can be found.
 		{
 			Releases: []Release{
 				{
@@ -1672,7 +1672,7 @@ func Test_Releases_GetNewestRelease(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 2 is the same as 1 but with different bundles.
+		// Test 2 is the same as 1 but with different releases.
 		{
 			Releases: []Release{
 				{
@@ -1730,7 +1730,7 @@ func Test_Releases_GetNewestRelease(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 3 is the same as 1 but with different bundles.
+		// Test 3 is the same as 1 but with different releases.
 		{
 			Releases: []Release{
 				{
@@ -1788,7 +1788,7 @@ func Test_Releases_GetNewestRelease(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 4 is the same as 1 but with different bundles.
+		// Test 4 is the same as 1 but with different releases.
 		{
 			Releases: []Release{
 				{
@@ -1863,7 +1863,7 @@ func Test_Releases_GetNewestRelease(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 5 is the same as 1 but with different bundles.
+		// Test 5 is the same as 1 but with different releases.
 		{
 			Releases: []Release{
 				{
