@@ -182,7 +182,5 @@ func GetNewestRelease(releases []Release) (Release, error) {
 	s := SortReleasesByVersion(releases)
 	sort.Sort(s)
 
-	fmt.Printf("%#v\n", s)
-
 	return s[len(s)-1], nil
 }
