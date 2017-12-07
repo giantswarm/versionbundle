@@ -794,80 +794,7 @@ func Test_Release_Deprecated(t *testing.T) {
 			ErrorMatcher:       nil,
 		},
 
-		// Test 5 is like 4 but with version bundles being flipped.
-		{
-			Bundles: []Bundle{
-				{
-					Changelogs: []Changelog{
-						{
-							Component:   "etcd",
-							Description: "Etcd version updated.",
-							Kind:        "changed",
-						},
-						{
-							Component:   "kubernetes",
-							Description: "Kubernetes version updated.",
-							Kind:        "changed",
-						},
-					},
-					Components: []Component{
-						{
-							Name:    "etcd",
-							Version: "3.2.0",
-						},
-						{
-							Name:    "kubernetes",
-							Version: "1.7.1",
-						},
-					},
-					Dependencies: []Dependency{},
-					Name:         "cloud-config-operator",
-					Deprecated:   false,
-					Time:         time.Unix(20, 15),
-					Version:      "0.2.0",
-					WIP:          false,
-				},
-				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-						{
-							Component:   "kubernetes",
-							Description: "Kubernetes version requirements changed due to calico update.",
-							Kind:        "changed",
-						},
-					},
-					Components: []Component{
-						{
-							Name:    "calico",
-							Version: "1.1.0",
-						},
-						{
-							Name:    "kube-dns",
-							Version: "1.0.0",
-						},
-					},
-					Dependencies: []Dependency{
-						{
-							Name:    "kubernetes",
-							Version: "<= 1.7.x",
-						},
-					},
-					Deprecated: false,
-					Name:       "kubernetes-operator",
-					Time:       time.Unix(10, 5),
-					Version:    "0.1.0",
-					WIP:        false,
-				},
-			},
-			ExpectedDeprecated: false,
-			ErrorMatcher:       nil,
-		},
-
-		// Test 6 is like 4 but with all deprecated flags being true.
+		// Test 5 is like 4 but with all deprecated flags being true.
 		{
 			Bundles: []Bundle{
 				{
@@ -940,7 +867,7 @@ func Test_Release_Deprecated(t *testing.T) {
 			ErrorMatcher:       nil,
 		},
 
-		// Test 7 is like 4 but with only one deprecated flag being true.
+		// Test 6 is like 4 but with only one deprecated flag being true.
 		{
 			Bundles: []Bundle{
 				{
@@ -1013,7 +940,7 @@ func Test_Release_Deprecated(t *testing.T) {
 			ErrorMatcher:       nil,
 		},
 
-		// Test 8 is like 7 but with version bundles being flipped.
+		// Test 7 is like 6 but with version bundles being flipped.
 		{
 			Bundles: []Bundle{
 				{
@@ -1778,80 +1705,7 @@ func Test_Release_WIP(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 5 is like 4 but with version bundles being flipped.
-		{
-			Bundles: []Bundle{
-				{
-					Changelogs: []Changelog{
-						{
-							Component:   "etcd",
-							Description: "Etcd version updated.",
-							Kind:        "changed",
-						},
-						{
-							Component:   "kubernetes",
-							Description: "Kubernetes version updated.",
-							Kind:        "changed",
-						},
-					},
-					Components: []Component{
-						{
-							Name:    "etcd",
-							Version: "3.2.0",
-						},
-						{
-							Name:    "kubernetes",
-							Version: "1.7.1",
-						},
-					},
-					Dependencies: []Dependency{},
-					Name:         "cloud-config-operator",
-					Deprecated:   false,
-					Time:         time.Unix(20, 15),
-					Version:      "0.2.0",
-					WIP:          false,
-				},
-				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-						{
-							Component:   "kubernetes",
-							Description: "Kubernetes version requirements changed due to calico update.",
-							Kind:        "changed",
-						},
-					},
-					Components: []Component{
-						{
-							Name:    "calico",
-							Version: "1.1.0",
-						},
-						{
-							Name:    "kube-dns",
-							Version: "1.0.0",
-						},
-					},
-					Dependencies: []Dependency{
-						{
-							Name:    "kubernetes",
-							Version: "<= 1.7.x",
-						},
-					},
-					Deprecated: false,
-					Name:       "kubernetes-operator",
-					Time:       time.Unix(10, 5),
-					Version:    "0.1.0",
-					WIP:        false,
-				},
-			},
-			ExpectedWIP:  false,
-			ErrorMatcher: nil,
-		},
-
-		// Test 6 is like 4 but with all wip flags being true.
+		// Test 5 is like 4 but with all wip flags being true.
 		{
 			Bundles: []Bundle{
 				{
@@ -1924,7 +1778,7 @@ func Test_Release_WIP(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 7 is like 4 but with only one wip flag being true.
+		// Test 6 is like 4 but with only one wip flag being true.
 		{
 			Bundles: []Bundle{
 				{
@@ -1997,7 +1851,7 @@ func Test_Release_WIP(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 8 is like 7 but with version bundles being flipped.
+		// Test 7 is like 6 but with version bundles being flipped.
 		{
 			Bundles: []Bundle{
 				{
