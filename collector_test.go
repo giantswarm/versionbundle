@@ -11,6 +11,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/giantswarm/micrologger/microloggertest"
 	"github.com/go-resty/resty"
 )
 
@@ -505,11 +506,12 @@ func Test_Collector_Collect(t *testing.T) {
 
 		var collector *Collector
 		{
-			c := DefaultCollectorConfig()
+			c := CollectorConfig{
+				Logger:     microloggertest.New(),
+				RestClient: resty.New(),
 
-			c.RestClient = resty.New()
-
-			c.Endpoints = endpoints
+				Endpoints: endpoints,
+			}
 
 			collector, err = NewCollector(c)
 			if err != nil {

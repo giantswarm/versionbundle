@@ -1,6 +1,7 @@
 package versionbundle
 
 import (
+	"fmt"
 	"reflect"
 	"sort"
 
@@ -74,7 +75,7 @@ func (a *Aggregator) Aggregate(bundles []Bundle) ([][]Bundle, error) {
 			continue
 		}
 
-		if distinctCount(bundles) != len(newGroup) {
+		if a.aggregatedBundlesMissVersionBundle(bundles, newGroup) {
 			continue
 		}
 
@@ -89,6 +90,34 @@ func (a *Aggregator) Aggregate(bundles []Bundle) ([][]Bundle, error) {
 	return aggregatedBundles, nil
 }
 
+func (a *Aggregator) aggregatedBundlesMissVersionBundle(bundles, newGroup []Bundle) bool {
+	// delta is the number of version bundles diverging compared to the aggregated
+	// list of version bundles making up a release. In case delta is greater than
+	// 0, the release misses delta version bundles. In case delta is lower than 0,
+	// the release has delta version bundles too much. The latter should be way
+	// more improbable to happen.
+	var delta int
+	{
+		desireCount := distinctCount(bundles)
+		currentCount := len(newGroup)
+
+		delta = desireCount - currentCount
+	}
+
+	if delta != 0 {
+		v, err := aggregateReleaseVersion(newGroup)
+		if err != nil {
+			a.logger.Log("level", "error", "message", "failed aggregating release version", "stack", fmt.Sprintf("%#v", err))
+		} else {
+			a.logger.Log("level", "debug", "message", fmt.Sprintf("release misses %d version bundles", delta), "version", v)
+		}
+
+		return true
+	}
+
+	return false
+}
+
 func (a *Aggregator) bundlesConflictWithDependencies(b1, b2 Bundle) bool {
 	for _, d := range b1.Dependencies {
 		for _, c := range b2.Components {
@@ -97,6 +126,7 @@ func (a *Aggregator) bundlesConflictWithDependencies(b1, b2 Bundle) bool {
 			}
 
 			if !d.Matches(c) {
+				a.logger.Log("component", fmt.Sprintf("%#v", c), "dependency", fmt.Sprintf("%#v", d), "level", "debug", "message", "dependency conflicts with component")
 				return true
 			}
 		}
@@ -105,9 +135,21 @@ func (a *Aggregator) bundlesConflictWithDependencies(b1, b2 Bundle) bool {
 	return false
 }
 
-func (a *Aggregator) containsAggregatedBundle(list [][]Bundle, item []Bundle) bool {
+func (a *Aggregator) containsAggregatedBundle(list [][]Bundle, newGroup []Bundle) bool {
+	if len(newGroup) == 0 {
+		a.logger.Log("level", "warning", "message", "release aggregation observed empty list of version bundles")
+		return false
+	}
+
 	for _, grouped := range list {
-		if reflect.DeepEqual(grouped, item) {
+		if reflect.DeepEqual(grouped, newGroup) {
+			v, err := aggregateReleaseVersion(newGroup)
+			if err != nil {
+				a.logger.Log("level", "error", "message", "failed aggregating release version", "stack", fmt.Sprintf("%#v", err))
+			} else {
+				a.logger.Log("level", "debug", "message", "release already exists in release list", "version", v)
+			}
+
 			return true
 		}
 	}
@@ -118,6 +160,7 @@ func (a *Aggregator) containsAggregatedBundle(list [][]Bundle, item []Bundle) bo
 func (a *Aggregator) containsBundleByName(list []Bundle, item Bundle) bool {
 	for _, b := range list {
 		if b.Name == item.Name {
+			a.logger.Log("level", "debug", "message", "version bundle already exists in aggregated list", "name", item.Name)
 			return true
 		}
 	}
