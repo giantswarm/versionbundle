@@ -5,11 +5,32 @@ import (
 	"sort"
 
 	"github.com/giantswarm/microerror"
+	"github.com/giantswarm/micrologger"
 )
+
+type AggregatorConfig struct {
+	Logger micrologger.Logger
+}
+
+type Aggregator struct {
+	logger micrologger.Logger
+}
+
+func NewAggregator(config AggregatorConfig) (*Aggregator, error) {
+	if config.Logger == nil {
+		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
+	}
+
+	a := &Aggregator{
+		logger: config.Logger,
+	}
+
+	return a, nil
+}
 
 // Aggregate merges version bundles based on dependencies each version bundle
 // within the given version bundles define for their own components.
-func Aggregate(bundles []Bundle) ([][]Bundle, error) {
+func (a *Aggregator) Aggregate(bundles []Bundle) ([][]Bundle, error) {
 	if len(bundles) == 0 {
 		return nil, nil
 	}
@@ -31,15 +52,15 @@ func Aggregate(bundles []Bundle) ([][]Bundle, error) {
 				continue
 			}
 
-			if bundlesConflictWithDependencies(b1, b2) {
+			if a.bundlesConflictWithDependencies(b1, b2) {
 				continue
 			}
 
-			if bundlesConflictWithDependencies(b2, b1) {
+			if a.bundlesConflictWithDependencies(b2, b1) {
 				continue
 			}
 
-			if containsBundleByName(newGroup, b2) {
+			if a.containsBundleByName(newGroup, b2) {
 				continue
 			}
 
@@ -49,7 +70,7 @@ func Aggregate(bundles []Bundle) ([][]Bundle, error) {
 		sort.Sort(SortBundlesByVersion(newGroup))
 		sort.Stable(SortBundlesByName(newGroup))
 
-		if containsAggregatedBundle(aggregatedBundles, newGroup) {
+		if a.containsAggregatedBundle(aggregatedBundles, newGroup) {
 			continue
 		}
 
@@ -68,7 +89,7 @@ func Aggregate(bundles []Bundle) ([][]Bundle, error) {
 	return aggregatedBundles, nil
 }
 
-func bundlesConflictWithDependencies(b1, b2 Bundle) bool {
+func (a *Aggregator) bundlesConflictWithDependencies(b1, b2 Bundle) bool {
 	for _, d := range b1.Dependencies {
 		for _, c := range b2.Components {
 			if d.Name != c.Name {
@@ -84,7 +105,7 @@ func bundlesConflictWithDependencies(b1, b2 Bundle) bool {
 	return false
 }
 
-func containsAggregatedBundle(list [][]Bundle, item []Bundle) bool {
+func (a *Aggregator) containsAggregatedBundle(list [][]Bundle, item []Bundle) bool {
 	for _, grouped := range list {
 		if reflect.DeepEqual(grouped, item) {
 			return true
@@ -94,7 +115,7 @@ func containsAggregatedBundle(list [][]Bundle, item []Bundle) bool {
 	return false
 }
 
-func containsBundleByName(list []Bundle, item Bundle) bool {
+func (a *Aggregator) containsBundleByName(list []Bundle, item Bundle) bool {
 	for _, b := range list {
 		if b.Name == item.Name {
 			return true

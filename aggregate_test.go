@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/giantswarm/micrologger/microloggertest"
 	"github.com/kylelemons/godebug/pretty"
 )
 
@@ -726,7 +727,21 @@ func Test_Aggregate(t *testing.T) {
 	}
 
 	for i, tc := range testCases {
-		groupedBundles, err := Aggregate(tc.Bundles)
+		var err error
+
+		var a *Aggregator
+		{
+			c := AggregatorConfig{
+				Logger: microloggertest.New(),
+			}
+
+			a, err = NewAggregator(c)
+			if err != nil {
+				t.Fatalf("test %d expected %#v got %#v", i, nil, err)
+			}
+		}
+
+		groupedBundles, err := a.Aggregate(tc.Bundles)
 		if tc.ErrorMatcher != nil {
 			if !tc.ErrorMatcher(err) {
 				t.Fatalf("test %d expected %#v got %#v", i, true, false)
