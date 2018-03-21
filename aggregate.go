@@ -171,10 +171,6 @@ func (a *Aggregator) walkTreeAndAggregate(n *node, bundles []Bundle) [][]Bundle 
 				if a.bundlesConflictWithDependencies(b1, b2) {
 					return [][]Bundle{}
 				}
-
-				if a.bundlesConflictWithDependencies(b2, b1) {
-					return [][]Bundle{}
-				}
 			}
 		}
 
@@ -198,6 +194,19 @@ func (a *Aggregator) walkTreeAndAggregate(n *node, bundles []Bundle) [][]Bundle 
 func (a *Aggregator) bundlesConflictWithDependencies(b1, b2 Bundle) bool {
 	for _, d := range b1.Dependencies {
 		for _, c := range b2.Components {
+			if d.Name != c.Name {
+				continue
+			}
+
+			if !d.Matches(c) {
+				a.logger.Log("component", fmt.Sprintf("%#v", c), "dependency", fmt.Sprintf("%#v", d), "level", "debug", "message", "dependency conflicts with component")
+				return true
+			}
+		}
+	}
+
+	for _, d := range b2.Dependencies {
+		for _, c := range b1.Components {
 			if d.Name != c.Name {
 				continue
 			}
