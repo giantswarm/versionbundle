@@ -733,12 +733,14 @@ func Test_Aggregate(t *testing.T) {
 						Changelog{
 							Component:   "vault",
 							Description: "Vault version updated.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 					},
 					Components: []Component{
 						Component{
 							Name:    "vault",
-							Version: "0.7.3"},
+							Version: "0.7.3",
+						},
 					},
 					Dependencies: []Dependency{},
 					Deprecated:   false,
@@ -752,12 +754,14 @@ func Test_Aggregate(t *testing.T) {
 						Changelog{
 							Component:   "flannel",
 							Description: "Flannel version updated.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 					},
 					Components: []Component{
 						Component{
 							Name:    "flannel",
-							Version: "0.9.0"},
+							Version: "0.9.0",
+						},
 					},
 					Dependencies: []Dependency{},
 					Deprecated:   false,
@@ -771,12 +775,14 @@ func Test_Aggregate(t *testing.T) {
 						Changelog{
 							Component:   "flannel",
 							Description: "Flannel version updated.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 					},
 					Components: []Component{
 						Component{
 							Name:    "flannel",
-							Version: "0.9.0"},
+							Version: "0.9.0",
+						},
 					},
 					Dependencies: []Dependency{},
 					Deprecated:   false,
@@ -790,47 +796,59 @@ func Test_Aggregate(t *testing.T) {
 						Changelog{
 							Component:   "calico",
 							Description: "Calico version updated.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "docker",
 							Description: "Docker version updated.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "etcd",
 							Description: "Etcd version updated.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "kubedns",
 							Description: "KubeDNS version updated.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "kubernetes",
 							Description: "Kubernetes version updated.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "nginx-ingress-controller",
 							Description: "Nginx-ingress-controller version updated.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 					},
 					Components: []Component{
 						Component{
 							Name:    "calico",
-							Version: "2.6.2"},
+							Version: "2.6.2",
+						},
 						Component{
 							Name:    "docker",
-							Version: "1.12.6"},
+							Version: "1.12.6",
+						},
 						Component{
 							Name:    "etcd",
-							Version: "3.2.7"},
+							Version: "3.2.7",
+						},
 						Component{
 							Name:    "kubedns",
-							Version: "1.14.5"},
+							Version: "1.14.5",
+						},
 						Component{
 							Name:    "kubernetes",
-							Version: "1.8.1"},
+							Version: "1.8.1",
+						},
 						Component{
 							Name:    "nginx-ingress-controller",
-							Version: "0.9.0"},
+							Version: "0.9.0",
+						},
 					},
 					Dependencies: []Dependency{},
 					Deprecated:   true,
@@ -844,27 +862,34 @@ func Test_Aggregate(t *testing.T) {
 						Changelog{
 							Component:   "kubernetes",
 							Description: "Updated to kubernetes 1.8.4. Fixes a goroutine leak in the k8s api.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 					},
 					Components: []Component{
 						Component{
 							Name:    "calico",
-							Version: "2.6.2"},
+							Version: "2.6.2",
+						},
 						Component{
 							Name:    "docker",
-							Version: "1.12.6"},
+							Version: "1.12.6",
+						},
 						Component{
 							Name:    "etcd",
-							Version: "3.2.7"},
+							Version: "3.2.7",
+						},
 						Component{
 							Name:    "kubedns",
-							Version: "1.14.5"},
+							Version: "1.14.5",
+						},
 						Component{
 							Name:    "kubernetes",
-							Version: "1.8.4"},
+							Version: "1.8.4",
+						},
 						Component{
 							Name:    "nginx-ingress-controller",
-							Version: "0.9.0"},
+							Version: "0.9.0",
+						},
 					},
 					Dependencies: []Dependency{},
 					Deprecated:   true,
@@ -878,27 +903,34 @@ func Test_Aggregate(t *testing.T) {
 						Changelog{
 							Component:   "kubernetes",
 							Description: "Enable encryption at rest",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 					},
 					Components: []Component{
 						Component{
 							Name:    "calico",
-							Version: "2.6.2"},
+							Version: "2.6.2",
+						},
 						Component{
 							Name:    "docker",
-							Version: "1.12.6"},
+							Version: "1.12.6",
+						},
 						Component{
 							Name:    "etcd",
-							Version: "3.2.7"},
+							Version: "3.2.7",
+						},
 						Component{
 							Name:    "kubedns",
-							Version: "1.14.5"},
+							Version: "1.14.5",
+						},
 						Component{
 							Name:    "kubernetes",
-							Version: "1.8.4"},
+							Version: "1.8.4",
+						},
 						Component{
 							Name:    "nginx-ingress-controller",
-							Version: "0.9.0"},
+							Version: "0.9.0",
+						},
 					},
 					Dependencies: []Dependency{},
 					Deprecated:   true,
@@ -912,34 +944,43 @@ func Test_Aggregate(t *testing.T) {
 						Changelog{
 							Component:   "containerlinux",
 							Description: "Updated containerlinux version to 1576.5.0.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "kubernetes",
 							Description: "Fixed audit log.",
-							Kind:        "fixed"},
+							Kind:        "fixed",
+						},
 					},
 					Components: []Component{
 						Component{
 							Name:    "calico",
-							Version: "2.6.2"},
+							Version: "2.6.2",
+						},
 						Component{
 							Name:    "containerlinux",
-							Version: "1576.5.0"},
+							Version: "1576.5.0",
+						},
 						Component{
 							Name:    "docker",
-							Version: "17.09.0"},
+							Version: "17.09.0",
+						},
 						Component{
 							Name:    "etcd",
-							Version: "3.2.7"},
+							Version: "3.2.7",
+						},
 						Component{
 							Name:    "kubedns",
-							Version: "1.14.5"},
+							Version: "1.14.5",
+						},
 						Component{
 							Name:    "kubernetes",
-							Version: "1.8.4"},
+							Version: "1.8.4",
+						},
 						Component{
 							Name:    "nginx-ingress-controller",
-							Version: "0.9.0"},
+							Version: "0.9.0",
+						},
 					},
 					Dependencies: []Dependency{},
 					Deprecated:   true,
@@ -953,62 +994,78 @@ func Test_Aggregate(t *testing.T) {
 						Changelog{
 							Component:   "Kubernetes",
 							Description: "Updated to Kubernetes 1.9.2.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "Kubernetes",
 							Description: "Switched to vanilla (previously CoreOS) hyperkube image.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "Docker",
 							Description: "Updated to 17.09.0-ce.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "Calico",
 							Description: "Updated to 3.0.1.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "CoreDNS",
 							Description: "Version 1.0.5 replaces kube-dns.",
-							Kind:        "added"},
+							Kind:        "added",
+						},
 						Changelog{
 							Component:   "Nginx Ingress Controller",
 							Description: "Updated to 0.10.2.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "cloudconfig",
 							Description: "Add OIDC integration for Kubernetes api-server.",
-							Kind:        "added"},
+							Kind:        "added",
+						},
 						Changelog{
 							Component:   "cloudconfig",
 							Description: "Replace systemd units for Kubernetes components with self-hosted pods.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "containerlinux",
 							Description: "Updated Container Linux version to 1576.5.0.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 					},
 					Components: []Component{
 						Component{
 							Name:    "calico",
-							Version: "3.0.1"},
+							Version: "3.0.1",
+						},
 						Component{
 							Name:    "containerlinux",
-							Version: "1576.5.0"},
+							Version: "1576.5.0",
+						},
 						Component{
 							Name:    "docker",
-							Version: "17.09.0"},
+							Version: "17.09.0",
+						},
 						Component{
 							Name:    "etcd",
-							Version: "3.2.7"},
+							Version: "3.2.7",
+						},
 						Component{
 							Name:    "coredns",
-							Version: "1.0.5"},
+							Version: "1.0.5",
+						},
 						Component{
 							Name:    "kubernetes",
-							Version: "1.9.2"},
+							Version: "1.9.2",
+						},
 						Component{
 							Name:    "nginx-ingress-controller",
-							Version: "0.10.2"},
+							Version: "0.10.2",
+						},
 					},
 					Dependencies: []Dependency{},
 					Deprecated:   true,
@@ -1022,50 +1079,63 @@ func Test_Aggregate(t *testing.T) {
 						Changelog{
 							Component:   "kvm-node-controller",
 							Description: "Updated KVM node controller with pod status bugfix.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "Calico",
 							Description: "Updated to 3.0.2.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "kubelet",
 							Description: "Tune kubelet flags for protecting key units (kubelet and container runtime) from workload overloads.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "etcd",
 							Description: "Updated to 3.3.1.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "qemu",
 							Description: "Fixed formula for calculating qemu memory overhead.",
-							Kind:        "fixed"},
+							Kind:        "fixed",
+						},
 						Changelog{
 							Component:   "monitoring",
 							Description: "Added configuration for monitoring endpoint IP addresses.",
-							Kind:        "added"},
+							Kind:        "added",
+						},
 					},
 					Components: []Component{
 						Component{
 							Name:    "calico",
-							Version: "3.0.2"},
+							Version: "3.0.2",
+						},
 						Component{
 							Name:    "containerlinux",
-							Version: "1576.5.0"},
+							Version: "1576.5.0",
+						},
 						Component{
 							Name:    "docker",
-							Version: "17.09.0"},
+							Version: "17.09.0",
+						},
 						Component{
 							Name:    "etcd",
-							Version: "3.3.1"},
+							Version: "3.3.1",
+						},
 						Component{
 							Name:    "coredns",
-							Version: "1.0.5"},
+							Version: "1.0.5",
+						},
 						Component{
 							Name:    "kubernetes",
-							Version: "1.9.2"},
+							Version: "1.9.2",
+						},
 						Component{
 							Name:    "nginx-ingress-controller",
-							Version: "0.10.2"},
+							Version: "0.10.2",
+						},
 					},
 					Dependencies: []Dependency{},
 					Deprecated:   true,
@@ -1079,54 +1149,68 @@ func Test_Aggregate(t *testing.T) {
 						Changelog{
 							Component:   "kvm-node-controller",
 							Description: "Updated KVM node controller with pod status bugfix.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "Calico",
 							Description: "Updated to 3.0.2.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "kubelet",
 							Description: "Tune kubelet flags for protecting key units (kubelet and container runtime) from workload overloads.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "etcd",
 							Description: "Updated to 3.3.1.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "qemu",
 							Description: "Fixed formula for calculating qemu memory overhead.",
-							Kind:        "fixed"},
+							Kind:        "fixed",
+						},
 						Changelog{
 							Component:   "monitoring",
 							Description: "Added configuration for monitoring endpoint IP addresses.",
-							Kind:        "added"},
+							Kind:        "added",
+						},
 						Changelog{
 							Component:   "cloudconfig",
 							Description: "Enable aggregation layer to be able to extend kubernetes API.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 					},
 					Components: []Component{
 						Component{
 							Name:    "calico",
-							Version: "3.0.2"},
+							Version: "3.0.2",
+						},
 						Component{
 							Name:    "containerlinux",
-							Version: "1576.5.0"},
+							Version: "1576.5.0",
+						},
 						Component{
 							Name:    "docker",
-							Version: "17.09.0"},
+							Version: "17.09.0",
+						},
 						Component{
 							Name:    "etcd",
-							Version: "3.3.1"},
+							Version: "3.3.1",
+						},
 						Component{
 							Name:    "coredns",
-							Version: "1.0.6"},
+							Version: "1.0.6",
+						},
 						Component{
 							Name:    "kubernetes",
-							Version: "1.9.2"},
+							Version: "1.9.2",
+						},
 						Component{
 							Name:    "nginx-ingress-controller",
-							Version: "0.11.0"},
+							Version: "0.11.0",
+						},
 					},
 					Dependencies: []Dependency{},
 					Deprecated:   true,
@@ -1140,34 +1224,43 @@ func Test_Aggregate(t *testing.T) {
 						Changelog{
 							Component:   "containerlinux",
 							Description: "Updated to version 1632.3.0.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 						Changelog{
 							Component:   "cloudconfig",
 							Description: "Removed set-ownership-etcd-data-dir.service.",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 					},
 					Components: []Component{
 						Component{
 							Name:    "calico",
-							Version: "3.0.2"},
+							Version: "3.0.2",
+						},
 						Component{
 							Name:    "containerlinux",
-							Version: "1632.3.0"},
+							Version: "1632.3.0",
+						},
 						Component{
 							Name:    "docker",
-							Version: "17.09.0"},
+							Version: "17.09.0",
+						},
 						Component{
 							Name:    "etcd",
-							Version: "3.3.1"},
+							Version: "3.3.1",
+						},
 						Component{
 							Name:    "coredns",
-							Version: "1.0.6"},
+							Version: "1.0.6",
+						},
 						Component{
 							Name:    "kubernetes",
-							Version: "1.9.2"},
+							Version: "1.9.2",
+						},
 						Component{
 							Name:    "nginx-ingress-controller",
-							Version: "0.11.0"},
+							Version: "0.11.0",
+						},
 					},
 					Dependencies: []Dependency{},
 					Deprecated:   false,
@@ -1181,30 +1274,38 @@ func Test_Aggregate(t *testing.T) {
 						Changelog{
 							Component:   "component",
 							Description: "Put your description here",
-							Kind:        "changed"},
+							Kind:        "changed",
+						},
 					},
 					Components: []Component{
 						Component{
 							Name:    "calico",
-							Version: "3.0.2"},
+							Version: "3.0.2",
+						},
 						Component{
 							Name:    "containerlinux",
-							Version: "1632.3.0"},
+							Version: "1632.3.0",
+						},
 						Component{
 							Name:    "docker",
-							Version: "17.09.0"},
+							Version: "17.09.0",
+						},
 						Component{
 							Name:    "etcd",
-							Version: "3.3.1"},
+							Version: "3.3.1",
+						},
 						Component{
 							Name:    "coredns",
-							Version: "1.0.6"},
+							Version: "1.0.6",
+						},
 						Component{
 							Name:    "kubernetes",
-							Version: "1.9.2"},
+							Version: "1.9.2",
+						},
 						Component{
 							Name:    "nginx-ingress-controller",
-							Version: "0.11.0"},
+							Version: "0.11.0",
+						},
 					},
 					Dependencies: []Dependency{},
 					Deprecated:   false,
@@ -2133,11 +2234,6 @@ func Test_Aggregate(t *testing.T) {
 						WIP:          true,
 					},
 				},
-				//--------------------------------------------------------------------------------------------------------------
-				//--------------------------------------------------------------------------------------------------------------
-				//--------------------------------------------------------------------------------------------------------------
-				//--------------------------------------------------------------------------------------------------------------
-				//--------------------------------------------------------------------------------------------------------------
 				[]Bundle{
 					Bundle{
 						Changelogs: []Changelog{
