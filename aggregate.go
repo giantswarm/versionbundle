@@ -100,6 +100,9 @@ func (a *Aggregator) Aggregate(bundles []Bundle) ([][]Bundle, error) {
 		bundleMap[v.Name] = append(bundleMap[v.Name], v)
 	}
 
+	// Gather keys for sorting to guarantee always the same order for [][]Bundles
+	var keys []string
+
 	// Ensure that there are no duplicate bundles.
 	for k, v := range bundleMap {
 		sort.Sort(SortBundlesByVersion(v))
@@ -110,14 +113,18 @@ func (a *Aggregator) Aggregate(bundles []Bundle) ([][]Bundle, error) {
 			}
 		}
 		bundleMap[k] = v
+		keys = append(keys, k)
 	}
+
+	// Sort'em
+	sort.Strings(keys)
 
 	// Tree root is an empty node.
 	tree := &node{}
 
 	// Build the tree.
-	for _, bundles := range bundleMap {
-		a.walkTreeAndAddLeaves(tree, bundles)
+	for _, k := range keys {
+		a.walkTreeAndAddLeaves(tree, bundleMap[k])
 	}
 
 	// Walk the tree and aggregate.
