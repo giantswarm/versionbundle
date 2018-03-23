@@ -186,31 +186,6 @@ func Test_Collector_Collect(t *testing.T) {
 				{
 					Changelogs: []Changelog{
 						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
-					Components: []Component{
-						{
-							Name:    "calico",
-							Version: "1.1.0",
-						},
-						{
-							Name:    "kube-dns",
-							Version: "1.0.0",
-						},
-					},
-					Dependencies: []Dependency{},
-					Deprecated:   false,
-					Name:         "kubernetes-operator",
-					Time:         time.Unix(10, 5).In(time.UTC),
-					Version:      "0.1.0",
-					WIP:          false,
-				},
-				{
-					Changelogs: []Changelog{
-						{
 							Component:   "etcd",
 							Description: "Etcd version updated.",
 							Kind:        "changed",
@@ -236,6 +211,31 @@ func Test_Collector_Collect(t *testing.T) {
 					Deprecated:   false,
 					Time:         time.Unix(20, 15).In(time.UTC),
 					Version:      "0.2.0",
+					WIP:          false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "calico",
+							Description: "Calico version updated.",
+							Kind:        "changed",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kube-dns",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "kubernetes-operator",
+					Time:         time.Unix(10, 5).In(time.UTC),
+					Version:      "0.1.0",
 					WIP:          false,
 				},
 			},
@@ -384,56 +384,6 @@ func Test_Collector_Collect(t *testing.T) {
 				{
 					Changelogs: []Changelog{
 						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
-					Components: []Component{
-						{
-							Name:    "calico",
-							Version: "1.1.0",
-						},
-						{
-							Name:    "kube-dns",
-							Version: "1.0.0",
-						},
-					},
-					Dependencies: []Dependency{},
-					Deprecated:   false,
-					Name:         "kubernetes-operator",
-					Time:         time.Unix(10, 5).In(time.UTC),
-					Version:      "0.1.0",
-					WIP:          false,
-				},
-				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
-					Components: []Component{
-						{
-							Name:    "calico",
-							Version: "1.2.0",
-						},
-						{
-							Name:    "kube-dns",
-							Version: "1.0.0",
-						},
-					},
-					Dependencies: []Dependency{},
-					Deprecated:   false,
-					Name:         "kubernetes-operator",
-					Time:         time.Unix(10, 5).In(time.UTC),
-					Version:      "0.2.0",
-					WIP:          false,
-				},
-				{
-					Changelogs: []Changelog{
-						{
 							Component:   "etcd",
 							Description: "Etcd version updated.",
 							Kind:        "changed",
@@ -484,6 +434,56 @@ func Test_Collector_Collect(t *testing.T) {
 					Deprecated:   false,
 					Time:         time.Unix(20, 15).In(time.UTC),
 					Version:      "0.3.0",
+					WIP:          false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "calico",
+							Description: "Calico version updated.",
+							Kind:        "changed",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kube-dns",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "kubernetes-operator",
+					Time:         time.Unix(10, 5).In(time.UTC),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "calico",
+							Description: "Calico version updated.",
+							Kind:        "changed",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.2.0",
+						},
+						{
+							Name:    "kube-dns",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "kubernetes-operator",
+					Time:         time.Unix(10, 5).In(time.UTC),
+					Version:      "0.2.0",
 					WIP:          false,
 				},
 			},
