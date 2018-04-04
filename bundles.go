@@ -68,7 +68,7 @@ func (b Bundles) hasDuplicatedVersions() bool {
 		var seen int
 
 		for _, b2 := range b {
-			if b1.Version == b2.Version {
+			if b1.Version == b2.Version && reflect.DeepEqual(b1.Labels, b2.Labels) {
 				seen++
 
 				if seen >= 2 {
@@ -96,30 +96,69 @@ func CopyBundles(bundles []Bundle) []Bundle {
 	return copy
 }
 
-func GetBundleByName(bundles []Bundle, name string) (Bundle, error) {
+func GetBundlesByNameAndLabels(bundles []Bundle, name string, labels map[string]string) ([]Bundle, error) {
 	if len(bundles) == 0 {
-		return Bundle{}, microerror.Maskf(executionFailedError, "bundles must not be empty")
+		return []Bundle{}, microerror.Maskf(executionFailedError, "bundles must not be empty")
 	}
 	if name == "" {
-		return Bundle{}, microerror.Maskf(executionFailedError, "name must not be empty")
+		return []Bundle{}, microerror.Maskf(executionFailedError, "name must not be empty")
 	}
 
+	var matches []Bundle
 	for _, b := range bundles {
-		if b.Name == name {
-			return b, nil
+		if b.Name == name && isSubset(labels, b.Labels) {
+			matches = append(matches, b)
 		}
 	}
 
-	return Bundle{}, microerror.Maskf(bundleNotFoundError, name)
+	if len(matches) == 0 {
+		return []Bundle{}, microerror.Maskf(bundleNotFoundError, name)
+	}
+	return matches, nil
 }
 
-func GetNewestBundle(bundles []Bundle) (Bundle, error) {
+func GetNewestBundle(bundles []Bundle, labels map[string]string) (Bundle, error) {
 	if len(bundles) == 0 {
 		return Bundle{}, microerror.Maskf(executionFailedError, "bundles must not be empty")
 	}
 
-	s := SortBundlesByVersion(bundles)
+	// filter bundles with labels first
+	var filtered []Bundle
+	for _, b := range bundles {
+		if isSubset(labels, b.Labels) {
+			filtered = append(filtered, b)
+		}
+	}
+
+	if len(filtered) == 0 {
+		return Bundle{}, microerror.Maskf(bundleNotFoundError, "no bundle with given labels found")
+	}
+
+	s := SortBundlesByVersion(filtered)
 	sort.Sort(s)
 
 	return s[len(s)-1], nil
+}
+
+func isSubset(subset map[string]string, superset map[string]string) bool {
+	if subset == nil {
+		return true
+	}
+
+	if superset == nil {
+		return false
+	}
+
+	for k, va := range subset {
+		vb, exists := superset[k]
+		if !exists {
+			return false
+		}
+
+		if va != vb {
+			return false
+		}
+	}
+
+	return true
 }
