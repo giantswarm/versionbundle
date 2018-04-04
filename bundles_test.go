@@ -670,6 +670,398 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 	}
 }
 
+func Test_Bundles_GetBundleByNameForProvider(t *testing.T) {
+	testCases := []struct {
+		Bundles        []Bundle
+		Name           string
+		Provider       string
+		ExpectedBundle Bundle
+		ErrorMatcher   func(err error) bool
+	}{
+		// Test 0 ensures that a nil list and an empty name throws an execution
+		// failed error.
+		{
+			Bundles:        nil,
+			Name:           "",
+			Provider:       "aws",
+			ExpectedBundle: Bundle{},
+			ErrorMatcher:   IsExecutionFailed,
+		},
+
+		// Test 1 ensures that a nil list and a non-empty name throws an execution
+		// failed error.
+		{
+			Bundles:        nil,
+			Name:           "kubernetes-operator",
+			Provider:       "aws",
+			ExpectedBundle: Bundle{},
+			ErrorMatcher:   IsExecutionFailed,
+		},
+
+		// Test 2 ensures that a non-empty list and an empty name throws an execution
+		// failed error.
+		{
+			Bundles: []Bundle{
+				{
+					Changelogs: []Changelog{},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kube-dns",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{
+						{
+							Name:    "kubernetes",
+							Version: "<= 1.7.x",
+						},
+					},
+					Deprecated: false,
+					Name:       "kubernetes-operator",
+					Time:       time.Unix(10, 5),
+					Version:    "0.1.0",
+					WIP:        false,
+				},
+			},
+			Name:           "",
+			Provider:       "",
+			ExpectedBundle: Bundle{},
+			ErrorMatcher:   IsExecutionFailed,
+		},
+
+		// Test 3 ensures that a non-empty list and an non-empty name throws a
+		// not found errorn case the given name does not exist in the given list.
+		{
+			Bundles: []Bundle{
+				{
+					Changelogs: []Changelog{},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kube-dns",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{
+						{
+							Name:    "kubernetes",
+							Version: "<= 1.7.x",
+						},
+					},
+					Deprecated: false,
+					Name:       "kubernetes-operator",
+					Provider:   "aws",
+					Time:       time.Unix(10, 5),
+					Version:    "0.1.0",
+					WIP:        false,
+				},
+			},
+			Name:           "cert-operator",
+			Provider:       "aws",
+			ExpectedBundle: Bundle{},
+			ErrorMatcher:   IsBundleNotFound,
+		},
+
+		// Test 4 is the same as 3 but with different version bundles.
+		{
+			Bundles: []Bundle{
+				{
+					Changelogs: []Changelog{},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kube-dns",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{
+						{
+							Name:    "kubernetes",
+							Version: "<= 1.7.x",
+						},
+					},
+					Deprecated: false,
+					Name:       "kubernetes-operator",
+					Provider:   "aws",
+					Time:       time.Unix(10, 5),
+					Version:    "0.1.0",
+					WIP:        false,
+				},
+				{
+					Changelogs: []Changelog{},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kubernetes",
+							Version: "1.7.5",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "cloud-config-operator",
+					Provider:     "aws",
+					Time:         time.Unix(10, 5),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+			},
+			Name:           "cert-operator",
+			Provider:       "aws",
+			ExpectedBundle: Bundle{},
+			ErrorMatcher:   IsBundleNotFound,
+		},
+
+		// Test 5 ensures that a bundle can be found.
+		{
+			Bundles: []Bundle{
+				{
+					Changelogs: []Changelog{},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kubernetes",
+							Version: "1.7.5",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "cloud-config-operator",
+					Provider:     "aws",
+					Time:         time.Unix(10, 5),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+			},
+			Name:     "cloud-config-operator",
+			Provider: "aws",
+			ExpectedBundle: Bundle{
+				Changelogs: []Changelog{},
+				Components: []Component{
+					{
+						Name:    "calico",
+						Version: "1.1.0",
+					},
+					{
+						Name:    "kubernetes",
+						Version: "1.7.5",
+					},
+				},
+				Dependencies: []Dependency{},
+				Deprecated:   false,
+				Name:         "cloud-config-operator",
+				Provider:     "aws",
+				Time:         time.Unix(10, 5),
+				Version:      "0.1.0",
+				WIP:          false,
+			},
+			ErrorMatcher: nil,
+		},
+
+		// Test 6 is the same as 5 but with different bundles.
+		{
+			Bundles: []Bundle{
+				{
+					Changelogs: []Changelog{},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kube-dns",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{
+						{
+							Name:    "kubernetes",
+							Version: "<= 1.7.x",
+						},
+					},
+					Deprecated: false,
+					Name:       "kubernetes-operator",
+					Provider:   "azure",
+					Time:       time.Unix(10, 5),
+					Version:    "0.1.0",
+					WIP:        false,
+				},
+				{
+					Changelogs: []Changelog{},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kubernetes",
+							Version: "1.7.5",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "cloud-config-operator",
+					Provider:     "azure",
+					Time:         time.Unix(10, 5),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+			},
+			Name:     "cloud-config-operator",
+			Provider: "azure",
+			ExpectedBundle: Bundle{
+				Changelogs: []Changelog{},
+				Components: []Component{
+					{
+						Name:    "calico",
+						Version: "1.1.0",
+					},
+					{
+						Name:    "kubernetes",
+						Version: "1.7.5",
+					},
+				},
+				Dependencies: []Dependency{},
+				Deprecated:   false,
+				Name:         "cloud-config-operator",
+				Provider:     "azure",
+				Time:         time.Unix(10, 5),
+				Version:      "0.1.0",
+				WIP:          false,
+			},
+			ErrorMatcher: nil,
+		},
+
+		// Test 7 is the same as 5 but with different bundles.
+		{
+			Bundles: []Bundle{
+				{
+					Changelogs: []Changelog{},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kube-dns",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{
+						{
+							Name:    "kubernetes",
+							Version: "<= 1.7.x",
+						},
+					},
+					Deprecated: false,
+					Name:       "kubernetes-operator",
+					Provider:   "azure",
+					Time:       time.Unix(10, 5),
+					Version:    "0.1.0",
+					WIP:        false,
+				},
+				{
+					Changelogs: []Changelog{},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kubernetes",
+							Version: "1.7.5",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "cloud-config-operator",
+					Provider:     "azure",
+					Time:         time.Unix(10, 5),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "aws",
+					Name:         "cluster-operator",
+					Time:         time.Unix(20, 15),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "azure",
+					Name:         "cluster-operator",
+					Time:         time.Unix(40, 35),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "kvm",
+					Name:         "cluster-operator",
+					Time:         time.Unix(10, 5),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+			},
+			Name:     "cluster-operator",
+			Provider: "azure",
+			ExpectedBundle: Bundle{
+				Changelogs:   []Changelog{},
+				Components:   []Component{},
+				Dependencies: []Dependency{},
+				Deprecated:   false,
+				Provider:     "azure",
+				Name:         "cluster-operator",
+				Time:         time.Unix(40, 35),
+				Version:      "0.1.0",
+				WIP:          false,
+			},
+			ErrorMatcher: nil,
+		},
+	}
+
+	for i, tc := range testCases {
+		result, err := GetBundleByNameForProvider(tc.Bundles, tc.Name, tc.Provider)
+		if tc.ErrorMatcher != nil {
+			if !tc.ErrorMatcher(err) {
+				t.Fatalf("test %d expected %#v got %#v", i, true, false)
+			}
+		} else if err != nil {
+			t.Fatalf("test %d expected %#v got %#v", i, nil, err)
+		} else {
+			if !reflect.DeepEqual(result, tc.ExpectedBundle) {
+				t.Fatalf("test %d expected %#v got %#v", i, tc.ExpectedBundle, result)
+			}
+		}
+	}
+}
+
 func Test_Bundles_GetNewestBundle(t *testing.T) {
 	testCases := []struct {
 		Bundles        []Bundle
@@ -1025,6 +1417,158 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 
 	for i, tc := range testCases {
 		result, err := GetNewestBundle(tc.Bundles)
+		if tc.ErrorMatcher != nil {
+			if !tc.ErrorMatcher(err) {
+				t.Fatalf("test %d expected %#v got %#v", i, true, false)
+			}
+		} else if err != nil {
+			t.Fatalf("test %d expected %#v got %#v", i, nil, err)
+		} else {
+			if !reflect.DeepEqual(result, tc.ExpectedBundle) {
+				t.Fatalf("test %d expected %#v got %#v", i, tc.ExpectedBundle, result)
+			}
+		}
+	}
+}
+
+func Test_Bundles_GetNewestBundleForProvider(t *testing.T) {
+	testCases := []struct {
+		Bundles        []Bundle
+		Provider       string
+		ExpectedBundle Bundle
+		ErrorMatcher   func(err error) bool
+	}{
+		// Test 0 verifies that newest bundle can be found for provider.
+		{
+			Bundles: []Bundle{
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "aws",
+					Name:         "cluster-operator",
+					Time:         time.Unix(20, 15),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "azure",
+					Name:         "cluster-operator",
+					Time:         time.Unix(40, 35),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "kvm",
+					Name:         "cluster-operator",
+					Time:         time.Unix(10, 5),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "aws",
+					Name:         "cluster-operator",
+					Time:         time.Unix(120, 15),
+					Version:      "0.2.0",
+					WIP:          false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "azure",
+					Name:         "cluster-operator",
+					Time:         time.Unix(140, 35),
+					Version:      "0.4.0",
+					WIP:          false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "kvm",
+					Name:         "cluster-operator",
+					Time:         time.Unix(110, 5),
+					Version:      "0.3.0",
+					WIP:          false,
+				},
+			},
+			Provider: "kvm",
+			ExpectedBundle: Bundle{
+				Changelogs:   []Changelog{},
+				Components:   []Component{},
+				Dependencies: []Dependency{},
+				Deprecated:   false,
+				Provider:     "kvm",
+				Name:         "cluster-operator",
+				Time:         time.Unix(110, 5),
+				Version:      "0.3.0",
+				WIP:          false,
+			},
+			ErrorMatcher: nil,
+		},
+
+		// Test 1 verifies that bundleNotFoundError is returned for missing
+		// provider.
+		{
+			Bundles: []Bundle{
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "aws",
+					Name:         "cluster-operator",
+					Time:         time.Unix(20, 15),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "azure",
+					Name:         "cluster-operator",
+					Time:         time.Unix(40, 35),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "kvm",
+					Name:         "cluster-operator",
+					Time:         time.Unix(10, 5),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+			},
+			Provider:       "bluemix",
+			ExpectedBundle: Bundle{},
+			ErrorMatcher:   IsBundleNotFound,
+		},
+	}
+
+	for i, tc := range testCases {
+		result, err := GetNewestBundleForProvider(tc.Bundles, tc.Provider)
 		if tc.ErrorMatcher != nil {
 			if !tc.ErrorMatcher(err) {
 				t.Fatalf("test %d expected %#v got %#v", i, true, false)
