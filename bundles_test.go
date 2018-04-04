@@ -392,29 +392,32 @@ func Test_Bundles_Copy(t *testing.T) {
 	}
 }
 
-func Test_Bundles_GetBundleByName(t *testing.T) {
+func Test_Bundles_GetBundlesByNameAndLabels(t *testing.T) {
 	testCases := []struct {
-		Bundles        []Bundle
-		Name           string
-		ExpectedBundle Bundle
-		ErrorMatcher   func(err error) bool
+		Bundles         []Bundle
+		Labels          map[string]string
+		Name            string
+		ExpectedBundles []Bundle
+		ErrorMatcher    func(err error) bool
 	}{
 		// Test 0 ensures that a nil list and an empty name throws an execution
 		// failed error.
 		{
-			Bundles:        nil,
-			Name:           "",
-			ExpectedBundle: Bundle{},
-			ErrorMatcher:   IsExecutionFailed,
+			Bundles:         nil,
+			Labels:          nil,
+			Name:            "",
+			ExpectedBundles: []Bundle{},
+			ErrorMatcher:    IsExecutionFailed,
 		},
 
 		// Test 1 ensures that a nil list and a non-empty name throws an execution
 		// failed error.
 		{
-			Bundles:        nil,
-			Name:           "kubernetes-operator",
-			ExpectedBundle: Bundle{},
-			ErrorMatcher:   IsExecutionFailed,
+			Bundles:         nil,
+			Labels:          nil,
+			Name:            "kubernetes-operator",
+			ExpectedBundles: []Bundle{},
+			ErrorMatcher:    IsExecutionFailed,
 		},
 
 		// Test 2 ensures that a non-empty list and an empty name throws an execution
@@ -446,9 +449,10 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 					WIP:        false,
 				},
 			},
-			Name:           "",
-			ExpectedBundle: Bundle{},
-			ErrorMatcher:   IsExecutionFailed,
+			Labels:          nil,
+			Name:            "",
+			ExpectedBundles: []Bundle{},
+			ErrorMatcher:    IsExecutionFailed,
 		},
 
 		// Test 3 ensures that a non-empty list and an non-empty name throws a
@@ -480,9 +484,10 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 					WIP:        false,
 				},
 			},
-			Name:           "cert-operator",
-			ExpectedBundle: Bundle{},
-			ErrorMatcher:   IsBundleNotFound,
+			Labels:          nil,
+			Name:            "cert-operator",
+			ExpectedBundles: []Bundle{},
+			ErrorMatcher:    IsBundleNotFound,
 		},
 
 		// Test 4 is the same as 3 but with different version bundles.
@@ -532,9 +537,10 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 					WIP:          false,
 				},
 			},
-			Name:           "cert-operator",
-			ExpectedBundle: Bundle{},
-			ErrorMatcher:   IsBundleNotFound,
+			Labels:          nil,
+			Name:            "cert-operator",
+			ExpectedBundles: []Bundle{},
+			ErrorMatcher:    IsBundleNotFound,
 		},
 
 		// Test 5 ensures that a bundle can be found.
@@ -560,25 +566,28 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 					WIP:          false,
 				},
 			},
-			Name: "cloud-config-operator",
-			ExpectedBundle: Bundle{
-				Changelogs: []Changelog{},
-				Components: []Component{
-					{
-						Name:    "calico",
-						Version: "1.1.0",
+			Labels: nil,
+			Name:   "cloud-config-operator",
+			ExpectedBundles: []Bundle{
+				{
+					Changelogs: []Changelog{},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kubernetes",
+							Version: "1.7.5",
+						},
 					},
-					{
-						Name:    "kubernetes",
-						Version: "1.7.5",
-					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "cloud-config-operator",
+					Time:         time.Unix(10, 5),
+					Version:      "0.1.0",
+					WIP:          false,
 				},
-				Dependencies: []Dependency{},
-				Deprecated:   false,
-				Name:         "cloud-config-operator",
-				Time:         time.Unix(10, 5),
-				Version:      "0.1.0",
-				WIP:          false,
 			},
 			ErrorMatcher: nil,
 		},
@@ -630,32 +639,152 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 					WIP:          false,
 				},
 			},
-			Name: "cloud-config-operator",
-			ExpectedBundle: Bundle{
-				Changelogs: []Changelog{},
-				Components: []Component{
-					{
-						Name:    "calico",
-						Version: "1.1.0",
+			Labels: nil,
+			Name:   "cloud-config-operator",
+			ExpectedBundles: []Bundle{
+				{
+					Changelogs: []Changelog{},
+					Components: []Component{
+						{
+							Name:    "calico",
+							Version: "1.1.0",
+						},
+						{
+							Name:    "kubernetes",
+							Version: "1.7.5",
+						},
 					},
-					{
-						Name:    "kubernetes",
-						Version: "1.7.5",
-					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "cloud-config-operator",
+					Time:         time.Unix(10, 5),
+					Version:      "0.1.0",
+					WIP:          false,
 				},
-				Dependencies: []Dependency{},
-				Deprecated:   false,
-				Name:         "cloud-config-operator",
-				Time:         time.Unix(10, 5),
-				Version:      "0.1.0",
-				WIP:          false,
 			},
 			ErrorMatcher: nil,
+		},
+
+		// Test 7 verifies that bundle can be found with name and labels.
+		{
+			Bundles: []Bundle{
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "aws",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(20, 15),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "azure",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(40, 35),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "kvm",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(10, 5),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+			},
+			Labels: map[string]string{
+				"provider": "kvm",
+			},
+			Name: "cluster-operator",
+			ExpectedBundles: []Bundle{
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "kvm",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(10, 5),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+			},
+			ErrorMatcher: nil,
+		},
+
+		// Test 8 verifies that bundleNotFoundError is returned when labels
+		// don't match.
+		{
+			Bundles: []Bundle{
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "aws",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(20, 15),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "azure",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(40, 35),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "kvm",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(10, 5),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+			},
+			Labels: map[string]string{
+				"provider": "bluemix",
+			},
+			Name:            "cluster-operator",
+			ExpectedBundles: []Bundle{},
+			ErrorMatcher:    IsBundleNotFound,
 		},
 	}
 
 	for i, tc := range testCases {
-		result, err := GetBundleByName(tc.Bundles, tc.Name)
+		result, err := GetBundlesByNameAndLabels(tc.Bundles, tc.Name, tc.Labels)
 		if tc.ErrorMatcher != nil {
 			if !tc.ErrorMatcher(err) {
 				t.Fatalf("test %d expected %#v got %#v", i, true, false)
@@ -663,8 +792,8 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 		} else if err != nil {
 			t.Fatalf("test %d expected %#v got %#v", i, nil, err)
 		} else {
-			if !reflect.DeepEqual(result, tc.ExpectedBundle) {
-				t.Fatalf("test %d expected %#v got %#v", i, tc.ExpectedBundle, result)
+			if !reflect.DeepEqual(result, tc.ExpectedBundles) {
+				t.Fatalf("test %d expected %#v got %#v", i, tc.ExpectedBundles, result)
 			}
 		}
 	}
@@ -673,12 +802,14 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 func Test_Bundles_GetNewestBundle(t *testing.T) {
 	testCases := []struct {
 		Bundles        []Bundle
+		Labels         map[string]string
 		ExpectedBundle Bundle
 		ErrorMatcher   func(err error) bool
 	}{
 		// Test 0 ensures that a nil list throws an execution failed error.
 		{
 			Bundles:        nil,
+			Labels:         nil,
 			ExpectedBundle: Bundle{},
 			ErrorMatcher:   IsExecutionFailed,
 		},
@@ -706,6 +837,7 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 					WIP:          false,
 				},
 			},
+			Labels: nil,
 			ExpectedBundle: Bundle{
 				Changelogs: []Changelog{},
 				Components: []Component{
@@ -770,6 +902,7 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 					WIP:          false,
 				},
 			},
+			Labels: nil,
 			ExpectedBundle: Bundle{
 				Changelogs: []Changelog{},
 				Components: []Component{
@@ -834,6 +967,7 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 					WIP:          false,
 				},
 			},
+			Labels: nil,
 			ExpectedBundle: Bundle{
 				Changelogs: []Changelog{},
 				Components: []Component{
@@ -917,6 +1051,7 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 					WIP:          false,
 				},
 			},
+			Labels: nil,
 			ExpectedBundle: Bundle{
 				Changelogs: []Changelog{},
 				Components: []Component{
@@ -1000,6 +1135,7 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 					WIP:          false,
 				},
 			},
+			Labels: nil,
 			ExpectedBundle: Bundle{
 				Changelogs: []Changelog{},
 				Components: []Component{
@@ -1021,10 +1157,200 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 			},
 			ErrorMatcher: nil,
 		},
+
+		// Test 6 verifies that correct bundle with given labels is found
+		{
+			Bundles: []Bundle{
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "aws",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(20, 15),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "azure",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(40, 35),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "kvm",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(10, 5),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "aws",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(120, 15),
+					Version: "0.3.0",
+					WIP:     false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "azure",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(140, 35),
+					Version: "0.2.0",
+					WIP:     false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "kvm",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(110, 5),
+					Version: "0.4.0",
+					WIP:     false,
+				},
+			},
+			Labels: map[string]string{
+				"provider": "azure",
+			},
+			ExpectedBundle: Bundle{
+				Changelogs:   []Changelog{},
+				Components:   []Component{},
+				Dependencies: []Dependency{},
+				Deprecated:   false,
+				Labels: map[string]string{
+					"provider": "azure",
+				},
+				Name:    "cluster-operator",
+				Time:    time.Unix(140, 35),
+				Version: "0.2.0",
+				WIP:     false,
+			},
+			ErrorMatcher: nil,
+		},
+
+		// Test 7 verifies that bundle with given labels is not found
+		{
+			Bundles: []Bundle{
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "aws",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(20, 15),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "azure",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(40, 35),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "kvm",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(10, 5),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "aws",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(120, 15),
+					Version: "0.3.0",
+					WIP:     false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "azure",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(140, 35),
+					Version: "0.2.0",
+					WIP:     false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Labels: map[string]string{
+						"provider": "kvm",
+					},
+					Name:    "cluster-operator",
+					Time:    time.Unix(110, 5),
+					Version: "0.4.0",
+					WIP:     false,
+				},
+			},
+			Labels: map[string]string{
+				"provider": "bluemix",
+			},
+			ExpectedBundle: Bundle{},
+			ErrorMatcher:   IsBundleNotFound,
+		},
 	}
 
 	for i, tc := range testCases {
-		result, err := GetNewestBundle(tc.Bundles)
+		result, err := GetNewestBundle(tc.Bundles, tc.Labels)
 		if tc.ErrorMatcher != nil {
 			if !tc.ErrorMatcher(err) {
 				t.Fatalf("test %d expected %#v got %#v", i, true, false)
@@ -1693,5 +2019,141 @@ func Test_Bundles_Validate(t *testing.T) {
 		} else if err != nil {
 			t.Fatalf("test %d expected %#v got %#v", i, nil, err)
 		}
+	}
+}
+
+func Test_isSubset(t *testing.T) {
+	testCases := []struct {
+		name           string
+		subset         map[string]string
+		superset       map[string]string
+		expectedResult bool
+	}{
+		{
+			name: "case 0: subset is subset of superset",
+			subset: map[string]string{
+				"foo": "1",
+				"bar": "2",
+				"baz": "3",
+			},
+			superset: map[string]string{
+				"foo":   "1",
+				"bar":   "2",
+				"baz":   "3",
+				"quux":  "4",
+				"alice": "bob",
+			},
+			expectedResult: true,
+		},
+		{
+			name: "case 1: subset equals superset",
+			subset: map[string]string{
+				"foo": "1",
+				"bar": "2",
+				"baz": "3",
+			},
+			superset: map[string]string{
+				"foo": "1",
+				"bar": "2",
+				"baz": "3",
+			},
+			expectedResult: true,
+		},
+		{
+			name: "case 2: subset has differing values from superset",
+			subset: map[string]string{
+				"foo": "1",
+				"bar": "2",
+				"baz": "3",
+			},
+			superset: map[string]string{
+				"foo":   "0",
+				"bar":   "2",
+				"baz":   "3",
+				"quux":  "4",
+				"alice": "bob",
+			},
+			expectedResult: false,
+		},
+		{
+			name: "case 3: subset has keys that are missing from superset",
+			subset: map[string]string{
+				"foo": "1",
+				"bar": "2",
+				"baz": "3",
+			},
+			superset: map[string]string{
+				"foo":   "1",
+				"baz":   "3",
+				"quux":  "4",
+				"alice": "bob",
+			},
+			expectedResult: false,
+		},
+		{
+			name:   "case 4: subset is empty",
+			subset: map[string]string{},
+			superset: map[string]string{
+				"foo":   "1",
+				"baz":   "3",
+				"quux":  "4",
+				"alice": "bob",
+			},
+			expectedResult: true,
+		},
+		{
+			name:   "case 5: subset is nil",
+			subset: nil,
+			superset: map[string]string{
+				"foo":   "1",
+				"baz":   "3",
+				"quux":  "4",
+				"alice": "bob",
+			},
+			expectedResult: true,
+		},
+		{
+			name: "case 6: superset is empty",
+			subset: map[string]string{
+				"foo": "1",
+				"bar": "2",
+				"baz": "3",
+			},
+			superset:       map[string]string{},
+			expectedResult: false,
+		},
+		{
+			name: "case 7: subset is nil",
+			subset: map[string]string{
+				"foo": "1",
+				"bar": "2",
+				"baz": "3",
+			},
+			superset:       nil,
+			expectedResult: false,
+		},
+		{
+			name:           "case 8: subset and superset are empty",
+			subset:         map[string]string{},
+			superset:       map[string]string{},
+			expectedResult: true,
+		},
+
+		{
+			name:           "case 9: subset and superset are nil",
+			subset:         nil,
+			superset:       nil,
+			expectedResult: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			ret := isSubset(tc.subset, tc.superset)
+
+			if ret != tc.expectedResult {
+				t.Fatalf("isSubset() == %v, want %v", ret, tc.expectedResult)
+			}
+		})
 	}
 }

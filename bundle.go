@@ -33,6 +33,9 @@ type Bundle struct {
 	// bundles are not intended to be mainatined anymore. Further usage of a
 	// deprecated version bundle should be omitted.
 	Deprecated bool `json:"deprecated" yaml:"deprecated"`
+	// Labels are key/value pairs for additional description and filtering of
+	// Bundles with same Name.
+	Labels map[string]string `json:"labels" yaml:"labels"`
 	// Name is the name of the authority exposing the version bundle.
 	//
 	// NOTE that once this property is set it must never change again.
