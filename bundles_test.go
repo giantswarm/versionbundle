@@ -2227,7 +2227,7 @@ func Test_Bundles_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundlesError,
 		},
 
-		// Test 14 verifies that version increment is validated per provider
+		// Test 14 verifies that version increment is validated per provider.
 		{
 			Bundles: []Bundle{
 				{
@@ -2300,7 +2300,9 @@ func Test_Bundles_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 15 like test 14 but verifies invalidBundlesError
+		// Test 15 like test 14 but verifies invalidBundlesError when there are
+		// two Bundles for AWS provider and second of those has newer timestamp
+		// and lower version number.
 		{
 			Bundles: []Bundle{
 				{
