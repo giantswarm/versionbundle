@@ -2226,6 +2226,174 @@ func Test_Bundles_Validate(t *testing.T) {
 			},
 			ErrorMatcher: IsInvalidBundlesError,
 		},
+
+		// Test 14 verifies that version increment is validated per provider
+		{
+			Bundles: []Bundle{
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "Cluster Operator",
+							Description: "Initial version for AWS.",
+							Kind:        "added",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "aws-operator",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "aws",
+					Name:         "cluster-operator",
+					Time:         time.Unix(20, 15),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "Cluster Operator",
+							Description: "Initial version for Azure.",
+							Kind:        "added",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "azure-operator",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "azure",
+					Name:         "cluster-operator",
+					Time:         time.Unix(40, 35),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "Cluster Operator",
+							Description: "Initial version for KVM.",
+							Kind:        "added",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "kvm-operator",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "kvm",
+					Name:         "cluster-operator",
+					Time:         time.Unix(10, 5),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+			},
+			ErrorMatcher: nil,
+		},
+
+		// Test 15 like test 14 but verifies invalidBundlesError
+		{
+			Bundles: []Bundle{
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "Cluster Operator",
+							Description: "Initial version for AWS.",
+							Kind:        "added",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "aws-operator",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "aws",
+					Name:         "cluster-operator",
+					Time:         time.Unix(20, 15),
+					Version:      "1.0.0",
+					WIP:          false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "Cluster Operator",
+							Description: "Updated version for AWS.",
+							Kind:        "updated",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "aws-operator",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "aws",
+					Name:         "cluster-operator",
+					Time:         time.Unix(30, 15),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "Cluster Operator",
+							Description: "Initial version for Azure.",
+							Kind:        "added",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "azure-operator",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "azure",
+					Name:         "cluster-operator",
+					Time:         time.Unix(40, 35),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "Cluster Operator",
+							Description: "Initial version for KVM.",
+							Kind:        "added",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "kvm-operator",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Provider:     "kvm",
+					Name:         "cluster-operator",
+					Time:         time.Unix(10, 5),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+			},
+			ErrorMatcher: IsInvalidBundlesError,
+		},
 	}
 
 	for i, tc := range testCases {
