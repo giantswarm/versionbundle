@@ -103,6 +103,7 @@ func TestKVMReleaseBundles(t *testing.T) {
 		t.Fatalf("expected %d releases got %d", expectedReleaseCount, len(releases))
 	}
 
+	kvmProviderBundlesCount := 0
 	minReleaseVersion := releases[0].Version()
 	maxReleaseVersion := releases[0].Version()
 	for _, r := range releases {
@@ -126,6 +127,8 @@ func TestKVMReleaseBundles(t *testing.T) {
 		for _, b := range bb {
 			if b.Provider != "" && b.Provider != "kvm" {
 				t.Fatalf("expected Bundle.Provider to be empty or kvm, got %s", b.Provider)
+			} else if b.Provider == "kvm" {
+				kvmProviderBundlesCount++
 			}
 		}
 
@@ -135,6 +138,10 @@ func TestKVMReleaseBundles(t *testing.T) {
 				t.Fatalf("in release %s there is duplicate bundles for name %s", r.Version(), bb[i].Name)
 			}
 		}
+	}
+
+	if kvmProviderBundlesCount == 0 {
+		t.Fatalf("expected at least one kvm provider specific bundle but found 0")
 	}
 
 	if minReleaseVersion != expectedMinReleaseVersion {
