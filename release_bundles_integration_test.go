@@ -15,12 +15,12 @@ import (
 	"github.com/go-resty/resty"
 )
 
-// TestCollectedAndAggregatedReleaseBundles is an integration test that uses
-// real world test scenario with operator version bundles exposed via
-// endpoints, collected with Collector, aggregated with Aggregator and then
-// compiled as releases with NewRelease(). Resulting Releases are then verified
-// against defined properties.
-func TestCollectedAndAggregatedReleaseBundles(t *testing.T) {
+// TestCollectedFilteredAndAggregatedReleaseBundles is an integration test that
+// uses real world test scenario with operator version bundles exposed via
+// endpoints, collected with Collector, filtered by provider, aggregated with
+// Aggregator and then compiled as releases with NewRelease(). Resulting
+// Releases are then verified against defined properties.
+func TestCollectedFilteredAndAggregatedReleaseBundles(t *testing.T) {
 	versionBundleEndpointHandlerFuncs := []func(w http.ResponseWriter, r *http.Request){
 		certOperatorVersionBundlesEndpoint(t),
 		clusterOperatorVersionBundlesEndpoint(t),
