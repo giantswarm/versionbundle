@@ -120,7 +120,10 @@ func (c *Collector) Collect(ctx context.Context) error {
 				for _, b := range r.VersionBundles {
 					if c.filterFunc(b) {
 						filteredBundles = append(filteredBundles, b)
+					} else {
+						c.logger.Log("endpoint", e, "level", "debug", "message", fmt.Sprintf("filterFunc rejected: %#v", b))
 					}
+
 				}
 			} else {
 				filteredBundles = r.VersionBundles
