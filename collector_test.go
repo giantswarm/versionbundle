@@ -18,6 +18,7 @@ import (
 func Test_Collector_Collect(t *testing.T) {
 	testCases := []struct {
 		HandlerFuncs    []func(w http.ResponseWriter, r *http.Request)
+		FilterFunc      func(Bundle) bool
 		ExpectedBundles []Bundle
 	}{
 		// Test 0 ensures a single version bundle exposed by a single endpoint
@@ -64,6 +65,7 @@ func Test_Collector_Collect(t *testing.T) {
 					}
 				},
 			},
+			FilterFunc: nil,
 			ExpectedBundles: []Bundle{
 				{
 					Changelogs: []Changelog{
@@ -182,6 +184,7 @@ func Test_Collector_Collect(t *testing.T) {
 					}
 				},
 			},
+			FilterFunc: nil,
 			ExpectedBundles: []Bundle{
 				{
 					Changelogs: []Changelog{
@@ -380,6 +383,7 @@ func Test_Collector_Collect(t *testing.T) {
 					}
 				},
 			},
+			FilterFunc: nil,
 			ExpectedBundles: []Bundle{
 				{
 					Changelogs: []Changelog{
@@ -488,6 +492,118 @@ func Test_Collector_Collect(t *testing.T) {
 				},
 			},
 		},
+
+		// Test 3 ensures that FilterFunc selects only one version bundle from
+		// three available one exposed by single endpoint.
+		{
+			HandlerFuncs: []func(w http.ResponseWriter, r *http.Request){
+				func(w http.ResponseWriter, r *http.Request) {
+					cr := CollectorEndpointResponse{
+						VersionBundles: []Bundle{
+							{
+								Changelogs: []Changelog{
+									{
+										Component:   "Cluster Operator",
+										Description: "Initial version for AWS",
+										Kind:        "added",
+									},
+								},
+								Components: []Component{
+									{
+										Name:    "aws-operator",
+										Version: "1.0.0",
+									},
+								},
+								Dependencies: []Dependency{},
+								Deprecated:   false,
+								Name:         "cluster-operator",
+								Provider:     "aws",
+								Time:         time.Date(2018, time.March, 27, 12, 00, 0, 0, time.UTC),
+								Version:      "0.1.0",
+								WIP:          true,
+							},
+							{
+								Changelogs: []Changelog{
+									{
+										Component:   "Cluster Operator",
+										Description: "Initial version for Azure",
+										Kind:        "added",
+									},
+								},
+								Components: []Component{
+									{
+										Name:    "azure-operator",
+										Version: "1.0.0",
+									},
+								},
+								Dependencies: []Dependency{},
+								Deprecated:   false,
+								Name:         "cluster-operator",
+								Provider:     "azure",
+								Time:         time.Date(2018, time.March, 28, 7, 30, 0, 0, time.UTC),
+								Version:      "0.1.0",
+								WIP:          true,
+							},
+							{
+								Changelogs: []Changelog{
+									{
+										Component:   "Cluster Operator",
+										Description: "Initial version for KVM",
+										Kind:        "added",
+									},
+								},
+								Components: []Component{
+									{
+										Name:    "kvm-operator",
+										Version: "1.0.0",
+									},
+								},
+								Dependencies: []Dependency{},
+								Deprecated:   false,
+								Name:         "cluster-operator",
+								Provider:     "kvm",
+								Time:         time.Date(2018, time.March, 27, 12, 00, 0, 0, time.UTC),
+								Version:      "0.1.0",
+								WIP:          true,
+							},
+						},
+					}
+					b, err := json.Marshal(cr)
+					if err != nil {
+						t.Fatalf("expected %#v got %#v", nil, err)
+					}
+					_, err = io.WriteString(w, string(b))
+					if err != nil {
+						t.Fatalf("expected %#v got %#v", nil, err)
+					}
+				},
+			},
+			FilterFunc: func(b Bundle) bool { return b.Provider == "kvm" },
+			ExpectedBundles: []Bundle{
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "Cluster Operator",
+							Description: "Initial version for KVM",
+							Kind:        "added",
+						},
+					},
+					Components: []Component{
+						{
+							Name:    "kvm-operator",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "cluster-operator",
+					Provider:     "kvm",
+					Time:         time.Date(2018, time.March, 27, 12, 00, 0, 0, time.UTC),
+					Version:      "0.1.0",
+					WIP:          true,
+				},
+			},
+		},
 	}
 
 	for i, tc := range testCases {
@@ -507,6 +623,7 @@ func Test_Collector_Collect(t *testing.T) {
 		var collector *Collector
 		{
 			c := CollectorConfig{
+				FilterFunc: tc.FilterFunc,
 				Logger:     microloggertest.New(),
 				RestClient: resty.New(),
 
