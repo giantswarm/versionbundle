@@ -99,19 +99,25 @@ func TestCollectedFilteredAndAggregatedReleaseBundles(t *testing.T) {
 	//
 	// Validation
 	//
-	expectedReleaseCount := 22
+	expectedReleaseCount := 44
 	expectedMinReleaseVersion := "0.4.0"
-	expectedMaxReleaseVersion := "2.5.4"
+	expectedMaxReleaseVersion := "2.6.4"
 	expectedBundleCountInEachRelease := 4
+	expectedActiveReleaseBundleCount := 1
 
 	if len(releases) != expectedReleaseCount {
 		t.Fatalf("expected %d releases got %d", expectedReleaseCount, len(releases))
 	}
 
+	activeReleaseBundles := 0
 	kvmProviderBundlesCount := 0
 	minReleaseVersion := releases[0].Version()
 	maxReleaseVersion := releases[0].Version()
 	for _, r := range releases {
+		if r.Active() {
+			activeReleaseBundles++
+		}
+
 		// Find min & max versions in releases.
 		if r.Version() < minReleaseVersion {
 			minReleaseVersion = r.Version()
@@ -119,6 +125,10 @@ func TestCollectedFilteredAndAggregatedReleaseBundles(t *testing.T) {
 
 		if r.Version() > maxReleaseVersion {
 			maxReleaseVersion = r.Version()
+		}
+
+		if len(r.Changelogs()) == 0 {
+			t.Fatalf("expected to have changelog entries in every release bundle but none found in %s", r.Version())
 		}
 
 		bb := r.Bundles()
@@ -143,6 +153,10 @@ func TestCollectedFilteredAndAggregatedReleaseBundles(t *testing.T) {
 				t.Fatalf("in release %s there is duplicate bundles for name %s", r.Version(), bb[i].Name)
 			}
 		}
+	}
+
+	if activeReleaseBundles != expectedActiveReleaseBundleCount {
+		t.Fatalf("expected %d release bundle to be active, found %d", expectedActiveReleaseBundleCount, activeReleaseBundles)
 	}
 
 	if kvmProviderBundlesCount == 0 {
@@ -220,7 +234,7 @@ func clusterOperatorVersionBundlesEndpoint(t *testing.T) func(w http.ResponseWri
 					Provider:     "aws",
 					Time:         time.Date(2018, time.March, 27, 12, 00, 0, 0, time.UTC),
 					Version:      "0.1.0",
-					WIP:          true,
+					WIP:          false,
 				},
 				{
 					Changelogs: []versionbundle.Changelog{
@@ -242,7 +256,7 @@ func clusterOperatorVersionBundlesEndpoint(t *testing.T) func(w http.ResponseWri
 					Provider:     "azure",
 					Time:         time.Date(2018, time.March, 28, 7, 30, 0, 0, time.UTC),
 					Version:      "0.1.0",
-					WIP:          true,
+					WIP:          false,
 				},
 				{
 					Changelogs: []versionbundle.Changelog{
@@ -264,6 +278,72 @@ func clusterOperatorVersionBundlesEndpoint(t *testing.T) func(w http.ResponseWri
 					Provider:     "kvm",
 					Time:         time.Date(2018, time.March, 27, 12, 00, 0, 0, time.UTC),
 					Version:      "0.1.0",
+					WIP:          false,
+				},
+				{
+					Changelogs: []versionbundle.Changelog{
+						{
+							Component:   "Cluster Operator",
+							Description: "TODO",
+							Kind:        "updated",
+						},
+					},
+					Components: []versionbundle.Component{
+						{
+							Name:    "aws-operator",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []versionbundle.Dependency{},
+					Deprecated:   false,
+					Name:         "cluster-operator",
+					Provider:     "aws",
+					Time:         time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version:      "0.2.0",
+					WIP:          true,
+				},
+				{
+					Changelogs: []versionbundle.Changelog{
+						{
+							Component:   "Cluster Operator",
+							Description: "TODO",
+							Kind:        "updated",
+						},
+					},
+					Components: []versionbundle.Component{
+						{
+							Name:    "azure-operator",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []versionbundle.Dependency{},
+					Deprecated:   false,
+					Name:         "cluster-operator",
+					Provider:     "azure",
+					Time:         time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version:      "0.2.0",
+					WIP:          true,
+				},
+				{
+					Changelogs: []versionbundle.Changelog{
+						{
+							Component:   "Cluster Operator",
+							Description: "TODO",
+							Kind:        "updated",
+						},
+					},
+					Components: []versionbundle.Component{
+						{
+							Name:    "kvm-operator",
+							Version: "1.0.0",
+						},
+					},
+					Dependencies: []versionbundle.Dependency{},
+					Deprecated:   false,
+					Name:         "cluster-operator",
+					Provider:     "kvm",
+					Time:         time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version:      "0.2.0",
 					WIP:          true,
 				},
 			},
@@ -298,7 +378,7 @@ func flannelOperatorVersionBundlesEndpoint(t *testing.T) func(w http.ResponseWri
 						},
 					},
 					Dependencies: []versionbundle.Dependency{},
-					Deprecated:   false,
+					Deprecated:   true,
 					Name:         "flannel-operator",
 					Time:         time.Date(2017, time.October, 27, 16, 21, 0, 0, time.UTC),
 					Version:      "0.1.0",
