@@ -189,12 +189,12 @@ func Test_deduplicateReleases(t *testing.T) {
 			output := deduplicateReleases(tc.input)
 
 			if !reflect.DeepEqual(output, tc.expectedOutput) {
-				fmt.Printf("\n\n%s - This is what I got: \n", tc.name)
+				fmt.Printf("%s: This is what I got: \n", tc.name)
 				for _, r := range output {
 					fmt.Printf("%s: %s, deprecated: %v, wip: %v, active: %v\n", r.Version(), r.Timestamp(), r.deprecated, r.wip, r.Active())
 				}
 
-				fmt.Printf("\n\n%s - This is what I want: \n", tc.name)
+				fmt.Printf("%s: This is what I want: \n", tc.name)
 				for _, r := range tc.expectedOutput {
 					fmt.Printf("%s: %s, deprecated: %v, wip: %v, active: %v\n", r.Version(), r.Timestamp(), r.deprecated, r.wip, r.Active())
 				}
