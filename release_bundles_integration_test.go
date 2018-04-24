@@ -96,10 +96,12 @@ func TestCollectedFilteredAndAggregatedReleaseBundles(t *testing.T) {
 		releases = append(releases, r)
 	}
 
+	releases = versionbundle.CanonicalizeReleases(releases)
+
 	//
 	// Validation
 	//
-	expectedReleaseCount := 44
+	expectedReleaseCount := 25 // Total count is 44 but there are releases with duplicate version number.
 	expectedMinReleaseVersion := "0.4.0"
 	expectedMaxReleaseVersion := "2.6.4"
 	expectedBundleCountInEachRelease := 4
@@ -113,9 +115,17 @@ func TestCollectedFilteredAndAggregatedReleaseBundles(t *testing.T) {
 	kvmProviderBundlesCount := 0
 	minReleaseVersion := releases[0].Version()
 	maxReleaseVersion := releases[0].Version()
+	versions := make(map[string]bool, 0)
 	for _, r := range releases {
 		if r.Active() {
 			activeReleaseBundles++
+		}
+
+		_, exists := versions[r.Version()]
+		if exists {
+			t.Fatalf("multiple releases for version %s", r.Version())
+		} else {
+			versions[r.Version()] = true
 		}
 
 		// Find min & max versions in releases.
