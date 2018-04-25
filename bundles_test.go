@@ -1698,8 +1698,8 @@ func Test_Bundles_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundlesError,
 		},
 
-		// Test 4 ensures validation of a list of version bundles where any version
-		// bundle has no components throws an error.
+		// Test 4 ensures validation of a list of version bundles where a
+		// version bundle has no components does not throw an error.
 		{
 			Bundles: []Bundle{
 				{
@@ -1729,7 +1729,7 @@ func Test_Bundles_Validate(t *testing.T) {
 					WIP:        false,
 				},
 			},
-			ErrorMatcher: IsInvalidBundlesError,
+			ErrorMatcher: nil,
 		},
 
 		// Test 5 is the same as 4 but with multiple version bundles.
@@ -1797,7 +1797,7 @@ func Test_Bundles_Validate(t *testing.T) {
 					WIP:        false,
 				},
 			},
-			ErrorMatcher: IsInvalidBundlesError,
+			ErrorMatcher: nil,
 		},
 
 		// Test 6 ensures validation of a list of version bundles where any version

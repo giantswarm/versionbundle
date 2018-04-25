@@ -1975,7 +1975,8 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundleError,
 		},
 
-		// Test 3 ensures a version bundle without components throws an error.
+		// Test 3 ensures a version bundle without components does not throw an
+		// error.
 		{
 			Bundle: Bundle{
 				Changelogs: []Changelog{
@@ -2003,7 +2004,7 @@ func Test_Bundle_Validate(t *testing.T) {
 				Version:    "0.1.0",
 				WIP:        false,
 			},
-			ErrorMatcher: IsInvalidBundleError,
+			ErrorMatcher: nil,
 		},
 
 		// Test 4 ensures a version bundle without dependencies does not throw an
