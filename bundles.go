@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"sort"
 
+	"github.com/coreos/go-semver/semver"
 	"github.com/giantswarm/microerror"
 )
 
@@ -38,12 +39,18 @@ func (b Bundles) Validate() error {
 	}
 
 	for _, v := range perProviderVersions {
-		b1 := CopyBundles(v)
-		b2 := CopyBundles(v)
-		sort.Sort(SortBundlesByTime(b1))
-		sort.Sort(SortBundlesByVersion(b2))
-		if !reflect.DeepEqual(b1, b2) {
-			return microerror.Maskf(invalidBundlesError, "version bundle versions must always increment")
+		for _, bundle := range v {
+			// Get all bundles from the same series.
+			f, err := filterSameSeriesBundles(bundle, v)
+			if err != nil {
+				return microerror.Maskf(invalidBundlesError, err.Error())
+			}
+
+			// Check that version number increments over time.
+			err = validateIncrementsOverTime(f)
+			if err != nil {
+				return microerror.Maskf(invalidBundlesError, err.Error())
+			}
 		}
 	}
 
@@ -101,6 +108,57 @@ func CopyBundles(bundles []Bundle) []Bundle {
 	}
 
 	return copy
+}
+
+// filterSameSeriesBundles filters bundles that are from the same semver series as
+// input bundle. For major version bundle (e.g. 3.0.0) this function will return
+// all available major bundles. For minor all minor bundles from the same major bundle.
+// For patch all patch versions from the same minor bundle.
+func filterSameSeriesBundles(bundle Bundle, bundles []Bundle) ([]Bundle, error) {
+	if len(bundles) == 0 {
+		return []Bundle{}, microerror.Maskf(executionFailedError, "bundles must not be empty")
+	}
+
+	filtered := []Bundle{}
+
+	// Get semver for input bundle.
+	bv := semver.New(bundle.Version)
+
+	// For the case, when input bundle is a major version.
+	if bv.Minor == 0 && bv.Patch == 0 {
+		for _, b := range bundles {
+			v := semver.New(b.Version)
+			// Filter only bundles that have minor and
+			// patch numbers equal to 0.
+			if v.Minor == 0 && v.Patch == 0 {
+				filtered = append(filtered, b)
+			}
+		}
+		return filtered, nil
+	}
+
+	// For the case, when input bundle is a minor version.
+	if bv.Patch == 0 {
+		for _, b := range bundles {
+			v := semver.New(b.Version)
+			// Filter only bundles that have equal major number
+			// and patch number is 0.
+			if v.Major == bv.Major && v.Patch == 0 {
+				filtered = append(filtered, b)
+			}
+		}
+		return filtered, nil
+	}
+
+	// Finally for the case, when input bundle is a patch version.
+	for _, b := range bundles {
+		v := semver.New(b.Version)
+		// Filter only bundles that have equal major and minor numbers.
+		if v.Major == bv.Major && v.Minor == bv.Minor {
+			filtered = append(filtered, b)
+		}
+	}
+	return filtered, nil
 }
 
 func GetBundleByName(bundles []Bundle, name string) (Bundle, error) {
@@ -167,4 +225,15 @@ func GetNewestBundleForProvider(bundles []Bundle, provider string) (Bundle, erro
 	sort.Sort(s)
 
 	return s[len(s)-1], nil
+}
+
+func validateIncrementsOverTime(bundles []Bundle) error {
+	b1 := CopyBundles(bundles)
+	b2 := CopyBundles(bundles)
+	sort.Sort(SortBundlesByTime(b1))
+	sort.Sort(SortBundlesByVersion(b2))
+	if !reflect.DeepEqual(b1, b2) {
+		return microerror.Maskf(invalidBundlesError, "version bundle versions must always increment")
+	}
+	return nil
 }
