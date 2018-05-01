@@ -392,6 +392,125 @@ func Test_Bundles_Copy(t *testing.T) {
 	}
 }
 
+func Test_Bundles_filterSameSeriesBundles(t *testing.T) {
+	exampleBundles := []Bundle{
+		{
+			Time:    time.Unix(60, 5),
+			Version: "2.0.0",
+		},
+		{
+			Time:    time.Unix(50, 5),
+			Version: "1.1.0",
+		},
+		{
+			Time:    time.Unix(40, 5),
+			Version: "1.0.0",
+		},
+		{
+			Time:    time.Unix(30, 5),
+			Version: "0.2.0",
+		},
+		{
+			Time:    time.Unix(20, 5),
+			Version: "0.1.1",
+		},
+		{
+			Time:    time.Unix(10, 5),
+			Version: "0.1.0",
+		},
+	}
+
+	testCases := []struct {
+		Bundle          Bundle
+		Bundles         []Bundle
+		ExpectedBundles []Bundle
+		ErrorMatcher    func(err error) bool
+	}{
+		// Test 0 ensures that for empty bundles list function returns error.
+		{
+			Bundle: Bundle{
+				Time:    time.Unix(10, 5),
+				Version: "0.1.1",
+			},
+			Bundles:         []Bundle{},
+			ExpectedBundles: []Bundle{},
+			ErrorMatcher:    IsExecutionFailed,
+		},
+		// Test 1 ensures that for patch version bundle function returns proper bundles.
+		{
+			Bundle: Bundle{
+				Time:    time.Unix(10, 5),
+				Version: "0.1.1",
+			},
+			Bundles: exampleBundles,
+			ExpectedBundles: []Bundle{
+				{
+					Time:    time.Unix(20, 5),
+					Version: "0.1.1",
+				},
+				{
+					Time:    time.Unix(10, 5),
+					Version: "0.1.0",
+				},
+			},
+			ErrorMatcher: nil,
+		},
+		// Test 2 ensures that for minor version bundle function returns proper bundles.
+		{
+			Bundle: Bundle{
+				Time:    time.Unix(30, 5),
+				Version: "0.2.0",
+			},
+			Bundles: exampleBundles,
+			ExpectedBundles: []Bundle{
+				{
+					Time:    time.Unix(30, 5),
+					Version: "0.2.0",
+				},
+				{
+					Time:    time.Unix(10, 5),
+					Version: "0.1.0",
+				},
+			},
+			ErrorMatcher: nil,
+		},
+		// Test 3 ensures that for major version bundle function returns proper bundles.
+		{
+			Bundle: Bundle{
+				Time:    time.Unix(40, 5),
+				Version: "1.0.0",
+			},
+			Bundles: exampleBundles,
+			ExpectedBundles: []Bundle{
+				{
+					Time:    time.Unix(60, 5),
+					Version: "2.0.0",
+				},
+				{
+					Time:    time.Unix(40, 5),
+					Version: "1.0.0",
+				},
+			},
+			ErrorMatcher: nil,
+		},
+	}
+
+	for i, tc := range testCases {
+		result, err := filterSameSeriesBundles(tc.Bundle, tc.Bundles)
+		if tc.ErrorMatcher != nil {
+			if !tc.ErrorMatcher(err) {
+				t.Fatalf("test %d expected %#v got %#v", i, true, false)
+			}
+		} else if err != nil {
+			t.Fatalf("test %d expected %#v got %#v", i, nil, err)
+		} else {
+			if !reflect.DeepEqual(result, tc.ExpectedBundles) {
+				t.Fatalf("test %d expected %#v got %#v", i, tc.ExpectedBundles, result)
+			}
+		}
+	}
+}
+
 func Test_Bundles_GetBundleByName(t *testing.T) {
 	testCases := []struct {
 		Bundles        []Bundle
@@ -2100,7 +2219,7 @@ func Test_Bundles_Validate(t *testing.T) {
 					Deprecated:   false,
 					Name:         "kubernetes-operator",
 					Time:         time.Unix(10, 5),
-					Version:      "0.1.0",
+					Version:      "0.1.1",
 					WIP:          false,
 				},
 				{
@@ -2125,7 +2244,7 @@ func Test_Bundles_Validate(t *testing.T) {
 					Deprecated:   false,
 					Name:         "kubernetes-operator",
 					Time:         time.Unix(20, 10),
-					Version:      "0.0.9",
+					Version:      "0.1.0",
 					WIP:          false,
 				},
 			},
@@ -2400,6 +2519,53 @@ func Test_Bundles_Validate(t *testing.T) {
 
 	for i, tc := range testCases {
 		err := Bundles(tc.Bundles).Validate()
+		if tc.ErrorMatcher != nil {
+			if !tc.ErrorMatcher(err) {
+				t.Fatalf("test %d expected %#v got %#v", i, true, false)
+			}
+		} else if err != nil {
+			t.Fatalf("test %d expected %#v got %#v", i, nil, err)
+		}
+	}
+}
+
+func Test_Bundles_validateIncrementsOverTime(t *testing.T) {
+	testCases := []struct {
+		Bundles      []Bundle
+		ErrorMatcher func(err error) bool
+	}{
+		// Test 0 ensures validation of a list of version bundles where version
+		// bundle that has bigger version and was released before version bundle
+		// with smaller version throws an error.
+		{
+			Bundles: []Bundle{
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "kubernetes-operator",
+					Time:         time.Unix(10, 5),
+					Version:      "0.1.1",
+					WIP:          false,
+				},
+				{
+					Changelogs:   []Changelog{},
+					Components:   []Component{},
+					Dependencies: []Dependency{},
+					Deprecated:   false,
+					Name:         "kubernetes-operator",
+					Time:         time.Unix(20, 5),
+					Version:      "0.1.0",
+					WIP:          false,
+				},
+			},
+			ErrorMatcher: IsInvalidBundlesError,
+		},
+	}
+
+	for i, tc := range testCases {
+		err := validateIncrementsOverTime(tc.Bundles)
 		if tc.ErrorMatcher != nil {
 			if !tc.ErrorMatcher(err) {
 				t.Fatalf("test %d expected %#v got %#v", i, true, false)
