@@ -2074,65 +2074,7 @@ func Test_Bundles_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundlesError,
 		},
 
-		// Test 11 ensures validation of a list of version bundles in which a newer
-		// version bundle (time) has a lower version number throws an error.
-		{
-			Bundles: []Bundle{
-				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
-					Components: []Component{
-						{
-							Name:    "calico",
-							Version: "1.1.0",
-						},
-						{
-							Name:    "kube-dns",
-							Version: "1.0.0",
-						},
-					},
-					Dependencies: []Dependency{},
-					Deprecated:   false,
-					Name:         "kubernetes-operator",
-					Time:         time.Unix(10, 5),
-					Version:      "0.1.0",
-					WIP:          false,
-				},
-				{
-					Changelogs: []Changelog{
-						{
-							Component:   "kube-dns",
-							Description: "Kube-DNS version updated.",
-							Kind:        "changed",
-						},
-					},
-					Components: []Component{
-						{
-							Name:    "calico",
-							Version: "1.1.0",
-						},
-						{
-							Name:    "kube-dns",
-							Version: "1.1.0",
-						},
-					},
-					Dependencies: []Dependency{},
-					Deprecated:   false,
-					Name:         "kubernetes-operator",
-					Time:         time.Unix(20, 10),
-					Version:      "0.0.9",
-					WIP:          false,
-				},
-			},
-			ErrorMatcher: IsInvalidBundlesError,
-		},
-
-		// Test 12 ensures validation of a list of version bundles where any version
+		// Test 11 ensures validation of a list of version bundles where any version
 		// bundle is deprecated and WIP throws an error.
 		{
 			Bundles: []Bundle{
@@ -2165,7 +2107,7 @@ func Test_Bundles_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundlesError,
 		},
 
-		// Test 13 is the same as 12 but with multiple version bundles.
+		// Test 12 is the same as 11 but with multiple version bundles.
 		{
 			Bundles: []Bundle{
 				{
@@ -2227,7 +2169,7 @@ func Test_Bundles_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundlesError,
 		},
 
-		// Test 14 verifies that version increment is validated per provider.
+		// Test 13 verifies that version increment is validated per provider.
 		{
 			Bundles: []Bundle{
 				{
@@ -2300,7 +2242,7 @@ func Test_Bundles_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 15 like test 14 but verifies invalidBundlesError when there are
+		// Test 14 like test 13 but verifies invalidBundlesError when there are
 		// two Bundles for AWS provider and second of those has newer timestamp
 		// and lower version number.
 		{
