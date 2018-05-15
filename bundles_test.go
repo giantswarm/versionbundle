@@ -695,7 +695,7 @@ func Test_Bundles_GetBundleByNameForProvider(t *testing.T) {
 			Name:           "kubernetes-operator",
 			Provider:       "aws",
 			ExpectedBundle: Bundle{},
-			ErrorMatcher:   IsExecutionFailed,
+			ErrorMatcher:   IsBundleNotFound,
 		},
 
 		// Test 2 ensures that a non-empty list and an empty name throws an execution
