@@ -15,6 +15,475 @@ func urlMustParse(v string) *url.URL {
 	return u
 }
 
+func Test_validateReleaseAuthorityEndpoints(t *testing.T) {
+	testCases := []struct {
+		name         string
+		releases     []IndexRelease
+		errorMatcher func(error) bool
+	}{
+		{
+			name: "case 0: success with only single release",
+			releases: []IndexRelease{
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.3.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.May, 21, 13, 12, 00, 00, time.UTC),
+					Version: "2.5.1",
+				},
+			},
+			errorMatcher: nil,
+		},
+		{
+			name: "case 1: success with multiple releases",
+			releases: []IndexRelease{
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.3.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.May, 21, 13, 12, 00, 00, time.UTC),
+					Version: "2.6.1",
+				},
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.2.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version: "2.5.1",
+				},
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.March, 27, 12, 00, 0, 0, time.UTC),
+					Version: "2.4.1",
+				},
+			},
+			errorMatcher: nil,
+		},
+		{
+			name: "case 2: failure with single release containing one with nil authorities",
+			releases: []IndexRelease{
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.3.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.May, 21, 13, 12, 00, 00, time.UTC),
+					Version: "2.6.1",
+				},
+				{
+					Active:      false,
+					Authorities: nil,
+					Date:        time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version:     "2.5.1",
+				},
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.March, 27, 12, 00, 0, 0, time.UTC),
+					Version: "2.4.1",
+				},
+			},
+			errorMatcher: IsInvalidRelease,
+		},
+		{
+			name: "case 3: failure with single release containing one with empty authorities list",
+			releases: []IndexRelease{
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.3.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.May, 21, 13, 12, 00, 00, time.UTC),
+					Version: "2.6.1",
+				},
+				{
+					Active:      false,
+					Authorities: make([]Authority, 0),
+					Date:        time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version:     "2.5.1",
+				},
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.March, 27, 12, 00, 0, 0, time.UTC),
+					Version: "2.4.1",
+				},
+			},
+			errorMatcher: IsInvalidRelease,
+		},
+		{
+			name: "case 4: failure with single release containing one authority without endpoint",
+			releases: []IndexRelease{
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.3.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.May, 21, 13, 12, 00, 00, time.UTC),
+					Version: "2.6.1",
+				},
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: nil,
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.2.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version: "2.5.1",
+				},
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version: "2.5.1",
+				},
+			},
+			errorMatcher: IsInvalidRelease,
+		},
+		{
+			name: "case 5: failure with single release containing one authority without name",
+			releases: []IndexRelease{
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.3.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.May, 21, 13, 12, 00, 00, time.UTC),
+					Version: "2.6.1",
+				},
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Provider: "kvm",
+							Version:  "0.2.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version: "2.5.1",
+				},
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version: "2.5.1",
+				},
+			},
+			errorMatcher: IsInvalidRelease,
+		},
+		{
+			name: "case 6: failure with single release containing one authority without version",
+			releases: []IndexRelease{
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.3.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.May, 21, 13, 12, 00, 00, time.UTC),
+					Version: "2.6.1",
+				},
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version: "2.5.1",
+				},
+				{
+					Active: false,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version: "2.5.1",
+				},
+			},
+			errorMatcher: IsInvalidRelease,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			err := validateReleaseAuthorities(tc.releases)
+
+			switch {
+			case err == nil && tc.errorMatcher == nil:
+				// correct; carry on
+			case err != nil && tc.errorMatcher == nil:
+				t.Fatalf("error == %#v, want nil", err)
+			case err == nil && tc.errorMatcher != nil:
+				t.Fatalf("error == nil, want non-nil")
+			case !tc.errorMatcher(err):
+				t.Fatalf("error == %#v, want matching", err)
+			}
+		})
+	}
+}
+
 func Test_validateReleaseDates(t *testing.T) {
 	testCases := []struct {
 		name         string
