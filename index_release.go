@@ -25,9 +25,24 @@ func ValidateIndexReleases(indexReleases []IndexRelease) error {
 		return nil
 	}
 
-	err := validateUniqueReleases(indexReleases)
+	err := validateReleaseDates(indexReleases)
 	if err != nil {
 		return microerror.Mask(err)
+	}
+
+	err = validateUniqueReleases(indexReleases)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	return nil
+}
+
+func validateReleaseDates(indexReleases []IndexRelease) error {
+	for _, release := range indexReleases {
+		if release.Date.IsZero() {
+			return microerror.Maskf(invalidReleaseError, "release %s has empty release date", release.Version)
+		}
 	}
 
 	return nil
