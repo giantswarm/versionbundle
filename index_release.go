@@ -35,10 +35,20 @@ func ValidateIndexReleases(indexReleases []IndexRelease) error {
 
 func validateUniqueReleases(indexReleases []IndexRelease) error {
 	releaseChecksums := make(map[string]string)
+	releaseVersions := make(map[string]string)
 
 	sha256Hash := sha256.New()
 
 	for _, release := range indexReleases {
+		// Verify release version number
+		otherVer, exists := releaseVersions[release.Version]
+		if exists {
+			return microerror.Maskf(invalidReleaseError, "duplicate release versions %s and %s", otherVer, release.Version)
+		}
+
+		releaseVersions[release.Version] = release.Version
+
+		// Verify release version contents
 		authorities := make([]string, 0, len(release.Authorities))
 		for _, a := range release.Authorities {
 			n := strings.TrimSpace(a.Name)
@@ -53,7 +63,7 @@ func validateUniqueReleases(indexReleases []IndexRelease) error {
 		sha256Hash.Write([]byte(strings.Join(authorities, ",")))
 
 		hexHash := hex.EncodeToString(sha256Hash.Sum(nil))
-		otherVer, exists := releaseChecksums[hexHash]
+		otherVer, exists = releaseChecksums[hexHash]
 		if exists {
 			return microerror.Maskf(invalidReleaseError, "duplicate release contents for versions %s and %s", otherVer, release.Version)
 		}
