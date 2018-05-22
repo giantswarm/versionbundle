@@ -2,11 +2,35 @@ package versionbundle
 
 import (
 	"net/url"
+
+	"github.com/giantswarm/microerror"
 )
 
 type Authority struct {
-	Endpoint *url.URL `yaml:"endpoint"`
-	Name     string   `yaml:"Name"`
-	Provider string   `yaml:"Provider"`
-	Version  string   `yaml:"version"`
+	Endpoint *URL   `yaml:"endpoint"`
+	Name     string `yaml:"Name"`
+	Provider string `yaml:"Provider"`
+	Version  string `yaml:"version"`
+}
+
+// URL is a hack referring to the native url.URL in order to support yaml
+// unmarshaling.
+type URL struct {
+	*url.URL
+}
+
+func (u *URL) UnmarshalYAML(unmarshal func(interface{}) error) error {
+	var s string
+	err := unmarshal(&s)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+	url, err := url.Parse(s)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	u.URL = url
+
+	return nil
 }

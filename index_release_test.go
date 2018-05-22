@@ -6,13 +6,15 @@ import (
 	"time"
 )
 
-func urlMustParse(v string) *url.URL {
+func urlMustParse(v string) *URL {
 	u, err := url.Parse(v)
 	if err != nil {
 		panic(err)
 	}
 
-	return u
+	return &URL{
+		URL: u,
+	}
 }
 
 func Test_validateReleaseAuthorityEndpoints(t *testing.T) {
