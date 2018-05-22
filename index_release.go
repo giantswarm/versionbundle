@@ -19,6 +19,51 @@ type IndexRelease struct {
 	Version     string      `yaml:"version"`
 }
 
+// CompileReleases takes indexReleases and collected version bundles and
+// compiles canonicalized Releases from them.
+func CompileReleases(indexReleases []IndexRelease, bundles []Bundle) ([]Release, error) {
+	releases, err := buildReleases(indexReleases, bundles)
+	if err != nil {
+		return nil, microerror.Mask(err)
+	}
+
+	// TODO(tuomas): Sort releases.
+	// TODO(tuomas): Implement changelog cleanup etc.
+
+	return releases, nil
+}
+
+func buildReleases(indexReleases []IndexRelease, bundles []Bundle) ([]Release, error) {
+	bundleCache := make(map[string]Bundle)
+
+	// Create cache of bundles for quick lookup
+	for _, b := range bundles {
+		bundleCache[b.ID()] = b
+	}
+
+	var releases []Release
+
+	for _, ir := range indexReleases {
+		release := Release{
+			active:    ir.Active,
+			timestamp: ir.Date.Format(releaseTimestampFormat),
+			version:   ir.Version,
+		}
+
+		for _, a := range ir.Authorities {
+			b, found := bundleCache[a.BundleID()]
+			if !found {
+				return nil, microerror.Maskf(invalidReleaseError, "IndexRelease v%s contains Authority with bundle ID %s that cannot be found from collected version bundles.")
+			}
+			release.bundles = append(release.bundles, b)
+		}
+
+		releases = append(releases, release)
+	}
+
+	return releases, nil
+}
+
 // TODO define and implement validation rules
 func ValidateIndexReleases(indexReleases []IndexRelease) error {
 	if len(indexReleases) == 0 {
@@ -94,10 +139,7 @@ func validateUniqueReleases(indexReleases []IndexRelease) error {
 		// Verify release version contents
 		authorities := make([]string, 0, len(release.Authorities))
 		for _, a := range release.Authorities {
-			n := strings.TrimSpace(a.Name)
-			p := strings.TrimSpace(a.Provider)
-			v := strings.TrimSpace(a.Version)
-			authorities = append(authorities, n+":"+p+":"+v)
+			authorities = append(authorities, a.BundleID())
 		}
 
 		sort.Strings(authorities)
