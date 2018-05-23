@@ -1,6 +1,7 @@
 package versionbundle
 
 import (
+	"fmt"
 	"net/url"
 	"strings"
 	"testing"
@@ -163,6 +164,133 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "case 2: introduction of patch to bar-operator",
+			releases: []Release{
+				{
+					changelogs: []Changelog{
+						{
+							Component:   "foo-operator",
+							Description: "new feature x",
+							Kind:        KindAdded,
+						},
+						{
+							Component:   "bar-operator",
+							Description: "new feature y",
+							Kind:        KindAdded,
+						},
+					},
+					version: "1.0.0",
+				},
+				{
+					changelogs: []Changelog{
+						{
+							Component:   "foo-operator",
+							Description: "new feature x",
+							Kind:        KindAdded,
+						},
+						{
+							Component:   "bar-operator",
+							Description: "changed feature y",
+							Kind:        KindChanged,
+						},
+					},
+					version: "1.0.1",
+				},
+				{
+					changelogs: []Changelog{
+						{
+							Component:   "foo-operator",
+							Description: "new feature z",
+							Kind:        KindAdded,
+						},
+						{
+							Component:   "bar-operator",
+							Description: "new feature y",
+							Kind:        KindAdded,
+						},
+						{
+							Component:   "baz-operator",
+							Description: "new feature quux",
+							Kind:        KindAdded,
+						},
+					},
+					version: "2.0.0",
+				},
+				{
+					changelogs: []Changelog{
+						{
+							Component:   "foo-operator",
+							Description: "new feature z",
+							Kind:        KindAdded,
+						},
+						{
+							Component:   "bar-operator",
+							Description: "changed feature y",
+							Kind:        KindChanged,
+						},
+						{
+							Component:   "baz-operator",
+							Description: "new feature quux",
+							Kind:        KindAdded,
+						},
+					},
+					version: "2.0.1",
+				},
+			},
+			expectedReleases: []Release{
+				{
+					changelogs: []Changelog{
+						{
+							Component:   "foo-operator",
+							Description: "new feature x",
+							Kind:        KindAdded,
+						},
+						{
+							Component:   "bar-operator",
+							Description: "new feature y",
+							Kind:        KindAdded,
+						},
+					},
+					version: "1.0.0",
+				},
+				{
+					changelogs: []Changelog{
+						{
+							Component:   "bar-operator",
+							Description: "changed feature y",
+							Kind:        KindChanged,
+						},
+					},
+					version: "1.0.1",
+				},
+				{
+					changelogs: []Changelog{
+						{
+							Component:   "bar-operator",
+							Description: "new feature y",
+							Kind:        KindAdded,
+						},
+						{
+							Component:   "baz-operator",
+							Description: "new feature quux",
+							Kind:        KindAdded,
+						},
+					},
+					version: "2.0.0",
+				},
+				{
+					changelogs: []Changelog{
+						{
+							Component:   "bar-operator",
+							Description: "changed feature y",
+							Kind:        KindChanged,
+						},
+					},
+					version: "2.0.1",
+				},
+			},
+		},
 	}
 
 	for _, tc := range testCases {
@@ -171,16 +299,20 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 
 			gotChangelogs := make([]string, 0)
 			for _, r := range filteredReleases {
+				gotChangelogs = append(gotChangelogs, fmt.Sprintf("Version %s: [", r.Version()))
 				for _, clog := range r.Changelogs() {
 					gotChangelogs = append(gotChangelogs, clog.String())
 				}
+				gotChangelogs = append(gotChangelogs, "]")
 			}
 
 			expectedChangelogs := make([]string, 0)
 			for _, r := range tc.expectedReleases {
+				expectedChangelogs = append(expectedChangelogs, fmt.Sprintf("Version %s: [", r.Version()))
 				for _, clog := range r.Changelogs() {
 					expectedChangelogs = append(expectedChangelogs, clog.String())
 				}
+				expectedChangelogs = append(expectedChangelogs, "]")
 			}
 
 			got := "[" + strings.Join(gotChangelogs, ", ") + "]"

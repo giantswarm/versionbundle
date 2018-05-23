@@ -103,10 +103,12 @@ func deduplicateReleaseChangelog(releases []Release) []Release {
 		curChangelogs := make(map[string]LogState)
 		for _, clog := range r.Changelogs() {
 			clogStr := clog.String()
-			_, exists := prevChangelogs[clogStr]
+			state, exists := prevChangelogs[clogStr]
 			switch exists {
 			case true:
-				curChangelogs[clogStr] = Removed
+				if state == New {
+					curChangelogs[clogStr] = Removed
+				}
 				// r.Changelogs() returns a copy of changelogs so removal won't
 				// mess iteration in this case.
 				r.removeChangelogEntry(clog)
