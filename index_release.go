@@ -99,7 +99,7 @@ func deduplicateReleaseChangelog(releases []Release) []Release {
 	// First one is always there.
 	filteredReleases := append([]Release{}, releases[0])
 
-	for _, r := range releases {
+	for _, r := range releases[1:] {
 		curChangelogs := make(map[string]LogState)
 		for _, clog := range r.Changelogs() {
 			clogStr := clog.String()
