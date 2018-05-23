@@ -46,7 +46,7 @@ func buildReleases(indexReleases []IndexRelease, bundles []Bundle) ([]Release, e
 	for _, ir := range indexReleases {
 		release := Release{
 			active:    ir.Active,
-			timestamp: ir.Date.Format(releaseTimestampFormat),
+			timestamp: ir.Date.Format(indexReleaseTimestampFormat),
 			version:   ir.Version,
 		}
 
