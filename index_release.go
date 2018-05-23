@@ -25,8 +25,7 @@ type IndexRelease struct {
 func CompileReleases(logger micrologger.Logger, indexReleases []IndexRelease, bundles []Bundle) ([]Release, error) {
 	releases := buildReleases(logger, indexReleases, bundles)
 
-	// TODO(tuomas): Sort releases.
-	// TODO(tuomas): Implement changelog cleanup etc.
+	deduplicateReleaseChangelog(releases)
 
 	return releases, nil
 }
@@ -62,6 +61,52 @@ INDEX_RELEASES:
 	}
 
 	return releases
+}
+
+// deduplicateReleaseChangelog removes duplicate changelog entries in
+// consequtive release entries.
+func deduplicateReleaseChangelog(releases []Release) []Release {
+	if len(releases) < 2 {
+		return releases
+	}
+
+	type LogState int
+	const (
+		New LogState = iota
+		Removed
+	)
+
+	sort.Sort(SortReleasesByVersion(releases))
+
+	prevChangelogs := make(map[string]LogState)
+	for _, clog := range releases[0].Changelogs() {
+		prevChangelogs[clog.String()] = New
+	}
+
+	// First one is always there.
+	filteredReleases := append([]Release{}, releases[0])
+
+	for _, r := range releases {
+		curChangelogs := make(map[string]LogState)
+		for _, clog := range r.Changelogs() {
+			clogStr := clog.String()
+			_, exists := prevChangelogs[clogStr]
+			switch exists {
+			case true:
+				curChangelogs[clogStr] = Removed
+				// r.Changelogs() returns a copy of changelogs so removal won't
+				// mess iteration in this case.
+				r.removeChangelogEntry(clog)
+			case false:
+				curChangelogs[clogStr] = New
+			}
+		}
+
+		filteredReleases = append(filteredReleases, r)
+		prevChangelogs = curChangelogs
+	}
+
+	return filteredReleases
 }
 
 // TODO define and implement validation rules
