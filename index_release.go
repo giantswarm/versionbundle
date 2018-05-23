@@ -40,27 +40,40 @@ func buildReleases(logger micrologger.Logger, indexReleases []IndexRelease, bund
 
 	var releases []Release
 
-INDEX_RELEASES:
 	for _, ir := range indexReleases {
+		bundles, err := groupBundlesForIndexRelease(ir, bundleCache)
+		if IsBundleNotFound(err) {
+			logger.Log("level", "warning", "message", err.Error())
+			continue
+		}
+
+		if err != nil {
+			panic(err)
+		}
+
 		release := Release{
 			active:    ir.Active,
+			bundles:   bundles,
 			timestamp: ir.Date.Format(indexReleaseTimestampFormat),
 			version:   ir.Version,
 		}
-
-		for _, a := range ir.Authorities {
-			b, found := bundleCache[a.BundleID()]
-			if !found {
-				logger.Log("level", "warning", "message", "IndexRelease v%s contains Authority with bundle ID %s that cannot be found from collected version bundles. Skipping.")
-				continue INDEX_RELEASES
-			}
-			release.bundles = append(release.bundles, b)
-		}
-
 		releases = append(releases, release)
 	}
 
 	return releases
+}
+
+func groupBundlesForIndexRelease(ir IndexRelease, bundles map[string]Bundle) ([]Bundle, error) {
+	var groupedBundles []Bundle
+	for _, a := range ir.Authorities {
+		b, found := bundles[a.BundleID()]
+		if !found {
+			return nil, microerror.Maskf(bundleNotFoundError, "IndexRelease v%s contains Authority with bundle ID %s that cannot be found from collected version bundles.", ir.Version, a.BundleID())
+		}
+		groupedBundles = append(groupedBundles, b)
+	}
+
+	return groupedBundles, nil
 }
 
 // deduplicateReleaseChangelog removes duplicate changelog entries in
