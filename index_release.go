@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/giantswarm/microerror"
+	"github.com/giantswarm/micrologger"
 )
 
 const indexReleaseTimestampFormat = "2006-01-02T15:04:05.00Z"
@@ -21,11 +22,8 @@ type IndexRelease struct {
 
 // CompileReleases takes indexReleases and collected version bundles and
 // compiles canonicalized Releases from them.
-func CompileReleases(indexReleases []IndexRelease, bundles []Bundle) ([]Release, error) {
-	releases, err := buildReleases(indexReleases, bundles)
-	if err != nil {
-		return nil, microerror.Mask(err)
-	}
+func CompileReleases(logger micrologger.Logger, indexReleases []IndexRelease, bundles []Bundle) ([]Release, error) {
+	releases := buildReleases(logger, indexReleases, bundles)
 
 	// TODO(tuomas): Sort releases.
 	// TODO(tuomas): Implement changelog cleanup etc.
@@ -33,7 +31,7 @@ func CompileReleases(indexReleases []IndexRelease, bundles []Bundle) ([]Release,
 	return releases, nil
 }
 
-func buildReleases(indexReleases []IndexRelease, bundles []Bundle) ([]Release, error) {
+func buildReleases(logger micrologger.Logger, indexReleases []IndexRelease, bundles []Bundle) []Release {
 	bundleCache := make(map[string]Bundle)
 
 	// Create cache of bundles for quick lookup
@@ -43,6 +41,7 @@ func buildReleases(indexReleases []IndexRelease, bundles []Bundle) ([]Release, e
 
 	var releases []Release
 
+INDEX_RELEASES:
 	for _, ir := range indexReleases {
 		release := Release{
 			active:    ir.Active,
@@ -53,7 +52,8 @@ func buildReleases(indexReleases []IndexRelease, bundles []Bundle) ([]Release, e
 		for _, a := range ir.Authorities {
 			b, found := bundleCache[a.BundleID()]
 			if !found {
-				return nil, microerror.Maskf(invalidReleaseError, "IndexRelease v%s contains Authority with bundle ID %s that cannot be found from collected version bundles.")
+				logger.Log("level", "warning", "message", "IndexRelease v%s contains Authority with bundle ID %s that cannot be found from collected version bundles. Skipping.")
+				continue INDEX_RELEASES
 			}
 			release.bundles = append(release.bundles, b)
 		}
@@ -61,7 +61,7 @@ func buildReleases(indexReleases []IndexRelease, bundles []Bundle) ([]Release, e
 		releases = append(releases, release)
 	}
 
-	return releases, nil
+	return releases
 }
 
 // TODO define and implement validation rules
