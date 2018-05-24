@@ -3,9 +3,12 @@ package versionbundle
 import (
 	"fmt"
 	"net/url"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/giantswarm/micrologger/microloggertest"
 )
 
 func urlMustParse(v string) *URL {
@@ -16,6 +19,717 @@ func urlMustParse(v string) *URL {
 
 	return &URL{
 		URL: u,
+	}
+}
+
+func Test_buildReleases(t *testing.T) {
+	testCases := []struct {
+		name             string
+		indexReleases    []IndexRelease
+		bundles          []Bundle
+		expectedReleases []Release
+	}{
+		{
+			name: "case 0: build one release",
+			indexReleases: []IndexRelease{
+				{
+					Active: true,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version: "1.0.0",
+				},
+			},
+			bundles: []Bundle{
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "cert-operator",
+							Description: "First release version.",
+							Kind:        KindAdded,
+						},
+					},
+					Name:    "cert-operator",
+					Time:    time.Date(2018, time.April, 12, 12, 00, 0, 0, time.UTC),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "cluster-operator",
+							Description: "First release version.",
+							Kind:        KindAdded,
+						},
+					},
+					Name:     "cluster-operator",
+					Provider: "kvm",
+					Time:     time.Date(2018, time.April, 14, 12, 00, 0, 0, time.UTC),
+					Version:  "0.1.0",
+					WIP:      false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "cluster-operator",
+							Description: "Change feature x.",
+							Kind:        KindChanged,
+						},
+					},
+					Name:     "cluster-operator",
+					Provider: "kvm",
+					Time:     time.Date(2018, time.May, 16, 12, 00, 0, 0, time.UTC),
+					Version:  "0.2.0",
+					WIP:      false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "cluster-operator",
+							Description: "Change AWS feature k.",
+							Kind:        KindChanged,
+						},
+					},
+					Name:     "cluster-operator",
+					Provider: "aws",
+					Time:     time.Date(2018, time.May, 4, 12, 00, 0, 0, time.UTC),
+					Version:  "0.1.0",
+					WIP:      false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "kvm-operator",
+							Description: "Change feature y.",
+							Kind:        KindChanged,
+						},
+					},
+					Name:    "kvm-operator",
+					Time:    time.Date(2018, time.January, 14, 12, 00, 0, 0, time.UTC),
+					Version: "1.2.0",
+					WIP:     false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "kvm-operator",
+							Description: "Change feature z.",
+							Kind:        KindChanged,
+						},
+					},
+					Name:    "kvm-operator",
+					Time:    time.Date(2018, time.February, 14, 12, 00, 0, 0, time.UTC),
+					Version: "1.4.2",
+					WIP:     false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "kvm-operator",
+							Description: "New component q.",
+							Kind:        KindAdded,
+						},
+					},
+					Name:    "kvm-operator",
+					Time:    time.Date(2018, time.March, 14, 12, 00, 0, 0, time.UTC),
+					Version: "2.2.1",
+					WIP:     false,
+				},
+			},
+			expectedReleases: []Release{
+				{
+					bundles: []Bundle{
+						{
+							Changelogs: []Changelog{
+								{
+									Component:   "cert-operator",
+									Description: "First release version.",
+									Kind:        KindAdded,
+								},
+							},
+							Name:    "cert-operator",
+							Time:    time.Date(2018, time.April, 12, 12, 00, 0, 0, time.UTC),
+							Version: "0.1.0",
+							WIP:     false,
+						},
+						{
+							Changelogs: []Changelog{
+								{
+									Component:   "cluster-operator",
+									Description: "First release version.",
+									Kind:        KindAdded,
+								},
+							},
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Time:     time.Date(2018, time.April, 14, 12, 00, 0, 0, time.UTC),
+							Version:  "0.1.0",
+							WIP:      false,
+						},
+						{
+							Changelogs: []Changelog{
+								{
+									Component:   "kvm-operator",
+									Description: "New component q.",
+									Kind:        KindAdded,
+								},
+							},
+							Name:    "kvm-operator",
+							Time:    time.Date(2018, time.March, 14, 12, 00, 0, 0, time.UTC),
+							Version: "2.2.1",
+							WIP:     false,
+						},
+					},
+					changelogs: []Changelog{
+						{
+							Component:   "cert-operator",
+							Description: "First release version.",
+							Kind:        KindAdded,
+						},
+						{
+							Component:   "cluster-operator",
+							Description: "First release version.",
+							Kind:        KindAdded,
+						},
+						{
+							Component:   "kvm-operator",
+							Description: "New component q.",
+							Kind:        KindAdded,
+						},
+					},
+					deprecated: false,
+					timestamp:  "2018-04-16T12:00:00.00Z",
+					version:    "1.0.0",
+					wip:        false,
+					active:     true,
+				},
+			},
+		},
+		{
+			name: "case 1: build two releases",
+			indexReleases: []IndexRelease{
+				{
+					Active: true,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version: "1.0.0",
+				},
+				{
+					Active: true,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.2.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.April, 22, 12, 00, 0, 0, time.UTC),
+					Version: "1.1.0",
+				},
+			},
+			bundles: []Bundle{
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "cert-operator",
+							Description: "First release version.",
+							Kind:        KindAdded,
+						},
+					},
+					Name:    "cert-operator",
+					Time:    time.Date(2018, time.April, 12, 12, 00, 0, 0, time.UTC),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "cluster-operator",
+							Description: "First release version.",
+							Kind:        KindAdded,
+						},
+					},
+					Name:     "cluster-operator",
+					Provider: "kvm",
+					Time:     time.Date(2018, time.April, 14, 12, 00, 0, 0, time.UTC),
+					Version:  "0.1.0",
+					WIP:      false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "cluster-operator",
+							Description: "Change feature x.",
+							Kind:        KindChanged,
+						},
+					},
+					Name:     "cluster-operator",
+					Provider: "kvm",
+					Time:     time.Date(2018, time.May, 16, 12, 00, 0, 0, time.UTC),
+					Version:  "0.2.0",
+					WIP:      false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "cluster-operator",
+							Description: "Change AWS feature k.",
+							Kind:        KindChanged,
+						},
+					},
+					Name:     "cluster-operator",
+					Provider: "aws",
+					Time:     time.Date(2018, time.May, 4, 12, 00, 0, 0, time.UTC),
+					Version:  "0.1.0",
+					WIP:      false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "kvm-operator",
+							Description: "Change feature y.",
+							Kind:        KindChanged,
+						},
+					},
+					Name:    "kvm-operator",
+					Time:    time.Date(2018, time.January, 14, 12, 00, 0, 0, time.UTC),
+					Version: "1.2.0",
+					WIP:     false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "kvm-operator",
+							Description: "Change feature z.",
+							Kind:        KindChanged,
+						},
+					},
+					Name:    "kvm-operator",
+					Time:    time.Date(2018, time.February, 14, 12, 00, 0, 0, time.UTC),
+					Version: "1.4.2",
+					WIP:     false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "kvm-operator",
+							Description: "New component q.",
+							Kind:        KindAdded,
+						},
+					},
+					Name:    "kvm-operator",
+					Time:    time.Date(2018, time.March, 14, 12, 00, 0, 0, time.UTC),
+					Version: "2.2.1",
+					WIP:     false,
+				},
+			},
+			expectedReleases: []Release{
+				{
+					bundles: []Bundle{
+						{
+							Changelogs: []Changelog{
+								{
+									Component:   "cert-operator",
+									Description: "First release version.",
+									Kind:        KindAdded,
+								},
+							},
+							Name:    "cert-operator",
+							Time:    time.Date(2018, time.April, 12, 12, 00, 0, 0, time.UTC),
+							Version: "0.1.0",
+							WIP:     false,
+						},
+						{
+							Changelogs: []Changelog{
+								{
+									Component:   "cluster-operator",
+									Description: "First release version.",
+									Kind:        KindAdded,
+								},
+							},
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Time:     time.Date(2018, time.April, 14, 12, 00, 0, 0, time.UTC),
+							Version:  "0.1.0",
+							WIP:      false,
+						},
+						{
+							Changelogs: []Changelog{
+								{
+									Component:   "kvm-operator",
+									Description: "New component q.",
+									Kind:        KindAdded,
+								},
+							},
+							Name:    "kvm-operator",
+							Time:    time.Date(2018, time.March, 14, 12, 00, 0, 0, time.UTC),
+							Version: "2.2.1",
+							WIP:     false,
+						},
+					},
+					changelogs: []Changelog{
+						{
+							Component:   "cert-operator",
+							Description: "First release version.",
+							Kind:        KindAdded,
+						},
+						{
+							Component:   "cluster-operator",
+							Description: "First release version.",
+							Kind:        KindAdded,
+						},
+						{
+							Component:   "kvm-operator",
+							Description: "New component q.",
+							Kind:        KindAdded,
+						},
+					},
+					deprecated: false,
+					timestamp:  "2018-04-16T12:00:00.00Z",
+					version:    "1.0.0",
+					wip:        false,
+					active:     true,
+				},
+				{
+					bundles: []Bundle{
+						{
+							Changelogs: []Changelog{
+								{
+									Component:   "cert-operator",
+									Description: "First release version.",
+									Kind:        KindAdded,
+								},
+							},
+							Name:    "cert-operator",
+							Time:    time.Date(2018, time.April, 12, 12, 00, 0, 0, time.UTC),
+							Version: "0.1.0",
+							WIP:     false,
+						},
+						{
+							Changelogs: []Changelog{
+								{
+									Component:   "cluster-operator",
+									Description: "Change feature x.",
+									Kind:        KindChanged,
+								},
+							},
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Time:     time.Date(2018, time.May, 16, 12, 00, 0, 0, time.UTC),
+							Version:  "0.2.0",
+							WIP:      false,
+						},
+						{
+							Changelogs: []Changelog{
+								{
+									Component:   "kvm-operator",
+									Description: "New component q.",
+									Kind:        KindAdded,
+								},
+							},
+							Name:    "kvm-operator",
+							Time:    time.Date(2018, time.March, 14, 12, 00, 0, 0, time.UTC),
+							Version: "2.2.1",
+							WIP:     false,
+						},
+					},
+					changelogs: []Changelog{
+						{
+							Component:   "cert-operator",
+							Description: "First release version.",
+							Kind:        KindAdded,
+						},
+						{
+							Component:   "cluster-operator",
+							Description: "Change feature x.",
+							Kind:        KindChanged,
+						},
+
+						{
+							Component:   "kvm-operator",
+							Description: "New component q.",
+							Kind:        KindAdded,
+						},
+					},
+					deprecated: false,
+					timestamp:  "2018-04-22T12:00:00.00Z",
+					version:    "1.1.0",
+					wip:        false,
+					active:     true,
+				},
+			},
+		},
+		{
+			name: "case 2: try to build two release but miss one bundle for second one",
+			indexReleases: []IndexRelease{
+				{
+					Active: true,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version: "1.0.0",
+				},
+				{
+					Active: true,
+					Authorities: []Authority{
+						{
+							Endpoint: urlMustParse("http://cert-operator:8000/"),
+							Name:     "cert-operator",
+							Version:  "0.1.0",
+						},
+						{
+							Endpoint: urlMustParse("http://cluster-operator:8000/"),
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.4.0",
+						},
+						{
+							Endpoint: urlMustParse("http://kvm-operator:8000/"),
+							Name:     "kvm-operator",
+							Version:  "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.April, 22, 12, 00, 0, 0, time.UTC),
+					Version: "1.1.0",
+				},
+			},
+			bundles: []Bundle{
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "cert-operator",
+							Description: "First release version.",
+							Kind:        KindAdded,
+						},
+					},
+					Name:    "cert-operator",
+					Time:    time.Date(2018, time.April, 12, 12, 00, 0, 0, time.UTC),
+					Version: "0.1.0",
+					WIP:     false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "cluster-operator",
+							Description: "First release version.",
+							Kind:        KindAdded,
+						},
+					},
+					Name:     "cluster-operator",
+					Provider: "kvm",
+					Time:     time.Date(2018, time.April, 14, 12, 00, 0, 0, time.UTC),
+					Version:  "0.1.0",
+					WIP:      false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "cluster-operator",
+							Description: "Change feature x.",
+							Kind:        KindChanged,
+						},
+					},
+					Name:     "cluster-operator",
+					Provider: "kvm",
+					Time:     time.Date(2018, time.May, 16, 12, 00, 0, 0, time.UTC),
+					Version:  "0.2.0",
+					WIP:      false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "cluster-operator",
+							Description: "Change AWS feature k.",
+							Kind:        KindChanged,
+						},
+					},
+					Name:     "cluster-operator",
+					Provider: "aws",
+					Time:     time.Date(2018, time.May, 4, 12, 00, 0, 0, time.UTC),
+					Version:  "0.1.0",
+					WIP:      false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "kvm-operator",
+							Description: "Change feature y.",
+							Kind:        KindChanged,
+						},
+					},
+					Name:    "kvm-operator",
+					Time:    time.Date(2018, time.January, 14, 12, 00, 0, 0, time.UTC),
+					Version: "1.2.0",
+					WIP:     false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "kvm-operator",
+							Description: "Change feature z.",
+							Kind:        KindChanged,
+						},
+					},
+					Name:    "kvm-operator",
+					Time:    time.Date(2018, time.February, 14, 12, 00, 0, 0, time.UTC),
+					Version: "1.4.2",
+					WIP:     false,
+				},
+				{
+					Changelogs: []Changelog{
+						{
+							Component:   "kvm-operator",
+							Description: "New component q.",
+							Kind:        KindAdded,
+						},
+					},
+					Name:    "kvm-operator",
+					Time:    time.Date(2018, time.March, 14, 12, 00, 0, 0, time.UTC),
+					Version: "2.2.1",
+					WIP:     false,
+				},
+			},
+			expectedReleases: []Release{
+				{
+					bundles: []Bundle{
+						{
+							Changelogs: []Changelog{
+								{
+									Component:   "cert-operator",
+									Description: "First release version.",
+									Kind:        KindAdded,
+								},
+							},
+							Name:    "cert-operator",
+							Time:    time.Date(2018, time.April, 12, 12, 00, 0, 0, time.UTC),
+							Version: "0.1.0",
+							WIP:     false,
+						},
+						{
+							Changelogs: []Changelog{
+								{
+									Component:   "cluster-operator",
+									Description: "First release version.",
+									Kind:        KindAdded,
+								},
+							},
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Time:     time.Date(2018, time.April, 14, 12, 00, 0, 0, time.UTC),
+							Version:  "0.1.0",
+							WIP:      false,
+						},
+						{
+							Changelogs: []Changelog{
+								{
+									Component:   "kvm-operator",
+									Description: "New component q.",
+									Kind:        KindAdded,
+								},
+							},
+							Name:    "kvm-operator",
+							Time:    time.Date(2018, time.March, 14, 12, 00, 0, 0, time.UTC),
+							Version: "2.2.1",
+							WIP:     false,
+						},
+					},
+					changelogs: []Changelog{
+						{
+							Component:   "cert-operator",
+							Description: "First release version.",
+							Kind:        KindAdded,
+						},
+						{
+							Component:   "cluster-operator",
+							Description: "First release version.",
+							Kind:        KindAdded,
+						},
+						{
+							Component:   "kvm-operator",
+							Description: "New component q.",
+							Kind:        KindAdded,
+						},
+					},
+					deprecated: false,
+					timestamp:  "2018-04-16T12:00:00.00Z",
+					version:    "1.0.0",
+					wip:        false,
+					active:     true,
+				},
+			},
+		},
+	}
+
+	logger := microloggertest.New()
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			releases := buildReleases(logger, tc.indexReleases, tc.bundles)
+
+			if !reflect.DeepEqual(releases, tc.expectedReleases) {
+				t.Fatalf("releases don't match expectedReleases; got:\n%#v\n\n, expected:\n%#v\n\n", releases, tc.expectedReleases)
+			}
+		})
 	}
 }
 
