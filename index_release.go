@@ -51,12 +51,21 @@ func buildReleases(logger micrologger.Logger, indexReleases []IndexRelease, bund
 			panic(err)
 		}
 
-		release := Release{
-			active:    ir.Active,
-			bundles:   bundles,
-			timestamp: ir.Date.Format(indexReleaseTimestampFormat),
-			version:   ir.Version,
+		rc := ReleaseConfig{
+			Bundles: bundles,
 		}
+
+		release, err := NewRelease(rc)
+		if err != nil {
+			logger.Log("level", "warning", "message", err.Error())
+			continue
+		}
+
+		release.active = ir.Active
+		release.deprecated = false
+		release.timestamp = ir.Date.Format(indexReleaseTimestampFormat)
+		release.version = ir.Version
+
 		releases = append(releases, release)
 	}
 
