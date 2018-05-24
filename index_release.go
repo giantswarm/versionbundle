@@ -25,7 +25,7 @@ type IndexRelease struct {
 func CompileReleases(logger micrologger.Logger, indexReleases []IndexRelease, bundles []Bundle) ([]Release, error) {
 	releases := buildReleases(logger, indexReleases, bundles)
 
-	deduplicateReleaseChangelog(releases)
+	releases = deduplicateReleaseChangelog(releases)
 
 	return releases, nil
 }
