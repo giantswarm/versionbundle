@@ -86,51 +86,84 @@ func groupBundlesForIndexRelease(ir IndexRelease, bundles map[string]Bundle) ([]
 }
 
 // deduplicateReleaseChangelog removes duplicate changelog entries in
-// consequtive release entries.
+// consequtive release entries. Core concept of algorithm here is to first sort
+// releases by their release version and then iterate them and compare current
+// release to previous one that fulfills following requirements: smaller
+// version number and earlier timestamp. Comparison of earlier timestamp is
+// crucial here in order to calculate changelog correctly when newer patch
+// releases have been introduced with lower version number
+// (e.g. [1.0.0, 2.0.0] -> [1.0.0, 1.0.1, 2.0.0, 2.0.1]).
 func deduplicateReleaseChangelog(releases []Release) []Release {
 	if len(releases) < 2 {
 		return releases
 	}
 
-	type LogState int
-	const (
-		New LogState = iota
-		Removed
-	)
-
 	sort.Sort(SortReleasesByVersion(releases))
 
-	prevChangelogs := make(map[string]LogState)
-	for _, clog := range releases[0].Changelogs() {
-		prevChangelogs[clog.String()] = New
-	}
+	var filteredReleases []Release
 
-	// First one is always there.
-	filteredReleases := append([]Release{}, releases[0])
+	for i := 0; i < len(releases); i++ {
+		r := releases[i]
 
-	for _, r := range releases[1:] {
-		curChangelogs := make(map[string]LogState)
+		// Deepcopy changelogs as they are modified later and this instance of
+		// r ends up to filteredReleases.
+		r.changelogs = make([]Changelog, len(releases[i].changelogs))
+		copy(r.changelogs, releases[i].changelogs)
+
+		// Find previous release and map changelogs for quick lookup.
+		prevRelease := findPreviousRelease(r, releases[:i])
+		prevChangelogs := mapReleaseChangelogs(prevRelease)
+
+		// Process changelogs of current release removing ones present in
+		// previous release.
 		for _, clog := range r.Changelogs() {
-			clogStr := clog.String()
-			state, exists := prevChangelogs[clogStr]
-			switch exists {
-			case true:
-				if state == New {
-					curChangelogs[clogStr] = Removed
-				}
+			_, exists := prevChangelogs[clog.String()]
+			if exists {
 				// r.Changelogs() returns a copy of changelogs so removal won't
 				// mess iteration in this case.
 				r.removeChangelogEntry(clog)
-			case false:
-				curChangelogs[clogStr] = New
 			}
+
 		}
 
 		filteredReleases = append(filteredReleases, r)
-		prevChangelogs = curChangelogs
 	}
 
 	return filteredReleases
+}
+
+// findPreviousRelease finds release that is older than argument r0. This
+// function expects that releases is sorted by version as it is iterated
+// backwards. If no previous release is found, empty Release is returned.
+func findPreviousRelease(r0 Release, releases []Release) Release {
+	r0Date, err := time.Parse(releaseTimestampFormat, r0.Timestamp())
+	if err != nil {
+		panic(err)
+	}
+
+	for i := len(releases) - 1; i >= 0; i-- {
+		date, err := time.Parse(releaseTimestampFormat, releases[i].Timestamp())
+		if err != nil {
+			panic(err)
+		}
+
+		if date.Before(r0Date) {
+			return releases[i]
+		}
+	}
+
+	return Release{}
+}
+
+// mapReleaseChangelogs converts Release's Changelog slice to
+// map[string]struct{} for quick lookup.
+func mapReleaseChangelogs(r Release) map[string]struct{} {
+	changelogs := make(map[string]struct{})
+	for _, clog := range r.Changelogs() {
+		changelogs[clog.String()] = struct{}{}
+	}
+
+	return changelogs
 }
 
 // TODO define and implement validation rules

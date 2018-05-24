@@ -36,7 +36,8 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					version: "1.0.0",
+					timestamp: "2018-05-02T12:00:00.000000Z",
+					version:   "1.0.0",
 				},
 				{
 					changelogs: []Changelog{
@@ -46,7 +47,8 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					version: "2.0.0",
+					timestamp: "2018-05-12T12:00:00.000000Z",
+					version:   "2.0.0",
 				},
 				{
 					changelogs: []Changelog{
@@ -56,7 +58,8 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					version: "3.0.0",
+					timestamp: "2018-05-22T12:00:00.000000Z",
+					version:   "3.0.0",
 				},
 			},
 			expectedReleases: []Release{
@@ -68,7 +71,8 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					version: "1.0.0",
+					timestamp: "2018-05-02T12:00:00.000000Z",
+					version:   "1.0.0",
 				},
 				{
 					changelogs: []Changelog{
@@ -78,7 +82,8 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					version: "2.0.0",
+					timestamp: "2018-05-12T12:00:00.000000Z",
+					version:   "2.0.0",
 				},
 				{
 					changelogs: []Changelog{
@@ -88,7 +93,8 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					version: "3.0.0",
+					timestamp: "2018-05-22T12:00:00.000000Z",
+					version:   "3.0.0",
 				},
 			},
 		},
@@ -103,7 +109,8 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					version: "1.0.0",
+					timestamp: "2018-05-02T12:00:00.000000Z",
+					version:   "1.0.0",
 				},
 				{
 					changelogs: []Changelog{
@@ -118,7 +125,8 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindChanged,
 						},
 					},
-					version: "1.0.1",
+					timestamp: "2018-05-18T12:00:00.000000Z",
+					version:   "1.0.1",
 				},
 				{
 					changelogs: []Changelog{
@@ -128,7 +136,8 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					version: "3.0.0",
+					timestamp: "2018-05-22T12:00:00.000000Z",
+					version:   "3.0.0",
 				},
 			},
 			expectedReleases: []Release{
@@ -140,7 +149,8 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					version: "1.0.0",
+					timestamp: "2018-05-02T12:00:00.000000Z",
+					version:   "1.0.0",
 				},
 				{
 					changelogs: []Changelog{
@@ -150,7 +160,8 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindChanged,
 						},
 					},
-					version: "1.0.1",
+					timestamp: "2018-05-18T12:00:00.000000Z",
+					version:   "1.0.1",
 				},
 				{
 					changelogs: []Changelog{
@@ -160,7 +171,8 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					version: "3.0.0",
+					timestamp: "2018-05-22T12:00:00.000000Z",
+					version:   "3.0.0",
 				},
 			},
 		},
@@ -180,7 +192,8 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					version: "1.0.0",
+					timestamp: "2018-05-02T12:00:00.000000Z",
+					version:   "1.0.0",
 				},
 				{
 					changelogs: []Changelog{
@@ -195,13 +208,14 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindChanged,
 						},
 					},
-					version: "1.0.1",
+					timestamp: "2018-05-28T12:00:00.000000Z",
+					version:   "1.0.1",
 				},
 				{
 					changelogs: []Changelog{
 						{
 							Component:   "foo-operator",
-							Description: "new feature z",
+							Description: "new feature x",
 							Kind:        KindAdded,
 						},
 						{
@@ -215,13 +229,14 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					version: "2.0.0",
+					timestamp: "2018-05-22T12:00:00.000000Z",
+					version:   "2.0.0",
 				},
 				{
 					changelogs: []Changelog{
 						{
 							Component:   "foo-operator",
-							Description: "new feature z",
+							Description: "new feature x",
 							Kind:        KindAdded,
 						},
 						{
@@ -235,7 +250,8 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					version: "2.0.1",
+					timestamp: "2018-05-28T15:00:00.000000Z",
+					version:   "2.0.1",
 				},
 			},
 			expectedReleases: []Release{
@@ -266,11 +282,6 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 				},
 				{
 					changelogs: []Changelog{
-						{
-							Component:   "bar-operator",
-							Description: "new feature y",
-							Kind:        KindAdded,
-						},
 						{
 							Component:   "baz-operator",
 							Description: "new feature quux",
