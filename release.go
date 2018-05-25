@@ -26,7 +26,7 @@ type Release struct {
 	changelogs []Changelog
 	components []Component
 	deprecated bool
-	timestamp  string
+	timestamp  time.Time
 	version    string
 	wip        bool
 	active     bool
@@ -63,7 +63,7 @@ func NewRelease(config ReleaseConfig) (Release, error) {
 		}
 	}
 
-	var timestamp string
+	var timestamp time.Time
 	{
 		timestamp, err = aggregateReleaseTimestamp(config.Bundles)
 		if err != nil {
@@ -121,7 +121,12 @@ func (r Release) Deprecated() bool {
 }
 
 func (r Release) Timestamp() string {
-	return r.timestamp
+	if r.timestamp.IsZero() {
+		// This maintains existing behavior.
+		return ""
+	}
+
+	return r.timestamp.Format(releaseTimestampFormat)
 }
 
 func (r Release) Version() string {
@@ -173,7 +178,7 @@ func aggregateReleaseDeprecated(bundles []Bundle) (bool, error) {
 	return false, nil
 }
 
-func aggregateReleaseTimestamp(bundles []Bundle) (string, error) {
+func aggregateReleaseTimestamp(bundles []Bundle) (time.Time, error) {
 	var t time.Time
 
 	for _, b := range bundles {
@@ -182,7 +187,7 @@ func aggregateReleaseTimestamp(bundles []Bundle) (string, error) {
 		}
 	}
 
-	return t.Format(releaseTimestampFormat), nil
+	return t, nil
 }
 
 func aggregateReleaseVersion(bundles []Bundle) (string, error) {

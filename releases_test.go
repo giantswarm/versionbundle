@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func Test_deduplicateReleases(t *testing.T) {
@@ -16,13 +17,13 @@ func Test_deduplicateReleases(t *testing.T) {
 			name: "case 0: test single Release",
 			input: []Release{
 				{
-					timestamp: "2018-02-02T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.February, 2, 0, 0, 00, 0, time.UTC),
 					version:   "1.0.1",
 				},
 			},
 			expectedOutput: []Release{
 				{
-					timestamp: "2018-02-02T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.February, 2, 0, 0, 00, 0, time.UTC),
 					version:   "1.0.1",
 				},
 			},
@@ -31,23 +32,23 @@ func Test_deduplicateReleases(t *testing.T) {
 			name: "case 1: test with two Releases",
 			input: []Release{
 				{
-					timestamp: "2018-02-08T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.February, 8, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
 				},
 				{
-					timestamp:  "2018-02-02T00:00:00.000000Z",
+					timestamp:  time.Date(2018, time.February, 2, 0, 0, 00, 0, time.UTC),
 					version:    "1.0.1",
 					deprecated: true,
 				},
 			},
 			expectedOutput: []Release{
 				{
-					timestamp:  "2018-02-02T00:00:00.000000Z",
+					timestamp:  time.Date(2018, time.February, 2, 0, 0, 00, 0, time.UTC),
 					version:    "1.0.1",
 					deprecated: true,
 				},
 				{
-					timestamp: "2018-02-08T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.February, 8, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
 				},
 			},
@@ -56,18 +57,18 @@ func Test_deduplicateReleases(t *testing.T) {
 			name: "case 2: test with two Releases with same version",
 			input: []Release{
 				{
-					timestamp: "2018-02-08T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.February, 8, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
 				},
 				{
-					timestamp:  "2018-02-02T00:00:00.000000Z",
+					timestamp:  time.Date(2018, time.February, 2, 0, 0, 00, 0, time.UTC),
 					version:    "1.1.1",
 					deprecated: true,
 				},
 			},
 			expectedOutput: []Release{
 				{
-					timestamp: "2018-02-08T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.February, 8, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
 				},
 			},
@@ -76,42 +77,42 @@ func Test_deduplicateReleases(t *testing.T) {
 			name: "case 3: test with three same versions in multiple Releases",
 			input: []Release{
 				{
-					timestamp:  "2018-02-08T00:00:00.000000Z",
+					timestamp:  time.Date(2018, time.February, 8, 0, 0, 00, 0, time.UTC),
 					version:    "1.1.1",
 					deprecated: true,
 				},
 				{
-					timestamp: "2018-03-22T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.March, 22, 0, 0, 00, 0, time.UTC),
 					version:   "1.2.0",
 					wip:       true,
 				},
 				{
-					timestamp:  "2018-02-02T00:00:00.000000Z",
+					timestamp:  time.Date(2018, time.February, 2, 0, 0, 00, 0, time.UTC),
 					version:    "1.0.1",
 					deprecated: true,
 				},
 				{
-					timestamp: "2018-02-18T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.February, 18, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
 				},
 				{
-					timestamp:  "2018-02-12T00:00:00.000000Z",
+					timestamp:  time.Date(2018, time.February, 12, 0, 0, 00, 0, time.UTC),
 					version:    "1.1.1",
 					deprecated: true,
 				},
 			},
 			expectedOutput: []Release{
 				{
-					timestamp:  "2018-02-02T00:00:00.000000Z",
+					timestamp:  time.Date(2018, time.February, 2, 0, 0, 00, 0, time.UTC),
 					version:    "1.0.1",
 					deprecated: true,
 				},
 				{
-					timestamp: "2018-02-18T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.February, 18, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
 				},
 				{
-					timestamp: "2018-03-22T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.March, 22, 0, 0, 00, 0, time.UTC),
 					version:   "1.2.0",
 					wip:       true,
 				},
@@ -121,18 +122,18 @@ func Test_deduplicateReleases(t *testing.T) {
 			name: "case 4: test with two Releases with same version where older is active",
 			input: []Release{
 				{
-					timestamp: "2018-02-08T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.February, 8, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
 					wip:       true,
 				},
 				{
-					timestamp: "2018-02-02T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.February, 2, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
 				},
 			},
 			expectedOutput: []Release{
 				{
-					timestamp: "2018-02-02T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.February, 2, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
 				},
 			},
@@ -141,42 +142,42 @@ func Test_deduplicateReleases(t *testing.T) {
 			name: "case 5: test with three same versions in multiple Releases where middle one of duplicates is active",
 			input: []Release{
 				{
-					timestamp:  "2018-02-08T00:00:00.000000Z",
+					timestamp:  time.Date(2018, time.February, 8, 0, 0, 00, 0, time.UTC),
 					version:    "1.1.1",
 					deprecated: true,
 				},
 				{
-					timestamp: "2018-03-22T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.March, 22, 0, 0, 00, 0, time.UTC),
 					version:   "1.2.0",
 					wip:       true,
 				},
 				{
-					timestamp:  "2018-02-02T00:00:00.000000Z",
+					timestamp:  time.Date(2018, time.February, 2, 0, 0, 00, 0, time.UTC),
 					version:    "1.0.1",
 					deprecated: true,
 				},
 				{
-					timestamp: "2018-02-18T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.February, 18, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
 					wip:       true,
 				},
 				{
-					timestamp: "2018-02-12T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.February, 12, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
 				},
 			},
 			expectedOutput: []Release{
 				{
-					timestamp:  "2018-02-02T00:00:00.000000Z",
+					timestamp:  time.Date(2018, time.February, 2, 0, 0, 00, 0, time.UTC),
 					version:    "1.0.1",
 					deprecated: true,
 				},
 				{
-					timestamp: "2018-02-12T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.February, 12, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
 				},
 				{
-					timestamp: "2018-03-22T00:00:00.000000Z",
+					timestamp: time.Date(2018, time.March, 22, 0, 0, 00, 0, time.UTC),
 					version:   "1.2.0",
 					wip:       true,
 				},
