@@ -215,7 +215,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					deprecated: false,
-					timestamp:  "2018-04-16T12:00:00.00Z",
+					timestamp:  time.Date(2018, time.April, 16, 12, 0, 0, 0, time.UTC),
 					version:    "1.0.0",
 					wip:        false,
 					active:     true,
@@ -431,7 +431,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					deprecated: false,
-					timestamp:  "2018-04-16T12:00:00.00Z",
+					timestamp:  time.Date(2018, time.April, 16, 12, 0, 0, 0, time.UTC),
 					version:    "1.0.0",
 					wip:        false,
 					active:     true,
@@ -498,7 +498,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					deprecated: false,
-					timestamp:  "2018-04-22T12:00:00.00Z",
+					timestamp:  time.Date(2018, time.April, 22, 12, 0, 0, 0, time.UTC),
 					version:    "1.1.0",
 					wip:        false,
 					active:     true,
@@ -714,7 +714,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					deprecated: false,
-					timestamp:  "2018-04-16T12:00:00.00Z",
+					timestamp:  time.Date(2018, time.April, 16, 12, 0, 0, 0, time.UTC),
 					version:    "1.0.0",
 					wip:        false,
 					active:     true,
@@ -766,7 +766,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					timestamp: "2018-05-02T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 2, 12, 0, 0, 0, time.UTC),
 					version:   "1.0.0",
 				},
 				{
@@ -777,7 +777,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					timestamp: "2018-05-12T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 12, 12, 0, 0, 0, time.UTC),
 					version:   "2.0.0",
 				},
 				{
@@ -788,7 +788,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					timestamp: "2018-05-22T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 22, 12, 0, 0, 0, time.UTC),
 					version:   "3.0.0",
 				},
 			},
@@ -801,7 +801,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					timestamp: "2018-05-02T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 2, 12, 0, 0, 0, time.UTC),
 					version:   "1.0.0",
 				},
 				{
@@ -812,7 +812,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					timestamp: "2018-05-12T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 12, 12, 0, 0, 0, time.UTC),
 					version:   "2.0.0",
 				},
 				{
@@ -823,7 +823,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					timestamp: "2018-05-22T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 22, 12, 0, 0, 0, time.UTC),
 					version:   "3.0.0",
 				},
 			},
@@ -840,7 +840,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					timestamp: "2018-05-02T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 2, 12, 0, 0, 0, time.UTC),
 					version:   "1.0.0",
 				},
 				{
@@ -856,7 +856,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindChanged,
 						},
 					},
-					timestamp: "2018-05-18T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 18, 12, 0, 0, 0, time.UTC),
 					version:   "1.0.1",
 				},
 				{
@@ -867,7 +867,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					timestamp: "2018-05-22T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 22, 12, 0, 0, 0, time.UTC),
 					version:   "3.0.0",
 				},
 			},
@@ -880,7 +880,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					timestamp: "2018-05-02T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 2, 12, 0, 0, 0, time.UTC),
 					version:   "1.0.0",
 				},
 				{
@@ -891,7 +891,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindChanged,
 						},
 					},
-					timestamp: "2018-05-18T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 18, 12, 0, 0, 0, time.UTC),
 					version:   "1.0.1",
 				},
 				{
@@ -902,7 +902,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					timestamp: "2018-05-22T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 22, 12, 0, 0, 0, time.UTC),
 					version:   "3.0.0",
 				},
 			},
@@ -924,7 +924,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					timestamp: "2018-05-02T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 2, 12, 0, 0, 0, time.UTC),
 					version:   "1.0.0",
 				},
 				{
@@ -940,7 +940,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindChanged,
 						},
 					},
-					timestamp: "2018-05-28T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 28, 12, 0, 0, 0, time.UTC),
 					version:   "1.0.1",
 				},
 				{
@@ -961,7 +961,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					timestamp: "2018-05-22T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 22, 12, 0, 0, 0, time.UTC),
 					version:   "2.0.0",
 				},
 				{
@@ -982,7 +982,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					timestamp: "2018-05-28T15:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 28, 15, 0, 0, 0, time.UTC),
 					version:   "2.0.1",
 				},
 			},
@@ -1039,18 +1039,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			filteredReleases, err := deduplicateReleaseChangelog(tc.releases)
-
-			switch {
-			case err == nil && tc.errorMatcher == nil:
-				// correct; carry on
-			case err != nil && tc.errorMatcher == nil:
-				t.Fatalf("error == %#v, want nil", err)
-			case err == nil && tc.errorMatcher != nil:
-				t.Fatalf("error == nil, want non-nil")
-			case !tc.errorMatcher(err):
-				t.Fatalf("error == %#v, want matching", err)
-			}
+			filteredReleases := deduplicateReleaseChangelog(tc.releases)
 
 			gotChangelogs := make([]string, 0)
 			for _, r := range filteredReleases {
@@ -1086,123 +1075,72 @@ func Test_findPreviousRelease(t *testing.T) {
 		r0              Release
 		releases        []Release
 		expectedRelease Release
-		errorMatcher    func(error) bool
 	}{
 		{
 			name: "case 0: return empty Release when releases is empty",
 			r0: Release{
-				timestamp: "2018-05-25T12:00:00.000000Z",
+				timestamp: time.Date(2018, time.May, 25, 12, 0, 0, 0, time.UTC),
 			},
 			releases:        []Release{},
 			expectedRelease: Release{},
-			errorMatcher:    nil,
 		},
 		{
 			name: "case 1: return empty Release when releases contains only current release",
 			r0: Release{
-				timestamp: "2018-05-25T12:00:00.000000Z",
+				timestamp: time.Date(2018, time.May, 25, 12, 0, 0, 0, time.UTC),
 			},
 			releases: []Release{
 				{
-					timestamp: "2018-05-25T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 25, 12, 0, 0, 0, time.UTC),
 				},
 			},
 			expectedRelease: Release{},
-			errorMatcher:    nil,
 		},
 		{
 			name: "case 2: return correct release when releases contains two releases",
 			r0: Release{
-				timestamp: "2018-05-25T12:00:00.000000Z",
+				timestamp: time.Date(2018, time.May, 25, 12, 0, 0, 0, time.UTC),
 			},
 			releases: []Release{
 				{
-					timestamp: "2018-05-23T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 23, 12, 0, 0, 0, time.UTC),
 				},
 				{
-					timestamp: "2018-05-25T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 25, 12, 0, 0, 0, time.UTC),
 				},
 			},
 			expectedRelease: Release{
-				timestamp: "2018-05-23T12:00:00.000000Z",
+				timestamp: time.Date(2018, time.May, 23, 12, 0, 0, 0, time.UTC),
 			},
-			errorMatcher: nil,
 		},
 		{
 			name: "case 3: return correct release when releases contains two older releases",
 			r0: Release{
-				timestamp: "2018-05-25T12:00:00.000000Z",
+				timestamp: time.Date(2018, time.May, 25, 12, 0, 0, 0, time.UTC),
 			},
 			releases: []Release{
 				{
-					timestamp: "2018-05-18T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 18, 12, 0, 0, 0, time.UTC),
 				},
 				{
-					timestamp: "2018-05-23T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 23, 12, 0, 0, 0, time.UTC),
 				},
 				{
-					timestamp: "2018-05-25T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 25, 12, 0, 0, 0, time.UTC),
 				},
 				{
-					timestamp: "2018-05-26T12:00:00.000000Z",
+					timestamp: time.Date(2018, time.May, 26, 12, 0, 0, 0, time.UTC),
 				},
 			},
 			expectedRelease: Release{
-				timestamp: "2018-05-23T12:00:00.000000Z",
+				timestamp: time.Date(2018, time.May, 23, 12, 0, 0, 0, time.UTC),
 			},
-			errorMatcher: nil,
-		},
-		{
-			name: "case 4: return error when r0 timestamp parsing fails",
-			r0: Release{
-				timestamp: "invalid",
-			},
-			releases: []Release{
-				{
-					timestamp: "2018-05-25T12:00:00.000000Z",
-				},
-			},
-			expectedRelease: Release{},
-			errorMatcher:    IsInvalidRelease,
-		},
-		{
-			name: "case 5: return error when one of releases' timestamp parsing fails",
-			r0: Release{
-				timestamp: "2018-05-25T12:00:00.000000Z",
-			},
-			releases: []Release{
-				{
-					timestamp: "2018-05-18T12:00:00.000000Z",
-				},
-				{
-					timestamp: "2018-05-23T12:00:00.000000Z",
-				},
-				{
-					timestamp: "2018-05-25T12:00:00.000000Z",
-				},
-				{
-					timestamp: "invalid",
-				},
-			},
-			expectedRelease: Release{},
-			errorMatcher:    IsInvalidRelease,
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			release, err := findPreviousRelease(tc.r0, tc.releases)
-
-			switch {
-			case err == nil && tc.errorMatcher == nil:
-				// correct; carry on
-			case err != nil && tc.errorMatcher == nil:
-				t.Fatalf("error == %#v, want nil", err)
-			case err == nil && tc.errorMatcher != nil:
-				t.Fatalf("error == nil, want non-nil")
-			case !tc.errorMatcher(err):
-				t.Fatalf("error == %#v, want matching", err)
-			}
+			release := findPreviousRelease(tc.r0, tc.releases)
 
 			if !reflect.DeepEqual(release, tc.expectedRelease) {
 				t.Fatalf("\ngot:\n%v\n\nexpected:\n%v\n\n", release, tc.expectedRelease)
