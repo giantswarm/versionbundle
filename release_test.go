@@ -2328,3 +2328,93 @@ func Test_Releases_GetNewestRelease(t *testing.T) {
 		}
 	}
 }
+
+func Test_Release_removeChangelogEntry(t *testing.T) {
+	testCases := []struct {
+		name              string
+		release           Release
+		changelogToRemove Changelog
+		expectedRelease   Release
+	}{
+		{
+			name:    "case 0: remove from empty list",
+			release: Release{},
+			changelogToRemove: Changelog{
+				Component:   "foo-operator",
+				Description: "changed bar",
+				Kind:        KindChanged,
+			},
+			expectedRelease: Release{},
+		},
+		{
+			name: "case 1: remove from list of one",
+			release: Release{
+				changelogs: []Changelog{
+					{
+						Component:   "foo-operator",
+						Description: "changed bar",
+						Kind:        KindChanged,
+					},
+				},
+			},
+			changelogToRemove: Changelog{
+				Component:   "foo-operator",
+				Description: "changed bar",
+				Kind:        KindChanged,
+			},
+			expectedRelease: Release{
+				changelogs: []Changelog{},
+			},
+		},
+		{
+			name: "case 2: remove from list of many",
+			release: Release{
+				changelogs: []Changelog{
+					{
+						Component:   "foo-operator",
+						Description: "changed bar",
+						Kind:        KindChanged,
+					},
+					{
+						Component:   "foo-operator",
+						Description: "added quux",
+						Kind:        KindAdded,
+					},
+					{
+						Component:   "bar-operator",
+						Description: "fixed bug",
+						Kind:        KindFixed,
+					},
+				},
+			},
+			changelogToRemove: Changelog{
+				Component:   "foo-operator",
+				Description: "changed bar",
+				Kind:        KindChanged,
+			},
+			expectedRelease: Release{
+				changelogs: []Changelog{
+					{
+						Component:   "foo-operator",
+						Description: "added quux",
+						Kind:        KindAdded,
+					},
+					{
+						Component:   "bar-operator",
+						Description: "fixed bug",
+						Kind:        KindFixed,
+					},
+				},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			tc.release.removeChangelogEntry(tc.changelogToRemove)
+			if !reflect.DeepEqual(tc.release, tc.expectedRelease) {
+				t.Fatalf("got %#v, expected %#v", tc.release, tc.expectedRelease)
+			}
+		})
+	}
+}

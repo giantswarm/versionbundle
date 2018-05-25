@@ -55,6 +55,13 @@ type Bundle struct {
 	WIP bool `json:"wip" yaml:"wip"`
 }
 
+func (b Bundle) ID() string {
+	n := strings.TrimSpace(b.Name)
+	p := strings.TrimSpace(b.Provider)
+	v := strings.TrimSpace(b.Version)
+	return n + ":" + p + ":" + v
+}
+
 func (b Bundle) IsMajorUpgrade(other Bundle) (bool, error) {
 	err := b.Validate()
 	if err != nil {
