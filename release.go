@@ -88,6 +88,7 @@ func NewRelease(config ReleaseConfig) (Release, error) {
 	}
 
 	r := Release{
+		active:     !(deprecated || wip),
 		bundles:    config.Bundles,
 		changelogs: changelogs,
 		components: components,
@@ -101,7 +102,7 @@ func NewRelease(config ReleaseConfig) (Release, error) {
 }
 
 func (r Release) Active() bool {
-	return !(r.Deprecated() || r.WIP())
+	return r.active
 }
 
 func (r Release) Bundles() []Bundle {

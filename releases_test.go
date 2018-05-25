@@ -122,17 +122,19 @@ func Test_deduplicateReleases(t *testing.T) {
 			name: "case 4: test with two Releases with same version where older is active",
 			input: []Release{
 				{
+					active:    false,
 					timestamp: time.Date(2018, time.February, 8, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
-					wip:       true,
 				},
 				{
+					active:    true,
 					timestamp: time.Date(2018, time.February, 2, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
 				},
 			},
 			expectedOutput: []Release{
 				{
+					active:    true,
 					timestamp: time.Date(2018, time.February, 2, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
 				},
@@ -145,6 +147,7 @@ func Test_deduplicateReleases(t *testing.T) {
 					timestamp:  time.Date(2018, time.February, 8, 0, 0, 00, 0, time.UTC),
 					version:    "1.1.1",
 					deprecated: true,
+					active:     false,
 				},
 				{
 					timestamp: time.Date(2018, time.March, 22, 0, 0, 00, 0, time.UTC),
@@ -160,10 +163,12 @@ func Test_deduplicateReleases(t *testing.T) {
 					timestamp: time.Date(2018, time.February, 18, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
 					wip:       true,
+					active:    false,
 				},
 				{
 					timestamp: time.Date(2018, time.February, 12, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
+					active:    true,
 				},
 			},
 			expectedOutput: []Release{
@@ -175,6 +180,7 @@ func Test_deduplicateReleases(t *testing.T) {
 				{
 					timestamp: time.Date(2018, time.February, 12, 0, 0, 00, 0, time.UTC),
 					version:   "1.1.1",
+					active:    true,
 				},
 				{
 					timestamp: time.Date(2018, time.March, 22, 0, 0, 00, 0, time.UTC),
