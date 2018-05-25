@@ -753,6 +753,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 		name             string
 		releases         []Release
 		expectedReleases []Release
+		errorMatcher     func(error) bool
 	}{
 		{
 			name: "case 0: simple linear changelog history without duplicates",
@@ -826,6 +827,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 					version:   "3.0.0",
 				},
 			},
+			errorMatcher: nil,
 		},
 		{
 			name: "case 1: simple linear changelog history with one duplicate",
@@ -904,6 +906,7 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 					version:   "3.0.0",
 				},
 			},
+			errorMatcher: nil,
 		},
 		{
 			name: "case 2: introduction of patch to bar-operator",
@@ -1030,12 +1033,24 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 					version: "2.0.1",
 				},
 			},
+			errorMatcher: nil,
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			filteredReleases := deduplicateReleaseChangelog(tc.releases)
+			filteredReleases, err := deduplicateReleaseChangelog(tc.releases)
+
+			switch {
+			case err == nil && tc.errorMatcher == nil:
+				// correct; carry on
+			case err != nil && tc.errorMatcher == nil:
+				t.Fatalf("error == %#v, want nil", err)
+			case err == nil && tc.errorMatcher != nil:
+				t.Fatalf("error == nil, want non-nil")
+			case !tc.errorMatcher(err):
+				t.Fatalf("error == %#v, want matching", err)
+			}
 
 			gotChangelogs := make([]string, 0)
 			for _, r := range filteredReleases {
@@ -1060,6 +1075,137 @@ func Test_deduplicateReleaseChangelog(t *testing.T) {
 
 			if got != expected {
 				t.Fatalf("\ngot:\t\t%s\nexpected:\t%s", got, expected)
+			}
+		})
+	}
+}
+
+func Test_findPreviousRelease(t *testing.T) {
+	testCases := []struct {
+		name            string
+		r0              Release
+		releases        []Release
+		expectedRelease Release
+		errorMatcher    func(error) bool
+	}{
+		{
+			name: "case 0: return empty Release when releases is empty",
+			r0: Release{
+				timestamp: "2018-05-25T12:00:00.000000Z",
+			},
+			releases:        []Release{},
+			expectedRelease: Release{},
+			errorMatcher:    nil,
+		},
+		{
+			name: "case 1: return empty Release when releases contains only current release",
+			r0: Release{
+				timestamp: "2018-05-25T12:00:00.000000Z",
+			},
+			releases: []Release{
+				{
+					timestamp: "2018-05-25T12:00:00.000000Z",
+				},
+			},
+			expectedRelease: Release{},
+			errorMatcher:    nil,
+		},
+		{
+			name: "case 2: return correct release when releases contains two releases",
+			r0: Release{
+				timestamp: "2018-05-25T12:00:00.000000Z",
+			},
+			releases: []Release{
+				{
+					timestamp: "2018-05-23T12:00:00.000000Z",
+				},
+				{
+					timestamp: "2018-05-25T12:00:00.000000Z",
+				},
+			},
+			expectedRelease: Release{
+				timestamp: "2018-05-23T12:00:00.000000Z",
+			},
+			errorMatcher: nil,
+		},
+		{
+			name: "case 3: return correct release when releases contains two older releases",
+			r0: Release{
+				timestamp: "2018-05-25T12:00:00.000000Z",
+			},
+			releases: []Release{
+				{
+					timestamp: "2018-05-18T12:00:00.000000Z",
+				},
+				{
+					timestamp: "2018-05-23T12:00:00.000000Z",
+				},
+				{
+					timestamp: "2018-05-25T12:00:00.000000Z",
+				},
+				{
+					timestamp: "2018-05-26T12:00:00.000000Z",
+				},
+			},
+			expectedRelease: Release{
+				timestamp: "2018-05-23T12:00:00.000000Z",
+			},
+			errorMatcher: nil,
+		},
+		{
+			name: "case 4: return error when r0 timestamp parsing fails",
+			r0: Release{
+				timestamp: "invalid",
+			},
+			releases: []Release{
+				{
+					timestamp: "2018-05-25T12:00:00.000000Z",
+				},
+			},
+			expectedRelease: Release{},
+			errorMatcher:    IsInvalidRelease,
+		},
+		{
+			name: "case 5: return error when one of releases' timestamp parsing fails",
+			r0: Release{
+				timestamp: "2018-05-25T12:00:00.000000Z",
+			},
+			releases: []Release{
+				{
+					timestamp: "2018-05-18T12:00:00.000000Z",
+				},
+				{
+					timestamp: "2018-05-23T12:00:00.000000Z",
+				},
+				{
+					timestamp: "2018-05-25T12:00:00.000000Z",
+				},
+				{
+					timestamp: "invalid",
+				},
+			},
+			expectedRelease: Release{},
+			errorMatcher:    IsInvalidRelease,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			release, err := findPreviousRelease(tc.r0, tc.releases)
+
+			switch {
+			case err == nil && tc.errorMatcher == nil:
+				// correct; carry on
+			case err != nil && tc.errorMatcher == nil:
+				t.Fatalf("error == %#v, want nil", err)
+			case err == nil && tc.errorMatcher != nil:
+				t.Fatalf("error == nil, want non-nil")
+			case !tc.errorMatcher(err):
+				t.Fatalf("error == %#v, want matching", err)
+			}
+
+			if !reflect.DeepEqual(release, tc.expectedRelease) {
+				t.Fatalf("\ngot:\n%v\n\nexpected:\n%v\n\n", release, tc.expectedRelease)
 			}
 		})
 	}

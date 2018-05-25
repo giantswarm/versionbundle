@@ -29,7 +29,10 @@ func CompileReleases(logger micrologger.Logger, indexReleases []IndexRelease, bu
 		return nil, err
 	}
 
-	releases = deduplicateReleaseChangelog(releases)
+	releases, err = deduplicateReleaseChangelog(releases)
+	if err != nil {
+		return nil, err
+	}
 
 	return releases, nil
 }
@@ -97,9 +100,9 @@ func groupBundlesForIndexRelease(ir IndexRelease, bundles map[string]Bundle) ([]
 // crucial here in order to calculate changelog correctly when newer patch
 // releases have been introduced with lower version number
 // (e.g. [1.0.0, 2.0.0] -> [1.0.0, 1.0.1, 2.0.0, 2.0.1]).
-func deduplicateReleaseChangelog(releases []Release) []Release {
+func deduplicateReleaseChangelog(releases []Release) ([]Release, error) {
 	if len(releases) < 2 {
-		return releases
+		return releases, nil
 	}
 
 	sort.Sort(SortReleasesByVersion(releases))
@@ -115,7 +118,11 @@ func deduplicateReleaseChangelog(releases []Release) []Release {
 		copy(r.changelogs, releases[i].changelogs)
 
 		// Find previous release and map changelogs for quick lookup.
-		prevRelease := findPreviousRelease(r, releases[:i])
+		prevRelease, err := findPreviousRelease(r, releases[:i])
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+
 		prevChangelogs := mapReleaseChangelogs(prevRelease)
 
 		// Process changelogs of current release removing ones present in
@@ -133,30 +140,30 @@ func deduplicateReleaseChangelog(releases []Release) []Release {
 		filteredReleases = append(filteredReleases, r)
 	}
 
-	return filteredReleases
+	return filteredReleases, nil
 }
 
 // findPreviousRelease finds release that is older than argument r0. This
 // function expects that releases is sorted by version as it is iterated
 // backwards. If no previous release is found, empty Release is returned.
-func findPreviousRelease(r0 Release, releases []Release) Release {
+func findPreviousRelease(r0 Release, releases []Release) (Release, error) {
 	r0Date, err := time.Parse(releaseTimestampFormat, r0.Timestamp())
 	if err != nil {
-		panic(err)
+		return Release{}, microerror.Maskf(invalidReleaseError, "unable to parse release %s timestamp: %v", r0.Version(), err)
 	}
 
 	for i := len(releases) - 1; i >= 0; i-- {
 		date, err := time.Parse(releaseTimestampFormat, releases[i].Timestamp())
 		if err != nil {
-			panic(err)
+			return Release{}, microerror.Maskf(invalidReleaseError, "unable to parse release %s timestamp: %v", releases[i].Version(), err)
 		}
 
 		if date.Before(r0Date) {
-			return releases[i]
+			return releases[i], nil
 		}
 	}
 
-	return Release{}
+	return Release{}, nil
 }
 
 // mapReleaseChangelogs converts Release's Changelog slice to
