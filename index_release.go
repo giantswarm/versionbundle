@@ -90,7 +90,7 @@ func groupBundlesForIndexRelease(ir IndexRelease, bundles map[string]Bundle) ([]
 }
 
 // deduplicateReleaseChangelog removes duplicate changelog entries in
-// consequtive release entries. Core concept of algorithm here is to first sort
+// consecutive release entries. Core concept of algorithm here is to first sort
 // releases by their release version and then iterate them and compare current
 // release to previous one that fulfills following requirements: smaller
 // version number and earlier timestamp. Comparison of earlier timestamp is
