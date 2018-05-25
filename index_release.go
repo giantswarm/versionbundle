@@ -3,6 +3,7 @@ package versionbundle
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"fmt"
 	"sort"
 	"strings"
 	"time"
@@ -23,14 +24,17 @@ type IndexRelease struct {
 // CompileReleases takes indexReleases and collected version bundles and
 // compiles canonicalized Releases from them.
 func CompileReleases(logger micrologger.Logger, indexReleases []IndexRelease, bundles []Bundle) ([]Release, error) {
-	releases := buildReleases(logger, indexReleases, bundles)
+	releases, err := buildReleases(logger, indexReleases, bundles)
+	if err != nil {
+		return nil, err
+	}
 
 	releases = deduplicateReleaseChangelog(releases)
 
 	return releases, nil
 }
 
-func buildReleases(logger micrologger.Logger, indexReleases []IndexRelease, bundles []Bundle) []Release {
+func buildReleases(logger micrologger.Logger, indexReleases []IndexRelease, bundles []Bundle) ([]Release, error) {
 	bundleCache := make(map[string]Bundle)
 
 	// Create cache of bundles for quick lookup
@@ -48,7 +52,7 @@ func buildReleases(logger micrologger.Logger, indexReleases []IndexRelease, bund
 		}
 
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 
 		rc := ReleaseConfig{
@@ -69,7 +73,7 @@ func buildReleases(logger micrologger.Logger, indexReleases []IndexRelease, bund
 		releases = append(releases, release)
 	}
 
-	return releases
+	return releases, nil
 }
 
 func groupBundlesForIndexRelease(ir IndexRelease, bundles map[string]Bundle) ([]Bundle, error) {

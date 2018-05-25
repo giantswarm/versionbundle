@@ -28,6 +28,7 @@ func Test_buildReleases(t *testing.T) {
 		indexReleases    []IndexRelease
 		bundles          []Bundle
 		expectedReleases []Release
+		errorMatcher     func(error) bool
 	}{
 		{
 			name: "case 0: build one release",
@@ -220,6 +221,7 @@ func Test_buildReleases(t *testing.T) {
 					active:     true,
 				},
 			},
+			errorMatcher: nil,
 		},
 		{
 			name: "case 1: build two releases",
@@ -502,6 +504,7 @@ func Test_buildReleases(t *testing.T) {
 					active:     true,
 				},
 			},
+			errorMatcher: nil,
 		},
 		{
 			name: "case 2: try to build two release but miss one bundle for second one",
@@ -717,6 +720,7 @@ func Test_buildReleases(t *testing.T) {
 					active:     true,
 				},
 			},
+			errorMatcher: nil,
 		},
 	}
 
@@ -724,10 +728,21 @@ func Test_buildReleases(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			releases := buildReleases(logger, tc.indexReleases, tc.bundles)
+			releases, err := buildReleases(logger, tc.indexReleases, tc.bundles)
+
+			switch {
+			case err == nil && tc.errorMatcher == nil:
+				// correct; carry on
+			case err != nil && tc.errorMatcher == nil:
+				t.Fatalf("error == %#v, want nil", err)
+			case err == nil && tc.errorMatcher != nil:
+				t.Fatalf("error == nil, want non-nil")
+			case !tc.errorMatcher(err):
+				t.Fatalf("error == %#v, want matching", err)
+			}
 
 			if !reflect.DeepEqual(releases, tc.expectedReleases) {
-				t.Fatalf("releases don't match expectedReleases; got:\n%#v\n\n, expected:\n%#v\n\n", releases, tc.expectedReleases)
+				t.Fatalf("releases don't match expectedReleases; got:\n%#v\n\nexpected:\n%#v\n\n", releases, tc.expectedReleases)
 			}
 		})
 	}
