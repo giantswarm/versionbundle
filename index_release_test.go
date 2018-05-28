@@ -67,9 +67,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					Name:    "cert-operator",
-					Time:    time.Date(2018, time.April, 12, 12, 00, 0, 0, time.UTC),
 					Version: "0.1.0",
-					WIP:     false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -81,9 +79,7 @@ func Test_buildReleases(t *testing.T) {
 					},
 					Name:     "cluster-operator",
 					Provider: "kvm",
-					Time:     time.Date(2018, time.April, 14, 12, 00, 0, 0, time.UTC),
 					Version:  "0.1.0",
-					WIP:      false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -95,9 +91,7 @@ func Test_buildReleases(t *testing.T) {
 					},
 					Name:     "cluster-operator",
 					Provider: "kvm",
-					Time:     time.Date(2018, time.May, 16, 12, 00, 0, 0, time.UTC),
 					Version:  "0.2.0",
-					WIP:      false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -109,9 +103,7 @@ func Test_buildReleases(t *testing.T) {
 					},
 					Name:     "cluster-operator",
 					Provider: "aws",
-					Time:     time.Date(2018, time.May, 4, 12, 00, 0, 0, time.UTC),
 					Version:  "0.1.0",
-					WIP:      false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -122,9 +114,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					Name:    "kvm-operator",
-					Time:    time.Date(2018, time.January, 14, 12, 00, 0, 0, time.UTC),
 					Version: "1.2.0",
-					WIP:     false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -135,9 +125,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					Name:    "kvm-operator",
-					Time:    time.Date(2018, time.February, 14, 12, 00, 0, 0, time.UTC),
 					Version: "1.4.2",
-					WIP:     false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -148,9 +136,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					Name:    "kvm-operator",
-					Time:    time.Date(2018, time.March, 14, 12, 00, 0, 0, time.UTC),
 					Version: "2.2.1",
-					WIP:     false,
 				},
 			},
 			expectedReleases: []Release{
@@ -165,9 +151,7 @@ func Test_buildReleases(t *testing.T) {
 								},
 							},
 							Name:    "cert-operator",
-							Time:    time.Date(2018, time.April, 12, 12, 00, 0, 0, time.UTC),
 							Version: "0.1.0",
-							WIP:     false,
 						},
 						{
 							Changelogs: []Changelog{
@@ -179,9 +163,7 @@ func Test_buildReleases(t *testing.T) {
 							},
 							Name:     "cluster-operator",
 							Provider: "kvm",
-							Time:     time.Date(2018, time.April, 14, 12, 00, 0, 0, time.UTC),
 							Version:  "0.1.0",
-							WIP:      false,
 						},
 						{
 							Changelogs: []Changelog{
@@ -192,9 +174,7 @@ func Test_buildReleases(t *testing.T) {
 								},
 							},
 							Name:    "kvm-operator",
-							Time:    time.Date(2018, time.March, 14, 12, 00, 0, 0, time.UTC),
 							Version: "2.2.1",
-							WIP:     false,
 						},
 					},
 					changelogs: []Changelog{
@@ -214,11 +194,9 @@ func Test_buildReleases(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					deprecated: false,
-					timestamp:  time.Date(2018, time.April, 16, 12, 0, 0, 0, time.UTC),
-					version:    "1.0.0",
-					wip:        false,
-					active:     true,
+					timestamp: time.Date(2018, time.April, 16, 12, 0, 0, 0, time.UTC),
+					version:   "1.0.0",
+					active:    true,
 				},
 			},
 			errorMatcher: nil,
@@ -283,9 +261,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					Name:    "cert-operator",
-					Time:    time.Date(2018, time.April, 12, 12, 00, 0, 0, time.UTC),
 					Version: "0.1.0",
-					WIP:     false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -297,9 +273,7 @@ func Test_buildReleases(t *testing.T) {
 					},
 					Name:     "cluster-operator",
 					Provider: "kvm",
-					Time:     time.Date(2018, time.April, 14, 12, 00, 0, 0, time.UTC),
 					Version:  "0.1.0",
-					WIP:      false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -311,9 +285,7 @@ func Test_buildReleases(t *testing.T) {
 					},
 					Name:     "cluster-operator",
 					Provider: "kvm",
-					Time:     time.Date(2018, time.May, 16, 12, 00, 0, 0, time.UTC),
 					Version:  "0.2.0",
-					WIP:      false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -325,9 +297,7 @@ func Test_buildReleases(t *testing.T) {
 					},
 					Name:     "cluster-operator",
 					Provider: "aws",
-					Time:     time.Date(2018, time.May, 4, 12, 00, 0, 0, time.UTC),
 					Version:  "0.1.0",
-					WIP:      false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -338,9 +308,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					Name:    "kvm-operator",
-					Time:    time.Date(2018, time.January, 14, 12, 00, 0, 0, time.UTC),
 					Version: "1.2.0",
-					WIP:     false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -351,9 +319,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					Name:    "kvm-operator",
-					Time:    time.Date(2018, time.February, 14, 12, 00, 0, 0, time.UTC),
 					Version: "1.4.2",
-					WIP:     false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -364,9 +330,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					Name:    "kvm-operator",
-					Time:    time.Date(2018, time.March, 14, 12, 00, 0, 0, time.UTC),
 					Version: "2.2.1",
-					WIP:     false,
 				},
 			},
 			expectedReleases: []Release{
@@ -381,9 +345,7 @@ func Test_buildReleases(t *testing.T) {
 								},
 							},
 							Name:    "cert-operator",
-							Time:    time.Date(2018, time.April, 12, 12, 00, 0, 0, time.UTC),
 							Version: "0.1.0",
-							WIP:     false,
 						},
 						{
 							Changelogs: []Changelog{
@@ -395,9 +357,7 @@ func Test_buildReleases(t *testing.T) {
 							},
 							Name:     "cluster-operator",
 							Provider: "kvm",
-							Time:     time.Date(2018, time.April, 14, 12, 00, 0, 0, time.UTC),
 							Version:  "0.1.0",
-							WIP:      false,
 						},
 						{
 							Changelogs: []Changelog{
@@ -408,9 +368,7 @@ func Test_buildReleases(t *testing.T) {
 								},
 							},
 							Name:    "kvm-operator",
-							Time:    time.Date(2018, time.March, 14, 12, 00, 0, 0, time.UTC),
 							Version: "2.2.1",
-							WIP:     false,
 						},
 					},
 					changelogs: []Changelog{
@@ -430,11 +388,9 @@ func Test_buildReleases(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					deprecated: false,
-					timestamp:  time.Date(2018, time.April, 16, 12, 0, 0, 0, time.UTC),
-					version:    "1.0.0",
-					wip:        false,
-					active:     true,
+					timestamp: time.Date(2018, time.April, 16, 12, 0, 0, 0, time.UTC),
+					version:   "1.0.0",
+					active:    true,
 				},
 				{
 					bundles: []Bundle{
@@ -447,9 +403,7 @@ func Test_buildReleases(t *testing.T) {
 								},
 							},
 							Name:    "cert-operator",
-							Time:    time.Date(2018, time.April, 12, 12, 00, 0, 0, time.UTC),
 							Version: "0.1.0",
-							WIP:     false,
 						},
 						{
 							Changelogs: []Changelog{
@@ -461,9 +415,7 @@ func Test_buildReleases(t *testing.T) {
 							},
 							Name:     "cluster-operator",
 							Provider: "kvm",
-							Time:     time.Date(2018, time.May, 16, 12, 00, 0, 0, time.UTC),
 							Version:  "0.2.0",
-							WIP:      false,
 						},
 						{
 							Changelogs: []Changelog{
@@ -474,9 +426,7 @@ func Test_buildReleases(t *testing.T) {
 								},
 							},
 							Name:    "kvm-operator",
-							Time:    time.Date(2018, time.March, 14, 12, 00, 0, 0, time.UTC),
 							Version: "2.2.1",
-							WIP:     false,
 						},
 					},
 					changelogs: []Changelog{
@@ -497,11 +447,9 @@ func Test_buildReleases(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					deprecated: false,
-					timestamp:  time.Date(2018, time.April, 22, 12, 0, 0, 0, time.UTC),
-					version:    "1.1.0",
-					wip:        false,
-					active:     true,
+					timestamp: time.Date(2018, time.April, 22, 12, 0, 0, 0, time.UTC),
+					version:   "1.1.0",
+					active:    true,
 				},
 			},
 			errorMatcher: nil,
@@ -566,9 +514,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					Name:    "cert-operator",
-					Time:    time.Date(2018, time.April, 12, 12, 00, 0, 0, time.UTC),
 					Version: "0.1.0",
-					WIP:     false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -580,9 +526,7 @@ func Test_buildReleases(t *testing.T) {
 					},
 					Name:     "cluster-operator",
 					Provider: "kvm",
-					Time:     time.Date(2018, time.April, 14, 12, 00, 0, 0, time.UTC),
 					Version:  "0.1.0",
-					WIP:      false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -594,9 +538,7 @@ func Test_buildReleases(t *testing.T) {
 					},
 					Name:     "cluster-operator",
 					Provider: "kvm",
-					Time:     time.Date(2018, time.May, 16, 12, 00, 0, 0, time.UTC),
 					Version:  "0.2.0",
-					WIP:      false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -608,9 +550,7 @@ func Test_buildReleases(t *testing.T) {
 					},
 					Name:     "cluster-operator",
 					Provider: "aws",
-					Time:     time.Date(2018, time.May, 4, 12, 00, 0, 0, time.UTC),
 					Version:  "0.1.0",
-					WIP:      false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -621,9 +561,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					Name:    "kvm-operator",
-					Time:    time.Date(2018, time.January, 14, 12, 00, 0, 0, time.UTC),
 					Version: "1.2.0",
-					WIP:     false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -634,9 +572,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					Name:    "kvm-operator",
-					Time:    time.Date(2018, time.February, 14, 12, 00, 0, 0, time.UTC),
 					Version: "1.4.2",
-					WIP:     false,
 				},
 				{
 					Changelogs: []Changelog{
@@ -647,9 +583,7 @@ func Test_buildReleases(t *testing.T) {
 						},
 					},
 					Name:    "kvm-operator",
-					Time:    time.Date(2018, time.March, 14, 12, 00, 0, 0, time.UTC),
 					Version: "2.2.1",
-					WIP:     false,
 				},
 			},
 			expectedReleases: []Release{
@@ -664,9 +598,7 @@ func Test_buildReleases(t *testing.T) {
 								},
 							},
 							Name:    "cert-operator",
-							Time:    time.Date(2018, time.April, 12, 12, 00, 0, 0, time.UTC),
 							Version: "0.1.0",
-							WIP:     false,
 						},
 						{
 							Changelogs: []Changelog{
@@ -678,9 +610,7 @@ func Test_buildReleases(t *testing.T) {
 							},
 							Name:     "cluster-operator",
 							Provider: "kvm",
-							Time:     time.Date(2018, time.April, 14, 12, 00, 0, 0, time.UTC),
 							Version:  "0.1.0",
-							WIP:      false,
 						},
 						{
 							Changelogs: []Changelog{
@@ -691,9 +621,7 @@ func Test_buildReleases(t *testing.T) {
 								},
 							},
 							Name:    "kvm-operator",
-							Time:    time.Date(2018, time.March, 14, 12, 00, 0, 0, time.UTC),
 							Version: "2.2.1",
-							WIP:     false,
 						},
 					},
 					changelogs: []Changelog{
@@ -713,11 +641,9 @@ func Test_buildReleases(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
-					deprecated: false,
-					timestamp:  time.Date(2018, time.April, 16, 12, 0, 0, 0, time.UTC),
-					version:    "1.0.0",
-					wip:        false,
-					active:     true,
+					timestamp: time.Date(2018, time.April, 16, 12, 0, 0, 0, time.UTC),
+					version:   "1.0.0",
+					active:    true,
 				},
 			},
 			errorMatcher: nil,

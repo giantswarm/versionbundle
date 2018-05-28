@@ -56,7 +56,9 @@ func buildReleases(logger micrologger.Logger, indexReleases []IndexRelease, bund
 		}
 
 		rc := ReleaseConfig{
+			Active:  ir.Active,
 			Bundles: bundles,
+			Date:    ir.Date,
 		}
 
 		release, err := NewRelease(rc)
@@ -65,9 +67,7 @@ func buildReleases(logger micrologger.Logger, indexReleases []IndexRelease, bund
 			continue
 		}
 
-		release.active = ir.Active
-		release.deprecated = false
-		release.timestamp = ir.Date
+		// Fix release version to one defined in IndexRelease.
 		release.version = ir.Version
 
 		releases = append(releases, release)
