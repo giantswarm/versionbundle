@@ -1,11 +1,9 @@
 package versionbundle
 
 import (
-	"fmt"
 	"sort"
 	"time"
 
-	"github.com/coreos/go-semver/semver"
 	"github.com/giantswarm/microerror"
 )
 
@@ -15,13 +13,7 @@ type ReleaseConfig struct {
 	Active  bool
 	Bundles []Bundle
 	Date    time.Time
-}
-
-func DefaultReleaseConfig() ReleaseConfig {
-	return ReleaseConfig{
-		Active:  false,
-		Bundles: nil,
-	}
+	Version string
 }
 
 type Release struct {
@@ -35,7 +27,7 @@ type Release struct {
 
 func NewRelease(config ReleaseConfig) (Release, error) {
 	if len(config.Bundles) == 0 {
-		return Release{}, microerror.Maskf(invalidConfigError, "config.Bundles must not be empty")
+		return Release{}, microerror.Maskf(invalidConfigError, "%T.Bundles must not be empty", config)
 	}
 
 	var err error
@@ -56,21 +48,13 @@ func NewRelease(config ReleaseConfig) (Release, error) {
 		}
 	}
 
-	var version string
-	{
-		version, err = aggregateReleaseVersion(config.Bundles)
-		if err != nil {
-			return Release{}, microerror.Maskf(invalidConfigError, err.Error())
-		}
-	}
-
 	r := Release{
 		active:     config.Active,
 		bundles:    config.Bundles,
 		changelogs: changelogs,
 		components: components,
 		timestamp:  config.Date,
-		version:    version,
+		version:    config.Version,
 	}
 
 	return r, nil
@@ -134,27 +118,6 @@ func aggregateReleaseComponents(bundles []Bundle) ([]Component, error) {
 	}
 
 	return components, nil
-}
-
-func aggregateReleaseVersion(bundles []Bundle) (string, error) {
-	var major int64
-	var minor int64
-	var patch int64
-
-	for _, b := range bundles {
-		v, err := semver.NewVersion(b.Version)
-		if err != nil {
-			return "", microerror.Mask(err)
-		}
-
-		major += v.Major
-		minor += v.Minor
-		patch += v.Patch
-	}
-
-	version := fmt.Sprintf("%d.%d.%d", major, minor, patch)
-
-	return version, nil
 }
 
 func GetNewestRelease(releases []Release) (Release, error) {

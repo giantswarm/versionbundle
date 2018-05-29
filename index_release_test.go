@@ -141,6 +141,7 @@ func Test_buildReleases(t *testing.T) {
 			},
 			expectedReleases: []Release{
 				{
+					active: true,
 					bundles: []Bundle{
 						{
 							Changelogs: []Changelog{
@@ -196,7 +197,6 @@ func Test_buildReleases(t *testing.T) {
 					},
 					timestamp: time.Date(2018, time.April, 16, 12, 0, 0, 0, time.UTC),
 					version:   "1.0.0",
-					active:    true,
 				},
 			},
 			errorMatcher: nil,
@@ -588,6 +588,7 @@ func Test_buildReleases(t *testing.T) {
 			},
 			expectedReleases: []Release{
 				{
+					active: true,
 					bundles: []Bundle{
 						{
 							Changelogs: []Changelog{
@@ -643,7 +644,6 @@ func Test_buildReleases(t *testing.T) {
 					},
 					timestamp: time.Date(2018, time.April, 16, 12, 0, 0, 0, time.UTC),
 					version:   "1.0.0",
-					active:    true,
 				},
 			},
 			errorMatcher: nil,

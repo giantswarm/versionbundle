@@ -59,6 +59,7 @@ func buildReleases(logger micrologger.Logger, indexReleases []IndexRelease, bund
 			Active:  ir.Active,
 			Bundles: bundles,
 			Date:    ir.Date,
+			Version: ir.Version,
 		}
 
 		release, err := NewRelease(rc)
@@ -66,9 +67,6 @@ func buildReleases(logger micrologger.Logger, indexReleases []IndexRelease, bund
 			logger.Log("level", "warning", "message", fmt.Sprintf("failed building new release from %s", ir.Version), "stack", fmt.Sprintf("%#v", err))
 			continue
 		}
-
-		// Fix release version to one defined in IndexRelease.
-		release.version = ir.Version
 
 		releases = append(releases, release)
 	}
