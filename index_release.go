@@ -56,7 +56,10 @@ func buildReleases(logger micrologger.Logger, indexReleases []IndexRelease, bund
 		}
 
 		rc := ReleaseConfig{
+			Active:  ir.Active,
 			Bundles: bundles,
+			Date:    ir.Date,
+			Version: ir.Version,
 		}
 
 		release, err := NewRelease(rc)
@@ -64,11 +67,6 @@ func buildReleases(logger micrologger.Logger, indexReleases []IndexRelease, bund
 			logger.Log("level", "warning", "message", fmt.Sprintf("failed building new release from %s", ir.Version), "stack", fmt.Sprintf("%#v", err))
 			continue
 		}
-
-		release.active = ir.Active
-		release.deprecated = false
-		release.timestamp = ir.Date
-		release.version = ir.Version
 
 		releases = append(releases, release)
 	}
