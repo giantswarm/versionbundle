@@ -333,6 +333,10 @@ func Test_Release_Components(t *testing.T) {
 					Name:    "kube-dns",
 					Version: "1.0.0",
 				},
+				{
+					Name:    "kubernetes-operator",
+					Version: "0.0.1",
+				},
 			},
 			ErrorMatcher: nil,
 		},
@@ -358,12 +362,16 @@ func Test_Release_Components(t *testing.T) {
 			},
 			ExpectedComponents: []Component{
 				{
+					Name:    "calico",
+					Version: "3.1.0",
+				},
+				{
 					Name:    "kube-dns",
 					Version: "1.17.0",
 				},
 				{
-					Name:    "calico",
-					Version: "3.1.0",
+					Name:    "kubernetes-operator",
+					Version: "11.4.1",
 				},
 			},
 			ErrorMatcher: nil,
@@ -432,16 +440,24 @@ func Test_Release_Components(t *testing.T) {
 					Version: "1.1.0",
 				},
 				{
-					Name:    "kube-dns",
-					Version: "1.0.0",
+					Name:    "cloud-config-operator",
+					Version: "0.2.0",
 				},
 				{
 					Name:    "etcd",
 					Version: "3.2.0",
 				},
 				{
+					Name:    "kube-dns",
+					Version: "1.0.0",
+				},
+				{
 					Name:    "kubernetes",
 					Version: "1.7.1",
+				},
+				{
+					Name:    "kubernetes-operator",
+					Version: "0.1.0",
 				},
 			},
 			ErrorMatcher: nil,
@@ -505,20 +521,28 @@ func Test_Release_Components(t *testing.T) {
 			},
 			ExpectedComponents: []Component{
 				{
+					Name:    "calico",
+					Version: "1.1.0",
+				},
+				{
+					Name:    "cloud-config-operator",
+					Version: "0.2.0",
+				},
+				{
 					Name:    "etcd",
 					Version: "3.2.0",
+				},
+				{
+					Name:    "kube-dns",
+					Version: "1.0.0",
 				},
 				{
 					Name:    "kubernetes",
 					Version: "1.7.1",
 				},
 				{
-					Name:    "calico",
-					Version: "1.1.0",
-				},
-				{
-					Name:    "kube-dns",
-					Version: "1.0.0",
+					Name:    "kubernetes-operator",
+					Version: "0.1.0",
 				},
 			},
 			ErrorMatcher: nil,
