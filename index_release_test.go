@@ -195,6 +195,20 @@ func Test_buildReleases(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
+					components: []Component{
+						{
+							Name:    "cert-operator",
+							Version: "0.1.0",
+						},
+						{
+							Name:    "cluster-operator",
+							Version: "0.1.0",
+						},
+						{
+							Name:    "kvm-operator",
+							Version: "2.2.1",
+						},
+					},
 					timestamp: time.Date(2018, time.April, 16, 12, 0, 0, 0, time.UTC),
 					version:   "1.0.0",
 				},
@@ -389,6 +403,20 @@ func Test_buildReleases(t *testing.T) {
 							Kind:        KindAdded,
 						},
 					},
+					components: []Component{
+						{
+							Name:    "cert-operator",
+							Version: "0.1.0",
+						},
+						{
+							Name:    "cluster-operator",
+							Version: "0.1.0",
+						},
+						{
+							Name:    "kvm-operator",
+							Version: "2.2.1",
+						},
+					},
 					timestamp: time.Date(2018, time.April, 16, 12, 0, 0, 0, time.UTC),
 					version:   "1.0.0",
 				},
@@ -446,6 +474,20 @@ func Test_buildReleases(t *testing.T) {
 							Component:   "kvm-operator",
 							Description: "New component q.",
 							Kind:        KindAdded,
+						},
+					},
+					components: []Component{
+						{
+							Name:    "cert-operator",
+							Version: "0.1.0",
+						},
+						{
+							Name:    "cluster-operator",
+							Version: "0.2.0",
+						},
+						{
+							Name:    "kvm-operator",
+							Version: "2.2.1",
 						},
 					},
 					timestamp: time.Date(2018, time.April, 22, 12, 0, 0, 0, time.UTC),
@@ -640,6 +682,20 @@ func Test_buildReleases(t *testing.T) {
 							Component:   "kvm-operator",
 							Description: "New component q.",
 							Kind:        KindAdded,
+						},
+					},
+					components: []Component{
+						{
+							Name:    "cert-operator",
+							Version: "0.1.0",
+						},
+						{
+							Name:    "cluster-operator",
+							Version: "0.1.0",
+						},
+						{
+							Name:    "kvm-operator",
+							Version: "2.2.1",
 						},
 					},
 					timestamp: time.Date(2018, time.April, 16, 12, 0, 0, 0, time.UTC),
