@@ -9,56 +9,56 @@ import (
 func TestIndexReleasesSortByVersion(t *testing.T) {
 	testCases := []struct {
 		name          string
-		releases      []Release
-		expectedOrder []Release
+		releases      []IndexRelease
+		expectedOrder []IndexRelease
 	}{
 		{
 			name: "case 0: sort 1.0.0, 2.0.0, 3.0.0",
-			releases: []Release{
+			releases: []IndexRelease{
 				{
-					version: "2.0.0",
+					Version: "2.0.0",
 				},
 				{
-					version: "1.0.0",
+					Version: "1.0.0",
 				},
 				{
-					version: "3.0.0",
+					Version: "3.0.0",
 				},
 			},
-			expectedOrder: []Release{
+			expectedOrder: []IndexRelease{
 				{
-					version: "1.0.0",
+					Version: "1.0.0",
 				},
 				{
-					version: "2.0.0",
+					Version: "2.0.0",
 				},
 				{
-					version: "3.0.0",
+					Version: "3.0.0",
 				},
 			},
 		},
 		{
 			name: "case 1: sort 1.0.0, 1.10.1, 1.2.10",
-			releases: []Release{
+			releases: []IndexRelease{
 				{
-					version: "1.10.1",
+					Version: "1.10.1",
 				},
 				{
-					version: "1.0.0",
+					Version: "1.0.0",
 				},
 				{
-					version: "1.2.10",
+					Version: "1.2.10",
 				},
 			},
-			expectedOrder: []Release{
+			expectedOrder: []IndexRelease{
 				{
-					version: "1.0.0",
+					Version: "1.0.0",
 				},
 				{
-					version: "1.2.10",
+					Version: "1.2.10",
 				},
 				{
-					version: "1.10.1",
+					Version: "1.10.1",
 				},
 			},
 		},
@@ -74,7 +74,7 @@ func TestIndexReleasesSortByVersion(t *testing.T) {
 						expectedOrderMsg += ", "
 					}
 
-					expectedOrderMsg += b.version
+					expectedOrderMsg += b.Version
 				}
 
 				expectedOrderMsg += "]"
@@ -84,7 +84,7 @@ func TestIndexReleasesSortByVersion(t *testing.T) {
 					if len(gotOrderMsg) > 1 {
 						gotOrderMsg += ", "
 					}
-					gotOrderMsg += b.version
+					gotOrderMsg += b.Version
 				}
 				gotOrderMsg += "]"
 
