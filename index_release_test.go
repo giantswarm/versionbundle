@@ -42,7 +42,7 @@ func Test_buildReleases(t *testing.T) {
 							Version:  "0.1.0",
 						},
 						{
-							Endpoint: urlMustParse("http://appcatalog-controller:8000/"),
+							Endpoint: urlMustParse("http://app-controller:8000/"),
 							Name:     "appcatalog-controller",
 							Version:  "0.1.0",
 						},
