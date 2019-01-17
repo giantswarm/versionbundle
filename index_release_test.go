@@ -37,13 +37,13 @@ func Test_buildReleases(t *testing.T) {
 					Active: true,
 					Authorities: []Authority{
 						{
-							Endpoint: urlMustParse("http://app-operator:8000/"),
-							Name:     "app-operator",
+							Endpoint: urlMustParse("http://app-controller:8000/"),
+							Name:     "app-controller",
 							Version:  "0.1.0",
 						},
 						{
-							Endpoint: urlMustParse("http://appcatalog-operator:8000/"),
-							Name:     "appcatalog-operator",
+							Endpoint: urlMustParse("http://appcatalog-controller:8000/"),
+							Name:     "appcatalog-controller",
 							Version:  "0.1.0",
 						},
 						{
@@ -151,23 +151,23 @@ func Test_buildReleases(t *testing.T) {
 				{
 					Changelogs: []Changelog{
 						{
-							Component:   "app-operator",
+							Component:   "app-controller",
 							Description: "Added initial version.",
 							Kind:        KindAdded,
 						},
 					},
-					Name:    "app-operator",
+					Name:    "app-controller",
 					Version: "0.1.0",
 				},
 				{
 					Changelogs: []Changelog{
 						{
-							Component:   "appcatalog-operator",
+							Component:   "appcatalog-controller",
 							Description: "Added initial version.",
 							Kind:        KindAdded,
 						},
 					},
-					Name:    "appcatalog-operator",
+					Name:    "appcatalog-controller",
 					Version: "0.1.0",
 				},
 			},
@@ -178,23 +178,23 @@ func Test_buildReleases(t *testing.T) {
 						{
 							Changelogs: []Changelog{
 								{
-									Component:   "app-operator",
+									Component:   "app-controller",
 									Description: "Added initial version.",
 									Kind:        KindAdded,
 								},
 							},
-							Name:    "app-operator",
+							Name:    "app-controller",
 							Version: "0.1.0",
 						},
 						{
 							Changelogs: []Changelog{
 								{
-									Component:   "appcatalog-operator",
+									Component:   "appcatalog-controller",
 									Description: "Added initial version.",
 									Kind:        KindAdded,
 								},
 							},
-							Name:    "appcatalog-operator",
+							Name:    "appcatalog-controller",
 							Version: "0.1.0",
 						},
 						{
@@ -234,12 +234,12 @@ func Test_buildReleases(t *testing.T) {
 					},
 					changelogs: []Changelog{
 						{
-							Component:   "app-operator",
+							Component:   "app-controller",
 							Description: "Added initial version.",
 							Kind:        KindAdded,
 						},
 						{
-							Component:   "appcatalog-operator",
+							Component:   "appcatalog-controller",
 							Description: "Added initial version.",
 							Kind:        KindAdded,
 						},
@@ -261,11 +261,11 @@ func Test_buildReleases(t *testing.T) {
 					},
 					components: []Component{
 						{
-							Name:    "app-operator",
+							Name:    "app-controller",
 							Version: "0.1.0",
 						},
 						{
-							Name:    "appcatalog-operator",
+							Name:    "appcatalog-controller",
 							Version: "0.1.0",
 						},
 						{
