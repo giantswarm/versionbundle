@@ -78,7 +78,7 @@ func groupBundlesForIndexRelease(ir IndexRelease, bundles map[string]Bundle) ([]
 	for _, a := range ir.Authorities {
 		b, found := bundles[a.BundleID()]
 		if !found {
-			return nil, microerror.Maskf(bundleNotFoundError, "IndexRelease v%s contains Authority with bundle ID %s that cannot be found from collected version bundles.", ir.Version, a.BundleID())
+			return nil, microerror.Maskf(bundleNotFoundError, "IndexRelease %#q contains Authority with bundle ID %#q that cannot be found from collected version bundles.", ir.Version, a.Version)
 		}
 		groupedBundles = append(groupedBundles, b)
 	}
