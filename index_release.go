@@ -47,7 +47,6 @@ func buildReleases(logger micrologger.Logger, indexReleases []IndexRelease, bund
 	for _, ir := range indexReleases {
 		bundles, err := groupBundlesForIndexRelease(ir, bundleCache)
 		if IsBundleNotFound(err) {
-			logger.Log("level", "warning", "message", fmt.Sprintf("failed grouping version bundles for release %s", ir.Version), "stack", fmt.Sprintf("%#v", err))
 			continue
 		}
 
