@@ -15,6 +15,8 @@ import (
 )
 
 type CollectorConfig struct {
+	// FilterFunc is not required and therefore not validated within the
+	// constructor below.
 	FilterFunc func(Bundle) bool
 	Logger     micrologger.Logger
 	RestClient *resty.Client
@@ -46,7 +48,7 @@ func NewCollector(config CollectorConfig) (*Collector, error) {
 	}
 
 	c := &Collector{
-		filterFunc: config.FilterFunc, // Not required and therefore not validated above.
+		filterFunc: config.FilterFunc,
 		logger:     config.Logger,
 		restClient: config.RestClient,
 
