@@ -73,7 +73,7 @@ type CollectorEndpointResponse struct {
 }
 
 func (c *Collector) Collect(ctx context.Context) error {
-	c.logger.Log("level", "debug", "message", "collector starts collecting version bundles from endpoints")
+	c.logger.Log("level", "debug", "message", "collecting version bundles from endpoints")
 
 	responses := map[string][]byte{}
 	{
@@ -83,14 +83,14 @@ func (c *Collector) Collect(ctx context.Context) error {
 			e := endpoint
 
 			g.Go(func() error {
-				c.logger.Log("endpoint", e.String(), "level", "debug", "message", "collector requesting version bundles from endpoint")
+				c.logger.Log("endpoint", e.String(), "level", "debug", "message", "requesting version bundles from endpoint")
 
 				res, err := c.restClient.NewRequest().Get(e.String())
 				if err != nil {
 					return microerror.Mask(err)
 				}
 
-				c.logger.Log("endpoint", e.String(), "level", "debug", "message", "collector received version bundles from endpoint")
+				c.logger.Log("endpoint", e.String(), "level", "debug", "message", "requested version bundles from endpoint")
 
 				c.mutex.Lock()
 				responses[e.String()] = res.Body()
@@ -142,7 +142,7 @@ func (c *Collector) Collect(ctx context.Context) error {
 		c.mutex.Unlock()
 	}
 
-	c.logger.Log("level", "debug", "message", "collector finishes collecting version bundles from endpoints")
+	c.logger.Log("level", "debug", "message", "collected version bundles from endpoints")
 
 	return nil
 }
