@@ -61,6 +61,8 @@ func NewCollector(config CollectorConfig) (*Collector, error) {
 	return c, nil
 }
 
+// SetEndpoints set the collector endpoints.
+// Warning: this function is not thread-safe and should be used synchronously.
 func (c *Collector) SetEndpoints(endpoints []*url.URL) {
 	c.endpoints = endpoints
 }
