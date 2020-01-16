@@ -55,6 +55,7 @@ func buildReleases(logger micrologger.Logger, indexReleases []IndexRelease, bund
 
 		rc := ReleaseConfig{
 			Active:  ir.Active,
+			Apps:    ir.Apps,
 			Bundles: bundles,
 			Date:    ir.Date,
 			Version: ir.Version,
