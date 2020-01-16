@@ -12,10 +12,9 @@ import (
 	"github.com/giantswarm/micrologger"
 )
 
-const indexReleaseTimestampFormat = "2006-01-02T15:04:05.00Z"
-
 type IndexRelease struct {
 	Active      bool        `yaml:"active"`
+	Apps        []App       `yaml:"apps"`
 	Authorities []Authority `yaml:"authorities"`
 	Date        time.Time   `yaml:"date"`
 	Version     string      `yaml:"version"`
