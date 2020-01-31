@@ -1,12 +1,12 @@
 package versionbundle
 
-type AppsLog map[string][]Log
+type AppsChangelogs map[string][]AppChangelog
 
-type Log struct {
+type AppChangelog struct {
 	Description string   `json:"description"`
 	Type        string   `json:"type"`
 	Urls        []string `json:"urls"`
 	Version     string   `json:"version"`
 }
 
-type ReleasesLog map[string]AppsLog
+type ReleasesChangelogs map[string]AppsChangelogs
