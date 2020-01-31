@@ -25,7 +25,7 @@ func Test_Changelog_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidChangelog,
 		},
 
-		// Test 2 ensures a changelog missing description and Kind throws an error.
+		// Test 2 ensures a changelog missing description and kind throws an error.
 		{
 			Changelog: Changelog{
 				Component:   "kubernetes",
@@ -35,7 +35,7 @@ func Test_Changelog_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidChangelog,
 		},
 
-		// Test 2 ensures a changelog missing Kind throws an error.
+		// Test 2 ensures a changelog missing kind throws an error.
 		{
 			Changelog: Changelog{
 				Component:   "kubernetes",
@@ -45,7 +45,7 @@ func Test_Changelog_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidChangelog,
 		},
 
-		// Test 3 ensures a changelog missing a valid Kind throws an error.
+		// Test 3 ensures a changelog missing a valid kind throws an error.
 		{
 			Changelog: Changelog{
 				Component:   "kubernetes",
@@ -75,7 +75,7 @@ func Test_Changelog_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidChangelog,
 		},
 
-		// Test 6 ensures a changelog having a valid Kind does not throw an error.
+		// Test 6 ensures a changelog having a valid kind does not throw an error.
 		{
 			Changelog: Changelog{
 				Component:   "kubernetes",
@@ -85,7 +85,7 @@ func Test_Changelog_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 7 is the same as 6 but with a different Kind.
+		// Test 7 is the same as 6 but with a different kind.
 		{
 			Changelog: Changelog{
 				Component:   "kubernetes",
@@ -95,7 +95,7 @@ func Test_Changelog_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 8 is the same as 6 but with a different Kind.
+		// Test 8 is the same as 6 but with a different kind.
 		{
 			Changelog: Changelog{
 				Component:   "kubernetes",
@@ -105,7 +105,7 @@ func Test_Changelog_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 9 is the same as 6 but with a different Kind.
+		// Test 9 is the same as 6 but with a different kind.
 		{
 			Changelog: Changelog{
 				Component:   "kubernetes",
@@ -115,7 +115,7 @@ func Test_Changelog_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 10 is the same as 6 but with a different Kind.
+		// Test 10 is the same as 6 but with a different kind.
 		{
 			Changelog: Changelog{
 				Component:   "kubernetes",
@@ -125,7 +125,7 @@ func Test_Changelog_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 11 is the same as 6 but with a different Kind.
+		// Test 11 is the same as 6 but with a different kind.
 		{
 			Changelog: Changelog{
 				Component:   "kubernetes",

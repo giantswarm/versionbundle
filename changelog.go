@@ -2,35 +2,36 @@ package versionbundle
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/giantswarm/microerror"
 )
 
-type Kind string
+type kind string
 
 const (
 	// KindAdded being used in a changelog describes an authority's component got
 	// added.
-	KindAdded Kind = "added"
+	KindAdded kind = "added"
 	// KindChanged being used in a changelog describes an authority's component got
 	// changed.
-	KindChanged Kind = "changed"
+	KindChanged kind = "changed"
 	// KindDeprecated being used in a changelog describes an authority's component got
 	// deprecated.
-	KindDeprecated Kind = "deprecated"
+	KindDeprecated kind = "deprecated"
 	// KindFixed being used in a changelog describes an authority's component got
 	// fixed.
-	KindFixed Kind = "fixed"
+	KindFixed kind = "fixed"
 	// KindRemoved being used in a changelog describes an authority's component got
 	// removed.
-	KindRemoved Kind = "removed"
+	KindRemoved kind = "removed"
 	// KindSecurity being used in a changelog describes an authority's component got
 	// adapted for security reasons.
-	KindSecurity Kind = "security"
+	KindSecurity kind = "security"
 )
 
 var (
-	validKinds = []Kind{
+	validKinds = []kind{
 		KindAdded,
 		KindChanged,
 		KindDeprecated,
@@ -52,9 +53,9 @@ type Changelog struct {
 	// Description is some text describing the changelog entry. This information
 	// is intended to be useful for humans.
 	Description string `json:"description" yaml:"description"`
-	// Kind is a machine readable type describing what Kind of changelog the
-	// changelog actually is. Also see the Kind type.
-	Kind Kind `json:"kind" yaml:"kind"`
+	// Kind is a machine readable type describing what kind of changelog the
+	// changelog actually is. Also see the kind type.
+	Kind kind `json:"kind" yaml:"kind"`
 	// URLs is a list of links which contain additional information to the
 	// changelog entry such as upstream changelogs or pull requests.
 	URLs []string `json:"urls" yaml:"urls"`
@@ -74,11 +75,17 @@ func (c Changelog) Validate() error {
 	}
 
 	if c.Kind == "" {
-		return microerror.Maskf(invalidChangelogError, "Kind must not be empty")
+		return microerror.Maskf(invalidChangelogError, "kind must not be empty")
 	}
 
-	if !ValidateKind(c.Kind) {
-		return microerror.Maskf(invalidChangelogError, "Kind must be one of %#v", validKinds)
+	var found bool
+	for _, k := range validKinds {
+		if c.Kind == k {
+			found = true
+		}
+	}
+	if !found {
+		return microerror.Maskf(invalidChangelogError, "kind must be one of %#v", validKinds)
 	}
 
 	return nil
@@ -99,11 +106,12 @@ func CopyChangelogs(changelogs []Changelog) []Changelog {
 	return copy
 }
 
-func ValidateKind(v Kind) bool {
+func NewKind(kindType string) (kind, error) {
+	converted := kind(strings.ToLower(kindType))
 	for _, k := range validKinds {
-		if v == k {
-			return true
+		if converted == k {
+			return converted, nil
 		}
 	}
-	return false
+	return kind(""), microerror.Maskf(invalidChangelogError, "kind must be one of %#v", validKinds)
 }
