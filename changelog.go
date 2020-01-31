@@ -2,8 +2,9 @@ package versionbundle
 
 import (
 	"encoding/json"
-	"github.com/giantswarm/microerror"
 	"strings"
+
+	"github.com/giantswarm/microerror"
 )
 
 type kind string
