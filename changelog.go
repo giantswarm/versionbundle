@@ -77,13 +77,7 @@ func (c Changelog) Validate() error {
 		return microerror.Maskf(invalidChangelogError, "Kind must not be empty")
 	}
 
-	var found bool
-	for _, k := range validKinds {
-		if c.Kind == k {
-			found = true
-		}
-	}
-	if !found {
+	if !ValidateKind(c.Kind) {
 		return microerror.Maskf(invalidChangelogError, "Kind must be one of %#v", validKinds)
 	}
 
@@ -103,4 +97,13 @@ func CopyChangelogs(changelogs []Changelog) []Changelog {
 	}
 
 	return copy
+}
+
+func ValidateKind(v Kind) bool {
+	for _, k := range validKinds {
+		if v == k {
+			return true
+		}
+	}
+	return false
 }
