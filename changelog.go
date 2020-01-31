@@ -2,8 +2,8 @@ package versionbundle
 
 import (
 	"encoding/json"
-
 	"github.com/giantswarm/microerror"
+	"strings"
 )
 
 type kind string
@@ -103,4 +103,14 @@ func CopyChangelogs(changelogs []Changelog) []Changelog {
 	}
 
 	return copy
+}
+
+func Kind(kindType string) (kind, error) {
+	converted := kind(strings.ToLower(kindType))
+	for _, k := range validKinds {
+		if converted == k {
+			return converted, nil
+		}
+	}
+	return kind(""), microerror.Maskf(invalidChangelogError, "kind must be one of %#v", validKinds)
 }
