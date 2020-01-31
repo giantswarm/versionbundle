@@ -113,5 +113,5 @@ func NewKind(kindType string) (kind, error) {
 			return converted, nil
 		}
 	}
-	return kind(""), microerror.Maskf(invalidChangelogError, "kind must be one of %#v", validKinds)
+	return kind(""), microerror.Maskf(executionFailedError, "kind must be one of %#v", validKinds)
 }
