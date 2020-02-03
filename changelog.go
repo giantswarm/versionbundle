@@ -55,7 +55,7 @@ type Changelog struct {
 	// URLs is a list of links which contain additional information to the
 	// changelog entry such as upstream changelogs or pull requests.
 	URLs []string `json:"urls" yaml:"urls"`
-	// Version is the version of the helm chart.
+	// Version is the Giant Swarm version of the component.
 	Version string `json:"version,omitempty" yaml:"version,omitempty"`
 }
 
