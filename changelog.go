@@ -44,7 +44,7 @@ type Changelog struct {
 	// authority or within another authority within the infrastructure. That is,
 	// Aggregate must know about it to be able to properly merge version bundles.
 	Component string `json:"component,omitempty" yaml:"component,omitempty"`
-	// ComponentVersion is the version of the exposed component.
+	// ComponentVersion is the upstream version of the exposed component.
 	ComponentVersion string `json:"componentVersion,omitempty" yaml:"componentVersion,omitempty"`
 	// Description is some text describing the changelog entry. This information
 	// is intended to be useful for humans.
