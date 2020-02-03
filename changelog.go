@@ -43,7 +43,9 @@ type Changelog struct {
 	// version bundles the given component must exist, either within the same
 	// authority or within another authority within the infrastructure. That is,
 	// Aggregate must know about it to be able to properly merge version bundles.
-	Component string `json:"component" yaml:"component"`
+	Component string `json:"component,omitempty" yaml:"component,omitempty"`
+	// ComponentVersion is the upstream version of the exposed component.
+	ComponentVersion string `json:"componentVersion,omitempty" yaml:"componentVersion,omitempty"`
 	// Description is some text describing the changelog entry. This information
 	// is intended to be useful for humans.
 	Description string `json:"description" yaml:"description"`
@@ -53,6 +55,8 @@ type Changelog struct {
 	// URLs is a list of links which contain additional information to the
 	// changelog entry such as upstream changelogs or pull requests.
 	URLs []string `json:"urls" yaml:"urls"`
+	// Version is the Giant Swarm version of the component.
+	Version string `json:"version,omitempty" yaml:"version,omitempty"`
 }
 
 func (c Changelog) String() string {
