@@ -4,7 +4,7 @@ import (
 	"github.com/giantswarm/microerror"
 )
 
-var bundleNotFoundError = microerror.Error{
+var bundleNotFoundError = &microerror.Error{
 	Kind: "bundleNotFoundError",
 }
 
@@ -13,7 +13,7 @@ func IsBundleNotFound(err error) bool {
 	return microerror.Cause(err) == bundleNotFoundError
 }
 
-var executionFailedError = microerror.Error{
+var executionFailedError = &microerror.Error{
 	Kind: "executionFailedError",
 }
 
@@ -22,7 +22,7 @@ func IsExecutionFailed(err error) bool {
 	return microerror.Cause(err) == executionFailedError
 }
 
-var invalidBundleError = microerror.Error{
+var invalidBundleError = &microerror.Error{
 	Kind: "invalidBundleError",
 }
 
@@ -36,7 +36,7 @@ func IsInvalidBundleError(err error) bool {
 	return microerror.Cause(err) == invalidBundleError
 }
 
-var invalidBundlesError = microerror.Error{
+var invalidBundlesError = &microerror.Error{
 	Kind: "invalidBundlesError",
 }
 
@@ -50,7 +50,7 @@ func IsInvalidBundlesError(err error) bool {
 	return microerror.Cause(err) == invalidBundlesError
 }
 
-var invalidChangelogError = microerror.Error{
+var invalidChangelogError = &microerror.Error{
 	Kind: "invalidChangelogError",
 }
 
@@ -59,7 +59,7 @@ func IsInvalidChangelog(err error) bool {
 	return microerror.Cause(err) == invalidChangelogError
 }
 
-var invalidComponentError = microerror.Error{
+var invalidComponentError = &microerror.Error{
 	Kind: "invalidComponentError",
 }
 
@@ -68,7 +68,7 @@ func IsInvalidComponent(err error) bool {
 	return microerror.Cause(err) == invalidComponentError
 }
 
-var invalidConfigError = microerror.Error{
+var invalidConfigError = &microerror.Error{
 	Kind: "invalidConfigError",
 }
 
@@ -77,7 +77,7 @@ func IsInvalidConfig(err error) bool {
 	return microerror.Cause(err) == invalidConfigError
 }
 
-var invalidReleaseError = microerror.Error{
+var invalidReleaseError = &microerror.Error{
 	Kind: "invalidReleaseError",
 }
 
