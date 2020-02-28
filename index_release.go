@@ -232,7 +232,7 @@ func validateUniqueReleases(indexReleases []IndexRelease) error {
 		// Verify release version contents
 		appsAndAuthorities := make([]string, 0, len(release.Apps)+len(release.Authorities))
 		for _, a := range release.Apps {
-			appsAndAuthorities = append(appsAndAuthorities, appID(a))
+			appsAndAuthorities = append(appsAndAuthorities, a.AppID())
 		}
 		for _, a := range release.Authorities {
 			appsAndAuthorities = append(appsAndAuthorities, a.BundleID())
@@ -252,8 +252,4 @@ func validateUniqueReleases(indexReleases []IndexRelease) error {
 	}
 
 	return nil
-}
-
-func appID(a App) string {
-	return a.App + ":" + a.Version
 }
