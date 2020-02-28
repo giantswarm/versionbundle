@@ -1960,6 +1960,66 @@ func Test_validateUniqueReleases(t *testing.T) {
 			},
 			errorMatcher: IsInvalidRelease,
 		},
+		{
+			name: "case 5: success with multiple unique releases with app diff only",
+			releases: []IndexRelease{
+				{
+					Active: false,
+					Apps: []App{
+						{
+							App:              "nginx-ingress-controller",
+							ComponentVersion: "0.30.0",
+							Version:          "1.6.0",
+						},
+					},
+					Authorities: []Authority{
+						{
+							Name:    "cert-operator",
+							Version: "0.1.0",
+						},
+						{
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.3.0",
+						},
+						{
+							Name:    "kvm-operator",
+							Version: "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.May, 21, 13, 12, 00, 00, time.UTC),
+					Version: "2.6.1",
+				},
+				{
+					Active: false,
+					Apps: []App{
+						{
+							App:              "nginx-ingress-controller",
+							ComponentVersion: "0.29.0",
+							Version:          "1.5.0",
+						},
+					},
+					Authorities: []Authority{
+						{
+							Name:    "cert-operator",
+							Version: "0.1.0",
+						},
+						{
+							Name:     "cluster-operator",
+							Provider: "kvm",
+							Version:  "0.3.0",
+						},
+						{
+							Name:    "kvm-operator",
+							Version: "2.2.1",
+						},
+					},
+					Date:    time.Date(2018, time.April, 16, 12, 00, 0, 0, time.UTC),
+					Version: "2.5.1",
+				},
+			},
+			errorMatcher: nil,
+		},
 	}
 
 	for _, tc := range testCases {
