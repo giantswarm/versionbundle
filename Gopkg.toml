@@ -30,13 +30,13 @@
   name = "github.com/coreos/go-semver"
   version = "0.2.0"
 
-[[override]]
+[[constraint]]
   name = "github.com/giantswarm/microerror"
-  version = "=v0.1.0"
+  version = "~v0.1.0"
 
-[[override]]
+[[constraint]]
+  version = "~0.1.1"
   name = "github.com/giantswarm/micrologger"
-  version = "=v0.1.0"
 
 [[constraint]]
   name = "gopkg.in/resty.v1"
