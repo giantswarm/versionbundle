@@ -2,7 +2,6 @@ package versionbundle
 
 import (
 	"fmt"
-	"net/url"
 	"reflect"
 	"strings"
 	"testing"
@@ -10,17 +9,6 @@ import (
 
 	"github.com/giantswarm/micrologger/microloggertest"
 )
-
-func urlMustParse(v string) *URL {
-	u, err := url.Parse(v)
-	if err != nil {
-		panic(err)
-	}
-
-	return &URL{
-		URL: u,
-	}
-}
 
 func Test_buildReleases(t *testing.T) {
 	testCases := []struct {
