@@ -241,7 +241,10 @@ func validateUniqueReleases(indexReleases []IndexRelease) error {
 		sort.Strings(appsAndAuthorities)
 
 		sha256Hash.Reset()
-		sha256Hash.Write([]byte(strings.Join(appsAndAuthorities, ",")))
+		_, err := sha256Hash.Write([]byte(strings.Join(appsAndAuthorities, ",")))
+		if err != nil {
+			return microerror.Mask(err)
+		}
 
 		hexHash := hex.EncodeToString(sha256Hash.Sum(nil))
 		otherVer, exists = releaseChecksums[hexHash]
