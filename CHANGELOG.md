@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
 
+- Purged changelogs from all structs.
 
 ## [0.2.0] 2020-03-23
 
