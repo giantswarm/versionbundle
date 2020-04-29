@@ -1,9 +1,7 @@
 package versionbundle
 
 import (
-	"fmt"
 	"reflect"
-	"strings"
 	"testing"
 	"time"
 
@@ -52,104 +50,41 @@ func Test_buildReleases(t *testing.T) {
 			},
 			bundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "cert-operator",
-							Description: "First release version.",
-							Kind:        KindAdded,
-						},
-					},
 					Name:    "cert-operator",
 					Version: "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "cluster-operator",
-							Description: "First release version.",
-							Kind:        KindAdded,
-						},
-					},
 					Name:     "cluster-operator",
 					Provider: "kvm",
 					Version:  "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "cluster-operator",
-							Description: "Change feature x.",
-							Kind:        KindChanged,
-						},
-					},
 					Name:     "cluster-operator",
 					Provider: "kvm",
 					Version:  "0.2.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "cluster-operator",
-							Description: "Change AWS feature k.",
-							Kind:        KindChanged,
-						},
-					},
 					Name:     "cluster-operator",
 					Provider: "aws",
 					Version:  "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "kvm-operator",
-							Description: "Change feature y.",
-							Kind:        KindChanged,
-						},
-					},
 					Name:    "kvm-operator",
 					Version: "1.2.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "kvm-operator",
-							Description: "Change feature z.",
-							Kind:        KindChanged,
-						},
-					},
 					Name:    "kvm-operator",
 					Version: "1.4.2",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "kvm-operator",
-							Description: "New component q.",
-							Kind:        KindAdded,
-						},
-					},
 					Name:    "kvm-operator",
 					Version: "2.2.1",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "app-controller",
-							Description: "Added initial version.",
-							Kind:        KindAdded,
-						},
-					},
 					Name:    "app-controller",
 					Version: "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "appcatalog-controller",
-							Description: "Added initial version.",
-							Kind:        KindAdded,
-						},
-					},
 					Name:    "appcatalog-controller",
 					Version: "0.1.0",
 				},
@@ -159,87 +94,25 @@ func Test_buildReleases(t *testing.T) {
 					active: true,
 					bundles: []Bundle{
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "app-controller",
-									Description: "Added initial version.",
-									Kind:        KindAdded,
-								},
-							},
 							Name:    "app-controller",
 							Version: "0.1.0",
 						},
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "appcatalog-controller",
-									Description: "Added initial version.",
-									Kind:        KindAdded,
-								},
-							},
 							Name:    "appcatalog-controller",
 							Version: "0.1.0",
 						},
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "cert-operator",
-									Description: "First release version.",
-									Kind:        KindAdded,
-								},
-							},
 							Name:    "cert-operator",
 							Version: "0.1.0",
 						},
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "cluster-operator",
-									Description: "First release version.",
-									Kind:        KindAdded,
-								},
-							},
 							Name:     "cluster-operator",
 							Provider: "kvm",
 							Version:  "0.1.0",
 						},
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "kvm-operator",
-									Description: "New component q.",
-									Kind:        KindAdded,
-								},
-							},
 							Name:    "kvm-operator",
 							Version: "2.2.1",
-						},
-					},
-					changelogs: []Changelog{
-						{
-							Component:   "app-controller",
-							Description: "Added initial version.",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "appcatalog-controller",
-							Description: "Added initial version.",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "cert-operator",
-							Description: "First release version.",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "cluster-operator",
-							Description: "First release version.",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "kvm-operator",
-							Description: "New component q.",
-							Kind:        KindAdded,
 						},
 					},
 					components: []Component{
@@ -316,82 +189,33 @@ func Test_buildReleases(t *testing.T) {
 			},
 			bundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "cert-operator",
-							Description: "First release version.",
-							Kind:        KindAdded,
-						},
-					},
 					Name:    "cert-operator",
 					Version: "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "cluster-operator",
-							Description: "First release version.",
-							Kind:        KindAdded,
-						},
-					},
 					Name:     "cluster-operator",
 					Provider: "kvm",
 					Version:  "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "cluster-operator",
-							Description: "Change feature x.",
-							Kind:        KindChanged,
-						},
-					},
 					Name:     "cluster-operator",
 					Provider: "kvm",
 					Version:  "0.2.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "cluster-operator",
-							Description: "Change AWS feature k.",
-							Kind:        KindChanged,
-						},
-					},
 					Name:     "cluster-operator",
 					Provider: "aws",
 					Version:  "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "kvm-operator",
-							Description: "Change feature y.",
-							Kind:        KindChanged,
-						},
-					},
 					Name:    "kvm-operator",
 					Version: "1.2.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "kvm-operator",
-							Description: "Change feature z.",
-							Kind:        KindChanged,
-						},
-					},
 					Name:    "kvm-operator",
 					Version: "1.4.2",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "kvm-operator",
-							Description: "New component q.",
-							Kind:        KindAdded,
-						},
-					},
 					Name:    "kvm-operator",
 					Version: "2.2.1",
 				},
@@ -401,55 +225,17 @@ func Test_buildReleases(t *testing.T) {
 					active: true,
 					bundles: []Bundle{
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "cert-operator",
-									Description: "First release version.",
-									Kind:        KindAdded,
-								},
-							},
 							Name:    "cert-operator",
 							Version: "0.1.0",
 						},
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "cluster-operator",
-									Description: "First release version.",
-									Kind:        KindAdded,
-								},
-							},
 							Name:     "cluster-operator",
 							Provider: "kvm",
 							Version:  "0.1.0",
 						},
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "kvm-operator",
-									Description: "New component q.",
-									Kind:        KindAdded,
-								},
-							},
 							Name:    "kvm-operator",
 							Version: "2.2.1",
-						},
-					},
-					changelogs: []Changelog{
-						{
-							Component:   "cert-operator",
-							Description: "First release version.",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "cluster-operator",
-							Description: "First release version.",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "kvm-operator",
-							Description: "New component q.",
-							Kind:        KindAdded,
 						},
 					},
 					components: []Component{
@@ -473,56 +259,17 @@ func Test_buildReleases(t *testing.T) {
 					active: true,
 					bundles: []Bundle{
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "cert-operator",
-									Description: "First release version.",
-									Kind:        KindAdded,
-								},
-							},
 							Name:    "cert-operator",
 							Version: "0.1.0",
 						},
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "cluster-operator",
-									Description: "Change feature x.",
-									Kind:        KindChanged,
-								},
-							},
 							Name:     "cluster-operator",
 							Provider: "kvm",
 							Version:  "0.2.0",
 						},
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "kvm-operator",
-									Description: "New component q.",
-									Kind:        KindAdded,
-								},
-							},
 							Name:    "kvm-operator",
 							Version: "2.2.1",
-						},
-					},
-					changelogs: []Changelog{
-						{
-							Component:   "cert-operator",
-							Description: "First release version.",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "cluster-operator",
-							Description: "Change feature x.",
-							Kind:        KindChanged,
-						},
-
-						{
-							Component:   "kvm-operator",
-							Description: "New component q.",
-							Kind:        KindAdded,
 						},
 					},
 					components: []Component{
@@ -591,82 +338,33 @@ func Test_buildReleases(t *testing.T) {
 			},
 			bundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "cert-operator",
-							Description: "First release version.",
-							Kind:        KindAdded,
-						},
-					},
 					Name:    "cert-operator",
 					Version: "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "cluster-operator",
-							Description: "First release version.",
-							Kind:        KindAdded,
-						},
-					},
 					Name:     "cluster-operator",
 					Provider: "kvm",
 					Version:  "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "cluster-operator",
-							Description: "Change feature x.",
-							Kind:        KindChanged,
-						},
-					},
 					Name:     "cluster-operator",
 					Provider: "kvm",
 					Version:  "0.2.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "cluster-operator",
-							Description: "Change AWS feature k.",
-							Kind:        KindChanged,
-						},
-					},
 					Name:     "cluster-operator",
 					Provider: "aws",
 					Version:  "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "kvm-operator",
-							Description: "Change feature y.",
-							Kind:        KindChanged,
-						},
-					},
 					Name:    "kvm-operator",
 					Version: "1.2.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "kvm-operator",
-							Description: "Change feature z.",
-							Kind:        KindChanged,
-						},
-					},
 					Name:    "kvm-operator",
 					Version: "1.4.2",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "kvm-operator",
-							Description: "New component q.",
-							Kind:        KindAdded,
-						},
-					},
 					Name:    "kvm-operator",
 					Version: "2.2.1",
 				},
@@ -676,55 +374,17 @@ func Test_buildReleases(t *testing.T) {
 					active: true,
 					bundles: []Bundle{
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "cert-operator",
-									Description: "First release version.",
-									Kind:        KindAdded,
-								},
-							},
 							Name:    "cert-operator",
 							Version: "0.1.0",
 						},
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "cluster-operator",
-									Description: "First release version.",
-									Kind:        KindAdded,
-								},
-							},
 							Name:     "cluster-operator",
 							Provider: "kvm",
 							Version:  "0.1.0",
 						},
 						{
-							Changelogs: []Changelog{
-								{
-									Component:   "kvm-operator",
-									Description: "New component q.",
-									Kind:        KindAdded,
-								},
-							},
 							Name:    "kvm-operator",
 							Version: "2.2.1",
-						},
-					},
-					changelogs: []Changelog{
-						{
-							Component:   "cert-operator",
-							Description: "First release version.",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "cluster-operator",
-							Description: "First release version.",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "kvm-operator",
-							Description: "New component q.",
-							Kind:        KindAdded,
 						},
 					},
 					components: []Component{
@@ -768,327 +428,6 @@ func Test_buildReleases(t *testing.T) {
 
 			if !reflect.DeepEqual(releases, tc.expectedReleases) {
 				t.Fatalf("releases don't match expectedReleases; got:\n%#v\n\nexpected:\n%#v\n\n", releases, tc.expectedReleases)
-			}
-		})
-	}
-}
-
-func Test_deduplicateReleaseChangelog(t *testing.T) {
-	testCases := []struct {
-		name             string
-		releases         []Release
-		expectedReleases []Release
-		errorMatcher     func(error) bool
-	}{
-		{
-			name: "case 0: simple linear changelog history without duplicates",
-			releases: []Release{
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature x",
-							Kind:        KindAdded,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 2, 12, 0, 0, 0, time.UTC),
-					version:   "1.0.0",
-				},
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature y",
-							Kind:        KindAdded,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 12, 12, 0, 0, 0, time.UTC),
-					version:   "2.0.0",
-				},
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature z",
-							Kind:        KindAdded,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 22, 12, 0, 0, 0, time.UTC),
-					version:   "3.0.0",
-				},
-			},
-			expectedReleases: []Release{
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature x",
-							Kind:        KindAdded,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 2, 12, 0, 0, 0, time.UTC),
-					version:   "1.0.0",
-				},
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature y",
-							Kind:        KindAdded,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 12, 12, 0, 0, 0, time.UTC),
-					version:   "2.0.0",
-				},
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature z",
-							Kind:        KindAdded,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 22, 12, 0, 0, 0, time.UTC),
-					version:   "3.0.0",
-				},
-			},
-			errorMatcher: nil,
-		},
-		{
-			name: "case 1: simple linear changelog history with one duplicate",
-			releases: []Release{
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature x",
-							Kind:        KindAdded,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 2, 12, 0, 0, 0, time.UTC),
-					version:   "1.0.0",
-				},
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature x",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "bar-operator",
-							Description: "changed feature k",
-							Kind:        KindChanged,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 18, 12, 0, 0, 0, time.UTC),
-					version:   "1.0.1",
-				},
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature z",
-							Kind:        KindAdded,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 22, 12, 0, 0, 0, time.UTC),
-					version:   "3.0.0",
-				},
-			},
-			expectedReleases: []Release{
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature x",
-							Kind:        KindAdded,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 2, 12, 0, 0, 0, time.UTC),
-					version:   "1.0.0",
-				},
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "bar-operator",
-							Description: "changed feature k",
-							Kind:        KindChanged,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 18, 12, 0, 0, 0, time.UTC),
-					version:   "1.0.1",
-				},
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature z",
-							Kind:        KindAdded,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 22, 12, 0, 0, 0, time.UTC),
-					version:   "3.0.0",
-				},
-			},
-			errorMatcher: nil,
-		},
-		{
-			name: "case 2: introduction of patch to bar-operator",
-			releases: []Release{
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature x",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "bar-operator",
-							Description: "new feature y",
-							Kind:        KindAdded,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 2, 12, 0, 0, 0, time.UTC),
-					version:   "1.0.0",
-				},
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature x",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "bar-operator",
-							Description: "changed feature y",
-							Kind:        KindChanged,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 28, 12, 0, 0, 0, time.UTC),
-					version:   "1.0.1",
-				},
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature x",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "bar-operator",
-							Description: "new feature y",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "baz-operator",
-							Description: "new feature quux",
-							Kind:        KindAdded,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 22, 12, 0, 0, 0, time.UTC),
-					version:   "2.0.0",
-				},
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature x",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "bar-operator",
-							Description: "changed feature y",
-							Kind:        KindChanged,
-						},
-						{
-							Component:   "baz-operator",
-							Description: "new feature quux",
-							Kind:        KindAdded,
-						},
-					},
-					timestamp: time.Date(2018, time.May, 28, 15, 0, 0, 0, time.UTC),
-					version:   "2.0.1",
-				},
-			},
-			expectedReleases: []Release{
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "foo-operator",
-							Description: "new feature x",
-							Kind:        KindAdded,
-						},
-						{
-							Component:   "bar-operator",
-							Description: "new feature y",
-							Kind:        KindAdded,
-						},
-					},
-					version: "1.0.0",
-				},
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "bar-operator",
-							Description: "changed feature y",
-							Kind:        KindChanged,
-						},
-					},
-					version: "1.0.1",
-				},
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "baz-operator",
-							Description: "new feature quux",
-							Kind:        KindAdded,
-						},
-					},
-					version: "2.0.0",
-				},
-				{
-					changelogs: []Changelog{
-						{
-							Component:   "bar-operator",
-							Description: "changed feature y",
-							Kind:        KindChanged,
-						},
-					},
-					version: "2.0.1",
-				},
-			},
-			errorMatcher: nil,
-		},
-	}
-
-	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
-			filteredReleases := deduplicateReleaseChangelog(tc.releases)
-
-			gotChangelogs := make([]string, 0)
-			for _, r := range filteredReleases {
-				gotChangelogs = append(gotChangelogs, fmt.Sprintf("Version %s: [", r.Version()))
-				for _, clog := range r.Changelogs() {
-					gotChangelogs = append(gotChangelogs, clog.String())
-				}
-				gotChangelogs = append(gotChangelogs, "]")
-			}
-
-			expectedChangelogs := make([]string, 0)
-			for _, r := range tc.expectedReleases {
-				expectedChangelogs = append(expectedChangelogs, fmt.Sprintf("Version %s: [", r.Version()))
-				for _, clog := range r.Changelogs() {
-					expectedChangelogs = append(expectedChangelogs, clog.String())
-				}
-				expectedChangelogs = append(expectedChangelogs, "]")
-			}
-
-			got := "[" + strings.Join(gotChangelogs, ", ") + "]"
-			expected := "[" + strings.Join(expectedChangelogs, ", ") + "]"
-
-			if got != expected {
-				t.Fatalf("\ngot:\t\t%s\nexpected:\t%s", got, expected)
 			}
 		})
 	}

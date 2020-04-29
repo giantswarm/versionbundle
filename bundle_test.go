@@ -22,13 +22,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 		// Test 1 is the same as 0 but with the lower bundle being empty.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -51,13 +44,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 		{
 			Bundle: Bundle{},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -78,13 +64,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 		// Test 3 ensures the same version results in false.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -99,13 +78,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 				Version: "0.1.0",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -127,13 +99,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 		// compared and result in an error.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -148,13 +113,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 				Version: "0.1.0",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -175,13 +133,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 		// Test 5 ensures a smaller major version is not considered a major upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -196,13 +147,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 				Version: "1.1.0",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -223,13 +167,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 		// Test 6 is the same as 5 but with different versions.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -244,13 +181,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 				Version: "5.7.18",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -271,13 +201,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 		// Test 7 ensures a smaller minor version is not considered a major upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -292,13 +215,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 				Version: "0.2.0",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -319,13 +235,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 		// Test 8 ensures a smaller patch version is not considered a major upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -340,13 +249,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 				Version: "0.2.1",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -367,13 +269,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 		// Test 9 ensures a bigger major version is considered a major upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -388,13 +283,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 				Version: "0.2.1",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -415,13 +303,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 		// Test 10 is the same as 9 but with different versions.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -436,13 +317,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 				Version: "5.17.8",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -463,13 +337,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 		// Test 11 ensures a bigger minor version is not considered a major upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -484,13 +351,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 				Version: "0.2.1",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -511,13 +371,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 		// Test 12 ensures a bigger patch version is not considered a major upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -532,13 +385,6 @@ func Test_Bundle_IsMajorUpgrade(t *testing.T) {
 				Version: "0.2.1",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -591,13 +437,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 		// Test 1 is the same as 0 but with the lower bundle being empty.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -620,13 +459,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 		{
 			Bundle: Bundle{},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -647,13 +479,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 		// Test 3 ensures the same version results in false.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -668,13 +493,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 				Version: "0.1.0",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -696,13 +514,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 		// compared and result in an error.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -717,13 +528,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 				Version: "0.1.0",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -744,13 +548,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 		// Test 5 ensures a smaller major version is not considered a minor upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -765,13 +562,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 				Version: "1.1.0",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -792,13 +582,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 		// Test 6 is the same as 5 but with different versions.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -813,13 +596,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 				Version: "5.7.18",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -840,13 +616,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 		// Test 7 ensures a smaller minor version is not considered a minor upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -861,13 +630,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 				Version: "0.2.0",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -888,13 +650,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 		// Test 8 ensures a smaller patch version is not considered a minor upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -909,13 +664,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 				Version: "0.2.1",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -936,13 +684,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 		// Test 9 ensures a bigger major version is not considered a minor upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -957,13 +698,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 				Version: "0.2.1",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -984,13 +718,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 		// Test 10 ensures a bigger minor version is considered a minor upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1005,13 +732,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 				Version: "0.2.1",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1032,13 +752,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 		// Test 11 is the same as 10 but with different versions.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1053,13 +766,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 				Version: "5.7.18",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1080,13 +786,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 		// Test 12 ensures a bigger patch version is not considered a minor upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1101,13 +800,6 @@ func Test_Bundle_IsMinorUpgrade(t *testing.T) {
 				Version: "0.2.1",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1160,13 +852,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 		// Test 1 is the same as 0 but with the lower bundle being empty.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1189,13 +875,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 		{
 			Bundle: Bundle{},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1216,13 +896,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 		// Test 3 ensures the same version results in false.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1237,13 +911,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 				Version: "0.1.0",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1265,13 +933,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 		// result in an error.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1286,13 +948,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 				Version: "0.1.0",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1313,13 +969,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 		// Test 5 ensures a smaller major version is not considered a patch upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1334,13 +984,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 				Version: "1.1.0",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1361,13 +1005,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 		// Test 6 ensures a smaller minor version is not considered a patch upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1382,13 +1020,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 				Version: "0.2.0",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1409,13 +1041,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 		// Test 7 ensures a smaller patch version is not considered a patch upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1430,13 +1056,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 				Version: "0.2.1",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1457,13 +1077,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 		// Test 8 ensures a bigger major version is not considered a patch upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1478,13 +1092,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 				Version: "0.2.1",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1505,13 +1113,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 		// Test 9 ensures a bigger minor version is not considered a patch upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1526,13 +1128,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 				Version: "0.2.1",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1553,13 +1149,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 		// Test 10 ensures a bigger patch version is considered a patch upgrade.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1574,13 +1164,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 				Version: "0.2.1",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1601,13 +1185,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 		// Test 11 is the same as 10 but with a versions.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1622,13 +1200,7 @@ func Test_Bundle_IsPatchUpgrade(t *testing.T) {
 				Version: "2.33.5",
 			},
 			Other: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
+
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1677,7 +1249,7 @@ func Test_Bundle_Validate(t *testing.T) {
 		// Test 1 is the same as 0 but with an empty list of bundles.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{},
+
 				Components: []Component{},
 				Name:       "",
 				Version:    "",
@@ -1685,42 +1257,10 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundleError,
 		},
 
-		// Test 2 ensures a version bundle without changelogs throws an error.
-		{
-			Bundle: Bundle{
-				Changelogs: []Changelog{},
-				Components: []Component{
-					{
-						Name:    "calico",
-						Version: "1.1.0",
-					},
-					{
-						Name:    "kube-dns",
-						Version: "1.0.0",
-					},
-				},
-				Name:    "kubernetes-operator",
-				Version: "0.1.0",
-			},
-			ErrorMatcher: IsInvalidBundleError,
-		},
-
-		// Test 3 ensures a version bundle without components does not throw an
+		// Test 2 ensures a version bundle without components does not throw an
 		// error.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-					{
-						Component:   "kubernetes",
-						Description: "Kubernetes version requirements changed due to calico update.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{},
 				Name:       "kubernetes-operator",
 				Version:    "0.1.0",
@@ -1728,21 +1268,9 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 4 ensures a version bundle without version throws an error.
+		// Test 3 ensures a version bundle without version throws an error.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-					{
-						Component:   "kubernetes",
-						Description: "Kubernetes version requirements changed due to calico update.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1759,21 +1287,9 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundleError,
 		},
 
-		// Test 5 ensures an invalid version throws an error.
+		// Test 4 ensures an invalid version throws an error.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-					{
-						Component:   "kubernetes",
-						Description: "Kubernetes version requirements changed due to calico update.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1790,21 +1306,9 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundleError,
 		},
 
-		// Test 6 is the same as 5 but with a different version.
+		// Test 5 is the same as 5 but with a different version.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-					{
-						Component:   "kubernetes",
-						Description: "Kubernetes version requirements changed due to calico update.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1821,21 +1325,9 @@ func Test_Bundle_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundleError,
 		},
 
-		// Test 7 ensures a valid version bundle does not throw an error.
+		// Test 6 ensures a valid version bundle does not throw an error.
 		{
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-					{
-						Component:   "kubernetes",
-						Description: "Kubernetes version requirements changed due to calico update.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",

@@ -101,36 +101,7 @@ func deduplicateReleaseChangelog(releases []Release) []Release {
 
 	sort.Sort(SortReleasesByVersion(releases))
 
-	var filteredReleases []Release
-
-	for i := 0; i < len(releases); i++ {
-		r := releases[i]
-
-		// Deepcopy changelogs as they are modified later and this instance of
-		// r ends up to filteredReleases.
-		r.changelogs = make([]Changelog, len(releases[i].changelogs))
-		copy(r.changelogs, releases[i].changelogs)
-
-		// Find previous release and map changelogs for quick lookup.
-		prevRelease := findPreviousRelease(r, releases[:i])
-		prevChangelogs := mapReleaseChangelogs(prevRelease)
-
-		// Process changelogs of current release removing ones present in
-		// previous release.
-		for _, clog := range r.Changelogs() {
-			_, exists := prevChangelogs[clog.String()]
-			if exists {
-				// r.Changelogs() returns a copy of changelogs so removal won't
-				// mess iteration in this case.
-				r.removeChangelogEntry(clog)
-			}
-
-		}
-
-		filteredReleases = append(filteredReleases, r)
-	}
-
-	return filteredReleases
+	return releases
 }
 
 // findPreviousRelease finds release that is older than argument r0. This
@@ -144,17 +115,6 @@ func findPreviousRelease(r0 Release, releases []Release) Release {
 	}
 
 	return Release{}
-}
-
-// mapReleaseChangelogs converts Release's Changelog slice to
-// map[string]struct{} for quick lookup.
-func mapReleaseChangelogs(r Release) map[string]struct{} {
-	changelogs := make(map[string]struct{})
-	for _, clog := range r.Changelogs() {
-		changelogs[clog.String()] = struct{}{}
-	}
-
-	return changelogs
 }
 
 // ValidateIndexReleases ensures semantic rules for collection of indexReleases

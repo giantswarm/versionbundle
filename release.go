@@ -1,7 +1,6 @@
 package versionbundle
 
 import (
-	"reflect"
 	"sort"
 	"time"
 
@@ -21,7 +20,6 @@ type ReleaseConfig struct {
 type Release struct {
 	apps       []App
 	bundles    []Bundle
-	changelogs []Changelog
 	components []Component
 	timestamp  time.Time
 	version    string
@@ -37,7 +35,6 @@ func NewRelease(config ReleaseConfig) (Release, error) {
 		active:     config.Active,
 		apps:       config.Apps,
 		bundles:    config.Bundles,
-		changelogs: aggregateReleaseChangelogs(config.Bundles),
 		components: aggregateReleaseComponents(config.Bundles),
 		timestamp:  config.Date,
 		version:    config.Version,
@@ -58,10 +55,6 @@ func (r Release) Bundles() []Bundle {
 	return CopyBundles(r.bundles)
 }
 
-func (r Release) Changelogs() []Changelog {
-	return CopyChangelogs(r.changelogs)
-}
-
 func (r Release) Components() []Component {
 	return CopyComponents(r.components)
 }
@@ -77,25 +70,6 @@ func (r Release) Timestamp() string {
 
 func (r Release) Version() string {
 	return r.version
-}
-
-func (r *Release) removeChangelogEntry(clog Changelog) {
-	for i := 0; i < len(r.changelogs); i++ {
-		if reflect.DeepEqual(clog, r.changelogs[i]) {
-			r.changelogs = append(r.changelogs[:i], r.changelogs[i+1:]...)
-			break
-		}
-	}
-}
-
-func aggregateReleaseChangelogs(bundles []Bundle) []Changelog {
-	var changelogs []Changelog
-
-	for _, b := range bundles {
-		changelogs = append(changelogs, b.Changelogs...)
-	}
-
-	return changelogs
 }
 
 func aggregateReleaseComponents(bundles []Bundle) []Component {
