@@ -31,13 +31,6 @@ func Test_Bundles_Contains(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -53,13 +46,6 @@ func Test_Bundles_Contains(t *testing.T) {
 				},
 			},
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -81,13 +67,6 @@ func Test_Bundles_Contains(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -102,13 +81,6 @@ func Test_Bundles_Contains(t *testing.T) {
 					Version: "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -124,13 +96,6 @@ func Test_Bundles_Contains(t *testing.T) {
 				},
 			},
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -152,13 +117,6 @@ func Test_Bundles_Contains(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -174,13 +132,6 @@ func Test_Bundles_Contains(t *testing.T) {
 				},
 			},
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -202,13 +153,6 @@ func Test_Bundles_Contains(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -223,13 +167,6 @@ func Test_Bundles_Contains(t *testing.T) {
 					Version: "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -245,13 +182,6 @@ func Test_Bundles_Contains(t *testing.T) {
 				},
 			},
 			Bundle: Bundle{
-				Changelogs: []Changelog{
-					{
-						Component:   "calico",
-						Description: "Calico version updated.",
-						Kind:        "changed",
-					},
-				},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -280,7 +210,6 @@ func Test_Bundles_Contains(t *testing.T) {
 func Test_Bundles_Copy(t *testing.T) {
 	bundles := []Bundle{
 		{
-			Changelogs: []Changelog{},
 			Components: []Component{
 				{
 					Name:    "calico",
@@ -295,18 +224,6 @@ func Test_Bundles_Copy(t *testing.T) {
 			Version: "0.1.0",
 		},
 		{
-			Changelogs: []Changelog{
-				{
-					Component:   "calico",
-					Description: "Calico version updated.",
-					Kind:        "changed",
-				},
-				{
-					Component:   "kubernetes",
-					Description: "Kubernetes version requirements changed due to calico update.",
-					Kind:        "changed",
-				},
-			},
 			Components: []Component{
 				{
 					Name:    "calico",
@@ -362,7 +279,6 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -387,7 +303,6 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -411,7 +326,6 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -426,7 +340,6 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 					Version: "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -450,7 +363,6 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -467,7 +379,6 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 			},
 			Name: "cloud-config-operator",
 			ExpectedBundle: Bundle{
-				Changelogs: []Changelog{},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -488,7 +399,6 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -503,7 +413,6 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 					Version: "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -520,7 +429,6 @@ func Test_Bundles_GetBundleByName(t *testing.T) {
 			},
 			Name: "cloud-config-operator",
 			ExpectedBundle: Bundle{
-				Changelogs: []Changelog{},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -587,7 +495,6 @@ func Test_Bundles_GetBundleByNameForProvider(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -613,7 +520,6 @@ func Test_Bundles_GetBundleByNameForProvider(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -639,7 +545,6 @@ func Test_Bundles_GetBundleByNameForProvider(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -655,7 +560,6 @@ func Test_Bundles_GetBundleByNameForProvider(t *testing.T) {
 					Version:  "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -681,7 +585,6 @@ func Test_Bundles_GetBundleByNameForProvider(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -700,7 +603,6 @@ func Test_Bundles_GetBundleByNameForProvider(t *testing.T) {
 			Name:     "cloud-config-operator",
 			Provider: "aws",
 			ExpectedBundle: Bundle{
-				Changelogs: []Changelog{},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -722,7 +624,6 @@ func Test_Bundles_GetBundleByNameForProvider(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -738,7 +639,6 @@ func Test_Bundles_GetBundleByNameForProvider(t *testing.T) {
 					Version:  "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -757,7 +657,6 @@ func Test_Bundles_GetBundleByNameForProvider(t *testing.T) {
 			Name:     "cloud-config-operator",
 			Provider: "azure",
 			ExpectedBundle: Bundle{
-				Changelogs: []Changelog{},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -779,7 +678,6 @@ func Test_Bundles_GetBundleByNameForProvider(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -795,7 +693,6 @@ func Test_Bundles_GetBundleByNameForProvider(t *testing.T) {
 					Version:  "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -811,21 +708,18 @@ func Test_Bundles_GetBundleByNameForProvider(t *testing.T) {
 					Version:  "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{},
 					Provider:   "aws",
 					Name:       "cluster-operator",
 					Version:    "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{},
 					Provider:   "azure",
 					Name:       "cluster-operator",
 					Version:    "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{},
 					Provider:   "kvm",
 					Name:       "cluster-operator",
@@ -835,7 +729,6 @@ func Test_Bundles_GetBundleByNameForProvider(t *testing.T) {
 			Name:     "cluster-operator",
 			Provider: "azure",
 			ExpectedBundle: Bundle{
-				Changelogs: []Changelog{},
 				Components: []Component{},
 				Provider:   "azure",
 				Name:       "cluster-operator",
@@ -878,7 +771,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -894,7 +786,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 				},
 			},
 			ExpectedBundle: Bundle{
-				Changelogs: []Changelog{},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -915,7 +806,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -930,7 +820,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 					Version: "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -946,7 +835,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 				},
 			},
 			ExpectedBundle: Bundle{
-				Changelogs: []Changelog{},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -967,7 +855,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -982,7 +869,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 					Version: "0.2.0",
 				},
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -998,7 +884,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 				},
 			},
 			ExpectedBundle: Bundle{
-				Changelogs: []Changelog{},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1019,7 +904,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -1034,7 +918,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 					Version: "0.2.0",
 				},
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -1049,7 +932,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 					Version: "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -1065,7 +947,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 				},
 			},
 			ExpectedBundle: Bundle{
-				Changelogs: []Changelog{},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1086,7 +967,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -1101,7 +981,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 					Version: "0.2.0",
 				},
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -1116,7 +995,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 					Version: "2.3.12",
 				},
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -1132,7 +1010,6 @@ func Test_Bundles_GetNewestBundle(t *testing.T) {
 				},
 			},
 			ExpectedBundle: Bundle{
-				Changelogs: []Changelog{},
 				Components: []Component{
 					{
 						Name:    "calico",
@@ -1177,42 +1054,40 @@ func Test_Bundles_GetNewestBundleForProvider(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{},
 					Provider:   "aws",
 					Name:       "cluster-operator",
 					Version:    "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{},
 					Components: []Component{},
 					Provider:   "azure",
 					Name:       "cluster-operator",
 					Version:    "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{},
+
 					Components: []Component{},
 					Provider:   "kvm",
 					Name:       "cluster-operator",
 					Version:    "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{},
+
 					Components: []Component{},
 					Provider:   "aws",
 					Name:       "cluster-operator",
 					Version:    "0.2.0",
 				},
 				{
-					Changelogs: []Changelog{},
+
 					Components: []Component{},
 					Provider:   "azure",
 					Name:       "cluster-operator",
 					Version:    "0.4.0",
 				},
 				{
-					Changelogs: []Changelog{},
+
 					Components: []Component{},
 					Provider:   "kvm",
 					Name:       "cluster-operator",
@@ -1221,7 +1096,7 @@ func Test_Bundles_GetNewestBundleForProvider(t *testing.T) {
 			},
 			Provider: "kvm",
 			ExpectedBundle: Bundle{
-				Changelogs: []Changelog{},
+
 				Components: []Component{},
 				Provider:   "kvm",
 				Name:       "cluster-operator",
@@ -1235,21 +1110,21 @@ func Test_Bundles_GetNewestBundleForProvider(t *testing.T) {
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{},
+
 					Components: []Component{},
 					Provider:   "aws",
 					Name:       "cluster-operator",
 					Version:    "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{},
+
 					Components: []Component{},
 					Provider:   "azure",
 					Name:       "cluster-operator",
 					Version:    "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{},
+
 					Components: []Component{},
 					Provider:   "kvm",
 					Name:       "cluster-operator",
@@ -1295,112 +1170,11 @@ func Test_Bundles_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundlesError,
 		},
 
-		// Test 2 ensures validation of a list of version bundles where any version
-		// bundle has no changelogs throws an error.
-		{
-			Bundles: []Bundle{
-				{
-					Changelogs: []Changelog{},
-					Components: []Component{
-						{
-							Name:    "calico",
-							Version: "1.1.0",
-						},
-						{
-							Name:    "kube-dns",
-							Version: "1.0.0",
-						},
-					},
-					Name:    "kubernetes-operator",
-					Version: "0.1.0",
-				},
-			},
-			ErrorMatcher: IsInvalidBundlesError,
-		},
-
-		// Test 3 ensures a bundle with pre-release version is valid.
-		{
-			Bundles: []Bundle{
-				{
-					Changelogs: []Changelog{},
-					Components: []Component{
-						{
-							Name:    "calico",
-							Version: "1.1.0",
-						},
-					},
-					Name:    "kubernetes-operator",
-					Version: "0.1.0-pre-release",
-				},
-			},
-			ErrorMatcher: IsInvalidBundlesError,
-		},
-
-		// Test 4 is the same as 2 but with multiple version bundles.
-		{
-			Bundles: []Bundle{
-				{
-					Changelogs: []Changelog{},
-					Components: []Component{
-						{
-							Name:    "calico",
-							Version: "1.1.0",
-						},
-						{
-							Name:    "kube-dns",
-							Version: "1.0.0",
-						},
-					},
-					Name:    "kubernetes-operator",
-					Version: "0.1.0",
-				},
-				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-						{
-							Component:   "kubernetes",
-							Description: "Kubernetes version requirements changed due to calico update.",
-							Kind:        "changed",
-						},
-					},
-					Components: []Component{
-						{
-							Name:    "calico",
-							Version: "1.1.0",
-						},
-						{
-							Name:    "kube-dns",
-							Version: "1.0.0",
-						},
-					},
-					Name:    "kubernetes-operator",
-					Version: "0.2.0",
-				},
-			},
-			ErrorMatcher: IsInvalidBundlesError,
-		},
-
-		// Test 5 ensures validation of a list of version bundles where a
+		// Test 2 ensures validation of a list of version bundles where a
 		// version bundle has no components does not throw an error.
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-						{
-							Component:   "kubernetes",
-							Description: "Kubernetes version requirements changed due to calico update.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{},
 					Name:       "kubernetes-operator",
 					Version:    "0.1.0",
@@ -1409,39 +1183,15 @@ func Test_Bundles_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 6 is the same as 4 but with multiple version bundles.
+		// Test 3 is the same as 4 but with multiple version bundles.
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-						{
-							Component:   "kubernetes",
-							Description: "Kubernetes version requirements changed due to calico update.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{},
 					Name:       "kubernetes-operator",
 					Version:    "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-						{
-							Component:   "kubernetes",
-							Description: "Kubernetes version requirements changed due to calico update.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -1459,18 +1209,11 @@ func Test_Bundles_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 7 ensures validation of a list of version bundles having the
+		// Test 4 ensures validation of a list of version bundles having the
 		// different name and version not throws an error.
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -1485,13 +1228,6 @@ func Test_Bundles_Validate(t *testing.T) {
 					Version: "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -1509,18 +1245,11 @@ func Test_Bundles_Validate(t *testing.T) {
 			ErrorMatcher: nil,
 		},
 
-		// Test 8 ensures validation of a list of version bundles having duplicated
+		// Test 5 ensures validation of a list of version bundles having duplicated
 		// version bundles throws an error.
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -1535,13 +1264,6 @@ func Test_Bundles_Validate(t *testing.T) {
 					Version: "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -1559,18 +1281,11 @@ func Test_Bundles_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundlesError,
 		},
 
-		// Test 9 ensures validation of a list of version bundles having the same
+		// Test 6 ensures validation of a list of version bundles having the same
 		// version throws an error.
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -1585,13 +1300,6 @@ func Test_Bundles_Validate(t *testing.T) {
 					Version: "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "kube-dns",
-							Description: "Kube-DNS version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -1609,17 +1317,10 @@ func Test_Bundles_Validate(t *testing.T) {
 			ErrorMatcher: IsInvalidBundlesError,
 		},
 
-		// Test 10 verifies that version increment is validated per provider.
+		// Test 7 verifies that version increment is validated per provider.
 		{
 			Bundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "Cluster Operator",
-							Description: "Initial version for AWS.",
-							Kind:        "added",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "aws-operator",
@@ -1631,13 +1332,6 @@ func Test_Bundles_Validate(t *testing.T) {
 					Version:  "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "Cluster Operator",
-							Description: "Initial version for Azure.",
-							Kind:        "added",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "azure-operator",
@@ -1649,13 +1343,6 @@ func Test_Bundles_Validate(t *testing.T) {
 					Version:  "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "Cluster Operator",
-							Description: "Initial version for KVM.",
-							Kind:        "added",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "kvm-operator",
@@ -1668,87 +1355,6 @@ func Test_Bundles_Validate(t *testing.T) {
 				},
 			},
 			ErrorMatcher: nil,
-		},
-
-		// Test 11 like test 10 but verifies invalidBundlesError when there are
-		// two Bundles for AWS provider and second of those has newer timestamp
-		// and lower version number.
-		{
-			Bundles: []Bundle{
-				{
-					Changelogs: []Changelog{
-						{
-							Component:   "Cluster Operator",
-							Description: "Initial version for AWS.",
-							Kind:        "added",
-						},
-					},
-					Components: []Component{
-						{
-							Name:    "aws-operator",
-							Version: "1.0.0",
-						},
-					},
-					Provider: "aws",
-					Name:     "cluster-operator",
-					Version:  "1.0.0",
-				},
-				{
-					Changelogs: []Changelog{
-						{
-							Component:   "Cluster Operator",
-							Description: "Updated version for AWS.",
-							Kind:        "updated",
-						},
-					},
-					Components: []Component{
-						{
-							Name:    "aws-operator",
-							Version: "1.0.0",
-						},
-					},
-					Provider: "aws",
-					Name:     "cluster-operator",
-					Version:  "0.1.0",
-				},
-				{
-					Changelogs: []Changelog{
-						{
-							Component:   "Cluster Operator",
-							Description: "Initial version for Azure.",
-							Kind:        "added",
-						},
-					},
-					Components: []Component{
-						{
-							Name:    "azure-operator",
-							Version: "1.0.0",
-						},
-					},
-					Provider: "azure",
-					Name:     "cluster-operator",
-					Version:  "0.1.0",
-				},
-				{
-					Changelogs: []Changelog{
-						{
-							Component:   "Cluster Operator",
-							Description: "Initial version for KVM.",
-							Kind:        "added",
-						},
-					},
-					Components: []Component{
-						{
-							Name:    "kvm-operator",
-							Version: "1.0.0",
-						},
-					},
-					Provider: "kvm",
-					Name:     "cluster-operator",
-					Version:  "0.1.0",
-				},
-			},
-			ErrorMatcher: IsInvalidBundlesError,
 		},
 	}
 

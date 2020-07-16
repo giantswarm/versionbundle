@@ -12,11 +12,6 @@ import (
 // structure. Version bundles are aggregated into a merged structure represented
 // by the Aggregation structure. Also see the Aggregate function.
 type Bundle struct {
-	// Changelogs describe what changes are introduced by the version bundle. Each
-	// version bundle must have at least one changelog entry.
-	//
-	// NOTE that once this property is set it must never change again.
-	Changelogs []Changelog `json:"changelogs" yaml:"changelogs"`
 	// Components describe the components an authority exposes. Functionality of
 	// components listed here is guaranteed to be implemented in the according
 	// versions.
@@ -151,16 +146,6 @@ func (b Bundle) IsPatchUpgrade(other Bundle) (bool, error) {
 }
 
 func (b Bundle) Validate() error {
-	if len(b.Changelogs) == 0 {
-		return microerror.Maskf(invalidBundleError, "changelogs must not be empty")
-	}
-	for _, c := range b.Changelogs {
-		err := c.Validate()
-		if err != nil {
-			return microerror.Maskf(invalidBundleError, err.Error())
-		}
-	}
-
 	for _, c := range b.Components {
 		err := c.Validate()
 		if err != nil {

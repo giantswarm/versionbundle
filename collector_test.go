@@ -28,13 +28,6 @@ func Test_Collector_Collect(t *testing.T) {
 					cr := CollectorEndpointResponse{
 						VersionBundles: []Bundle{
 							{
-								Changelogs: []Changelog{
-									{
-										Component:   "calico",
-										Description: "Calico version updated.",
-										Kind:        "changed",
-									},
-								},
 								Components: []Component{
 									{
 										Name:    "calico",
@@ -63,13 +56,6 @@ func Test_Collector_Collect(t *testing.T) {
 			FilterFunc: nil,
 			ExpectedBundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -95,13 +81,6 @@ func Test_Collector_Collect(t *testing.T) {
 					cr := CollectorEndpointResponse{
 						VersionBundles: []Bundle{
 							{
-								Changelogs: []Changelog{
-									{
-										Component:   "calico",
-										Description: "Calico version updated.",
-										Kind:        "changed",
-									},
-								},
 								Components: []Component{
 									{
 										Name:    "calico",
@@ -130,18 +109,6 @@ func Test_Collector_Collect(t *testing.T) {
 					cr := CollectorEndpointResponse{
 						VersionBundles: []Bundle{
 							{
-								Changelogs: []Changelog{
-									{
-										Component:   "etcd",
-										Description: "Etcd version updated.",
-										Kind:        "changed",
-									},
-									{
-										Component:   "kubernetes",
-										Description: "Kubernetes version updated.",
-										Kind:        "changed",
-									},
-								},
 								Components: []Component{
 									{
 										Name:    "etcd",
@@ -170,18 +137,6 @@ func Test_Collector_Collect(t *testing.T) {
 			FilterFunc: nil,
 			ExpectedBundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "etcd",
-							Description: "Etcd version updated.",
-							Kind:        "changed",
-						},
-						{
-							Component:   "kubernetes",
-							Description: "Kubernetes version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "etcd",
@@ -196,13 +151,6 @@ func Test_Collector_Collect(t *testing.T) {
 					Version: "0.2.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -228,13 +176,6 @@ func Test_Collector_Collect(t *testing.T) {
 					cr := CollectorEndpointResponse{
 						VersionBundles: []Bundle{
 							{
-								Changelogs: []Changelog{
-									{
-										Component:   "calico",
-										Description: "Calico version updated.",
-										Kind:        "changed",
-									},
-								},
 								Components: []Component{
 									{
 										Name:    "calico",
@@ -249,13 +190,6 @@ func Test_Collector_Collect(t *testing.T) {
 								Version: "0.1.0",
 							},
 							{
-								Changelogs: []Changelog{
-									{
-										Component:   "calico",
-										Description: "Calico version updated.",
-										Kind:        "changed",
-									},
-								},
 								Components: []Component{
 									{
 										Name:    "calico",
@@ -284,18 +218,6 @@ func Test_Collector_Collect(t *testing.T) {
 					cr := CollectorEndpointResponse{
 						VersionBundles: []Bundle{
 							{
-								Changelogs: []Changelog{
-									{
-										Component:   "etcd",
-										Description: "Etcd version updated.",
-										Kind:        "changed",
-									},
-									{
-										Component:   "kubernetes",
-										Description: "Kubernetes version updated.",
-										Kind:        "changed",
-									},
-								},
 								Components: []Component{
 									{
 										Name:    "etcd",
@@ -310,13 +232,6 @@ func Test_Collector_Collect(t *testing.T) {
 								Version: "0.2.0",
 							},
 							{
-								Changelogs: []Changelog{
-									{
-										Component:   "etcd",
-										Description: "Etcd version updated.",
-										Kind:        "changed",
-									},
-								},
 								Components: []Component{
 									{
 										Name:    "etcd",
@@ -345,18 +260,6 @@ func Test_Collector_Collect(t *testing.T) {
 			FilterFunc: nil,
 			ExpectedBundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "etcd",
-							Description: "Etcd version updated.",
-							Kind:        "changed",
-						},
-						{
-							Component:   "kubernetes",
-							Description: "Kubernetes version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "etcd",
@@ -371,13 +274,6 @@ func Test_Collector_Collect(t *testing.T) {
 					Version: "0.2.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "etcd",
-							Description: "Etcd version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "etcd",
@@ -392,13 +288,6 @@ func Test_Collector_Collect(t *testing.T) {
 					Version: "0.3.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -413,13 +302,6 @@ func Test_Collector_Collect(t *testing.T) {
 					Version: "0.1.0",
 				},
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "calico",
-							Description: "Calico version updated.",
-							Kind:        "changed",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "calico",
@@ -444,13 +326,6 @@ func Test_Collector_Collect(t *testing.T) {
 					cr := CollectorEndpointResponse{
 						VersionBundles: []Bundle{
 							{
-								Changelogs: []Changelog{
-									{
-										Component:   "Cluster Operator",
-										Description: "Initial version for AWS",
-										Kind:        "added",
-									},
-								},
 								Components: []Component{
 									{
 										Name:    "aws-operator",
@@ -462,13 +337,6 @@ func Test_Collector_Collect(t *testing.T) {
 								Version:  "0.1.0",
 							},
 							{
-								Changelogs: []Changelog{
-									{
-										Component:   "Cluster Operator",
-										Description: "Initial version for Azure",
-										Kind:        "added",
-									},
-								},
 								Components: []Component{
 									{
 										Name:    "azure-operator",
@@ -480,13 +348,6 @@ func Test_Collector_Collect(t *testing.T) {
 								Version:  "0.1.0",
 							},
 							{
-								Changelogs: []Changelog{
-									{
-										Component:   "Cluster Operator",
-										Description: "Initial version for KVM",
-										Kind:        "added",
-									},
-								},
 								Components: []Component{
 									{
 										Name:    "kvm-operator",
@@ -512,13 +373,6 @@ func Test_Collector_Collect(t *testing.T) {
 			FilterFunc: func(b Bundle) bool { return b.Provider == "kvm" },
 			ExpectedBundles: []Bundle{
 				{
-					Changelogs: []Changelog{
-						{
-							Component:   "Cluster Operator",
-							Description: "Initial version for KVM",
-							Kind:        "added",
-						},
-					},
 					Components: []Component{
 						{
 							Name:    "kvm-operator",
