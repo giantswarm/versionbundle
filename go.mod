@@ -1,6 +1,6 @@
 module github.com/giantswarm/versionbundle
 
-go 1.13
+go 1.17
 
 require (
 	github.com/coreos/go-semver v0.2.0
