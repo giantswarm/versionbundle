@@ -1,15 +1,13 @@
 module github.com/giantswarm/versionbundle
 
-go 1.23.0
-
-toolchain go1.23.2
+go 1.23.7
 
 require (
 	github.com/coreos/go-semver v0.3.1
 	github.com/giantswarm/microerror v0.4.1
 	github.com/giantswarm/micrologger v1.1.2
+	github.com/go-resty/resty/v2 v2.16.5
 	golang.org/x/sync v0.12.0
-	gopkg.in/resty.v1 v1.12.0
 )
 
 require (

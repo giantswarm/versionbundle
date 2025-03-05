@@ -10,8 +10,9 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/go-resty/resty/v2"
+
 	"github.com/giantswarm/micrologger/microloggertest"
-	"gopkg.in/resty.v1"
 )
 
 func Test_Collector_Collect(t *testing.T) {
