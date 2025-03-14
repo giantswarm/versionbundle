@@ -8,10 +8,11 @@ import (
 	"sort"
 	"sync"
 
+	"github.com/go-resty/resty/v2"
+	"golang.org/x/sync/errgroup"
+
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
-	"golang.org/x/sync/errgroup"
-	"gopkg.in/resty.v1"
 )
 
 type CollectorConfig struct {
