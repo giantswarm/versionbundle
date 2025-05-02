@@ -15,5 +15,5 @@ require (
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
 	github.com/go-logr/logr v1.3.0 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
-	golang.org/x/net v0.18.0 // indirect
+	golang.org/x/net v0.39.0 // indirect
 )
