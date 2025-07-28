@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Resolve staticcheck warnings from golangci-lint v2.
+
 ## [1.1.0] - 2023-11-09
 
 - Upgrade to Go 1.20

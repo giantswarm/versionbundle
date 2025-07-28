@@ -3,7 +3,6 @@ package versionbundle
 import (
 	"context"
 	"encoding/json"
-	"io"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -48,7 +47,7 @@ func Test_Collector_Collect(t *testing.T) {
 					if err != nil {
 						t.Fatalf("expected %#v got %#v", nil, err)
 					}
-					_, err = io.WriteString(w, string(b))
+					_, err = w.Write(b)
 					if err != nil {
 						t.Fatalf("expected %#v got %#v", nil, err)
 					}
@@ -101,7 +100,7 @@ func Test_Collector_Collect(t *testing.T) {
 					if err != nil {
 						t.Fatalf("expected %#v got %#v", nil, err)
 					}
-					_, err = io.WriteString(w, string(b))
+					_, err = w.Write(b)
 					if err != nil {
 						t.Fatalf("expected %#v got %#v", nil, err)
 					}
@@ -129,7 +128,7 @@ func Test_Collector_Collect(t *testing.T) {
 					if err != nil {
 						t.Fatalf("expected %#v got %#v", nil, err)
 					}
-					_, err = io.WriteString(w, string(b))
+					_, err = w.Write(b)
 					if err != nil {
 						t.Fatalf("expected %#v got %#v", nil, err)
 					}
@@ -210,7 +209,7 @@ func Test_Collector_Collect(t *testing.T) {
 					if err != nil {
 						t.Fatalf("expected %#v got %#v", nil, err)
 					}
-					_, err = io.WriteString(w, string(b))
+					_, err = w.Write(b)
 					if err != nil {
 						t.Fatalf("expected %#v got %#v", nil, err)
 					}
@@ -252,7 +251,7 @@ func Test_Collector_Collect(t *testing.T) {
 					if err != nil {
 						t.Fatalf("expected %#v got %#v", nil, err)
 					}
-					_, err = io.WriteString(w, string(b))
+					_, err = w.Write(b)
 					if err != nil {
 						t.Fatalf("expected %#v got %#v", nil, err)
 					}
@@ -365,7 +364,7 @@ func Test_Collector_Collect(t *testing.T) {
 					if err != nil {
 						t.Fatalf("expected %#v got %#v", nil, err)
 					}
-					_, err = io.WriteString(w, string(b))
+					_, err = w.Write(b)
 					if err != nil {
 						t.Fatalf("expected %#v got %#v", nil, err)
 					}
