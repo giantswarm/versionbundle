@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-01-26
+
 ### Fixed
 
 - Resolve staticcheck warnings from golangci-lint v2.
@@ -51,7 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First release.
 
-[Unreleased]: https://github.com/giantswarm/versionbundle/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/giantswarm/versionbundle/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/giantswarm/versionbundle/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/giantswarm/versionbundle/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/giantswarm/versionbundle/releases/tag/v0.2.0...v1.0.0
 [0.2.0]: https://github.com/giantswarm/versionbundle/releases/tag/v0.1.0...v0.2.0
